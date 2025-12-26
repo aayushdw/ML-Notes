@@ -62,8 +62,8 @@
 - [ ] [[Vector Databases for RAG]]
 - [ ] [[Embedding Models]]
 - [ ] [[Retrieval Strategies]]
-- [ ] [[Hybrid Search (Dense + Sparse)]]
-- [ ] [[Reranking Techniques]]
+- [ ] [[Hybrid Search]]
+- [ ] [[Re-ranking]]
 - [ ] [[RAG Evaluation]]
 
 ### Multi-Modal Systems
