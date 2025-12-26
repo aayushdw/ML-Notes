@@ -1,18 +1,28 @@
-# Quartz v4
+# Aayush's ML & AI Notes
 
-> “[One] who works with the door open gets all kinds of interruptions, but [they] also occasionally gets clues as to what the world is and what might be important.” — Richard Hamming
+A personal knowledge base for Machine Learning and AI Engineering concepts.
 
-Quartz is a set of tools that helps you publish your [digital garden](https://jzhao.xyz/posts/networked-thought) and notes as a website for free.
-Quartz v4 features a from-the-ground rewrite focusing on end-user extensibility and ease-of-use.
+**Live site:** https://aayushdw.github.io/ML-Notes/
 
-🔗 Read the documentation and get started: https://quartz.jzhao.xyz/
+## Topics
 
-[Join the Discord Community](https://discord.gg/cRFFHYye7t)
+### Core Fundamentals
+Machine Learning basics and Deep Learning architecture foundations.
 
-## Sponsors
+### LLMs & Generative AI
+Modern language models and generative systems, including LLM operations and production systems.
 
-<p align="center">
-  <a href="https://github.com/sponsors/jackyzha0">
-    <img src="https://cdn.jsdelivr.net/gh/jackyzha0/jackyzha0/sponsorkit/sponsors.svg" />
-  </a>
-</p>
+### MLOps & Infrastructure
+Deploying, scaling, and maintaining ML systems in production — model lifecycle management and infrastructure scaling.
+
+### Software Engineering
+Software engineering best practices applied to AI systems — system design, code quality, and testing.
+
+### Data Engineering
+Data pipelines and infrastructure for ML — data management and infrastructure.
+
+### Specialized Domains
+Deep dives into specific AI application areas: Computer Vision, NLP, and Ethics & Responsible AI.
+
+### Business & Strategy
+Bridging technical skills with business impact — strategic skills, leadership, and communication.

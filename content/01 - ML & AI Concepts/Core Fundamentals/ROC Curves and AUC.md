@@ -20,7 +20,7 @@
 2. Generate thresholds (typically every unique probability + ∞ and 0)
 3. **For each threshold**:
    - Classify: predict 1 if prob ≥ threshold, else 0
-   - Calculate confusion matrix → get TP, FP, TN, FN (See [[Precision, Recall, and F1-Score]])
+   - Calculate confusion matrix → get TP, FP, TN, FN (See [[Precision, Recall and F1 Score]])
    - Calculate TPR = TP/(TP+FN) and FPR = FP/(FP+TN)
    - This gives ONE point (FPR, TPR) on the curve
 4. Plot all points → connect them → ROC curve!

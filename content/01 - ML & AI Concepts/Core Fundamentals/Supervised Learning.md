@@ -37,17 +37,22 @@ $$\hat{R}(h) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h(x_i), y_i)$$
 ### [[Gradient Descent and Optimization]]
 To minimize empirical risk, we use gradient descent. For a parameterized model $h_\theta(x)$ with parameters $\theta$: 
 $$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_\theta \hat{R}(\theta)$$
+
 where $\eta$ is the learning rate.
 
 If $\theta = [\theta_0, \theta_1, ..., \theta_p]$, then: 
+
 $$\nabla_\theta \hat{R}(\theta) = \begin{bmatrix} \frac{\partial \hat{R}}{\partial \theta_0} \\ \frac{\partial \hat{R}}{\partial \theta_1} \\ \vdots \\ \frac{\partial \hat{R}}{\partial \theta_p} \end{bmatrix}$$
 
 
 Each component shows how much the loss changes when adjusting that specific parameter.
 
 $$\nabla_\theta \hat{R}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$
+
 [[SGD (Stochastic Gradient Descent)]] approximates this using mini-batches: 
+
 $$\theta^{(t+1)} = \theta^{(t)} - \eta \cdot \frac{1}{|B|}\sum_{i \in B}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$
+
 where $B$ is a randomly sampled batch.
 
 ### Example: Linear Regression

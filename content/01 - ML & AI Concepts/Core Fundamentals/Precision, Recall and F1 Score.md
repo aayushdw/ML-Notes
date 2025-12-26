@@ -76,12 +76,6 @@ $$ \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN} $$
 | **Weakness** | Fails on imbalanced data | Ignores False Negatives | Ignores False Positives | Harder to interpret intuitively |
 
 ## Resources
-*   **Articles**:
-    *   [Understanding Precision, Recall, and F1 Score (Medium)](https://medium.com/analytics-vidhya/precision-recall-f1-score-intuitively-explained-c4d6b2915e0)
-    *   [Precision vs Recall (Towards Data Science)](https://towardsdatascience.com/precision-vs-recall-386cf9f89488)
-*   **Videos**:
-    *   [Precision, Recall & F1 Score Intuitively Explained (YouTube)](https://www.youtube.com/watch?v=Kdsp6soqA7g)
-    *   [StatQuest: Precision and Recall](https://www.youtube.com/watch?v=j-EB6RsqqG0)
 
 
 **Back to**: [[ML & AI Index]]

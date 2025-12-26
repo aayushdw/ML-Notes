@@ -115,4 +115,4 @@ $$
     - [HuggingFace: Optimizing LLMs for Speed and Memory](https://huggingface.co/docs/transformers/llm_tutorial_optimization)
 
 
-**Back to**: [[00 - LLMs & Generative AI Index]]
+**Back to**: [[02 - LLMs & Generative AI Index]]

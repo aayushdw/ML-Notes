@@ -80,7 +80,5 @@ The Concept: Replace the category $x_i$ with a scalar representing the likelihoo
 $$x'_i = P(Y=1 | x_i)$$
 
 
-# Next: https://gemini.google.com/gem/efe5a0156c9d/e1b9cb8522af3b13
-
 ---
 **Back to**: [[ML & AI Index]]

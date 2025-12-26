@@ -97,4 +97,4 @@ Modern MLOps (GenAI/LLMs) deals with text and images where single "columns" don'
     - [NannyML](https://github.com/NannyML/nannyml) (Good visualizer for drift vs performance)
 
 ---
-**Back to**: [[00 - MLOps & Infrastructure Index]]
+**Back to**: [[03 - MLOps & Infrastructure Index]]

@@ -67,4 +67,4 @@ This allows you to update the model in the background (by promoting a new versio
 
 
 ---
-**Back to**: [[00 - MLOps & Infrastructure Index]]
+**Back to**: [[03 - MLOps & Infrastructure Index]]

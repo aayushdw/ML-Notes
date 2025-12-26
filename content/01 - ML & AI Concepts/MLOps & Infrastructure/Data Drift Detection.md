@@ -131,4 +131,4 @@ Don't confuse weekly patterns with drift. If your traffic dips on weekends, comp
 - **Articles**: https://medium.com/@anicomanesh/model-drift-identifying-and-monitoring-for-model-drift-in-machine-learning-engineering-and-0f74b2aa2fb0 
 
 
-**Back to**: [[00 - MLOps & Infrastructure Index]]
+**Back to**: [[03 - MLOps & Infrastructure Index]]

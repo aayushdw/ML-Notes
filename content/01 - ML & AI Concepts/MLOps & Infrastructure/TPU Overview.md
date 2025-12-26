@@ -117,4 +117,4 @@ TPUs compile the compute graph (XLA) before running.
 *   **Video**: [Google I/O: Cloud TPU Pods](https://www.youtube.com/watch?v=MXxN4fv01c8) - great visuals of the layout.
 
 ---
-**Back to**: [[00 - MLOps & Infrastructure Index]]
+**Back to**: [[03 - MLOps & Infrastructure Index]]

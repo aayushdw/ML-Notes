@@ -114,4 +114,4 @@ Using lower precision reduces memory traffic and increases tensor core throughpu
 - [ ] Hands-on practice (Profile a training run with PyTorch Profiler)
 - [ ] Can explain to others
 
-**Back to**: [[00 - MLOps & Infrastructure Index]]
+**Back to**: [[03 - MLOps & Infrastructure Index]]
