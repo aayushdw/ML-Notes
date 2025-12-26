@@ -15,14 +15,8 @@ Modern language models and generative systems, including LLM operations and prod
 ### MLOps & Infrastructure
 Deploying, scaling, and maintaining ML systems in production — model lifecycle management and infrastructure scaling.
 
-### Software Engineering
-Software engineering best practices applied to AI systems — system design, code quality, and testing.
-
 ### Data Engineering
 Data pipelines and infrastructure for ML — data management and infrastructure.
 
 ### Specialized Domains
 Deep dives into specific AI application areas: Computer Vision, NLP, and Ethics & Responsible AI.
-
-### Business & Strategy
-Bridging technical skills with business impact — strategic skills, leadership, and communication.
