@@ -42,7 +42,6 @@ These metrics compare the model's output against a known "reference" or "ground 
 
 Originally designed for machine translation. Measures n-gram overlap between generated text and reference.
 
-**Formula:**
 $$\text{BLEU} = BP \cdot \exp\left(\sum_{n=1}^{N} w_n \log p_n\right)$$
 
 Where:
@@ -73,14 +72,14 @@ METEOR aligns words between candidate and reference in priority order:
 2. Stem matches
 3. Synonym matches (via WordNet)
 
-**Formula:**
 $$\text{METEOR} = F_{mean} \cdot (1 - Penalty)$$
 
 Where:
 - $F_{mean}$ = Harmonic mean of precision and recall (weighted toward recall)
 - $Penalty$ = Fragmentation penalty based on number of "chunks" needed to align texts
 
-**Fragmentation Penalty:**
+Fragmentation Penalty:
+
 $$Penalty = \gamma \left(\frac{chunks}{matched\ words}\right)^\theta$$
 
 Fewer contiguous chunks = better word order = lower penalty.
@@ -88,8 +87,6 @@ Fewer contiguous chunks = better word order = lower penalty.
 ### ROUGE (Recall-Oriented Understudy for Gisting Evaluation)
 
 Designed for summarization. Unlike BLEU (precision-focused), ROUGE is **recall-focused**: "How much of the reference appears in my output?"
-
-**Variants:**
 
 | Variant | Description                | Use Case            |
 | :------ | :------------------------- | :------------------ |
@@ -99,7 +96,6 @@ Designed for summarization. Unlike BLEU (precision-focused), ROUGE is **recall-f
 | ROUGE-L | Longest Common Subsequence | Sentence structure  |
 | ROUGE-S | Skip-bigram (allows gaps)  | Flexible matching   |
 
-**ROUGE-L Formula:**
 $$\text{ROUGE-L} = \frac{(1 + \beta^2) \cdot R_{lcs} \cdot P_{lcs}}{R_{lcs} + \beta^2 \cdot P_{lcs}}$$
 
 Where:
@@ -118,7 +114,6 @@ A **semantic similarity** metric that uses contextual embeddings (BERT) instead 
 3. Use greedy matching to find optimal alignment
 4. Return precision, recall, and F1
 
-**Formula:**
 $$R_{BERT} = \frac{1}{|x|} \sum_{x_i \in x} \max_{y_j \in y} \mathbf{x}_i^T \mathbf{y}_j$$
 
 $$P_{BERT} = \frac{1}{|y|} \sum_{y_j \in y} \max_{x_i \in x} \mathbf{x}_i^T \mathbf{y}_j$$
@@ -151,7 +146,6 @@ These metrics evaluate outputs without needing ground truth. Essential for creat
 
 Measures how "surprised" a language model is by the text. Lower perplexity = more fluent/natural text.
 
-**Formula:**
 $$\text{Perplexity}(X) = \exp\left(-\frac{1}{N}\sum_{i=1}^{N}\log P(x_i|x_{<i})\right)$$
 
 Where $P(x_i|x_{<i})$ is the probability of token $x_i$ given all previous tokens.
@@ -298,6 +292,7 @@ The gold standard, but expensive and hard to scale.
 Measure consistency between human evaluators:
 
 **Cohen's Kappa:** (Higher is better)
+
 $$\kappa = \frac{p_o - p_e}{1 - p_e}$$
 
 Where:

@@ -52,12 +52,10 @@
 - [ ] [[Token Budget Management]]
 
 ### Safety & Alignment
-- [ ] [[LLM Safety Fundamentals]]
-- [ ] [[Content Filtering]]
-- [ ] [[Guardrails and Constraints]]
-- [ ] [[RLHF (Reinforcement Learning from Human Feedback)]]
-- [ ] [[Constitutional AI]]
-- [ ] [[Red Teaming LLMs]]
+- [x] [[LLM Safety Fundamentals]]
+- [x] [[LLM Safety Fundamentals#Reinforcement Learning from Human Feedback (RLHF)|RLHF]] 
+- [x] [[LLM Safety Fundamentals#Direct Preference Optimization (DPO)|Direct Preference Optimization]]
+- [x] [[LLM Safety Fundamentals#Red Teaming|Red Teaming]]
 
 ### RAG Systems
 - [ ] [[RAG (Retrieval Augmented Generation) Overview]]
