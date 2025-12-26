@@ -5,26 +5,25 @@
 ## LLM Operations
 
 ### Prompt Engineering
-- [ ] [[Prompt Engineering Fundamentals]]
+- [x] [[Prompt Engineering Fundamentals]]
 - [ ] [[Prompt Design Patterns]]
 - [ ] [[Prompt Optimization Techniques]]
 - [x] [[Prompt Injection and Safety]]
  
 ### Fine-Tuning Strategies
-- [ ] [[Fine-Tuning Overview]]
-- [x] [[Full Fine-Tuning]] (Not needed, Captured in above doc)
+- [x] [[Fine-Tuning Overview]]
+- [x] [[Fine-Tuning Overview#Full Fine-Tuning|Full Fine Tuning]]
 - [x] [[LoRA (Low-Rank Adaptation)]]
 - [x] [[QLoRA (Quantized LoRA)]]
 - [ ] [[P-Tuning, Prefix-Tuning]]
-- [x] [[Adapter Methods]](Can be found in FineTuning Overview)
+- [x] [[Fine-Tuning Overview#Generic Adapter Method|Adapter Methods]]
 
 ### Model Evaluation
-- [ ] [[LLM Evaluation Metrics]]
-- [ ] [[Perplexity]]
-- [ ] [[BLEU Score]]
-- [ ] [[ROUGE Scores]]
-- [ ] [[Human Evaluation Methods]]
-- [ ] [[LLM Benchmarks (MMLU, HellaSwag, etc.)]]
+- [x] [[LLM Evaluation Metrics]]
+- [x] [[LLM Evaluation Metrics#Perplexity|Perplexity]]
+- [x] [[LLM Evaluation Metrics#BLEU (Bilingual Evaluation Understudy)|BLUE Score]]
+- [x] [[LLM Evaluation Metrics#ROUGE (Recall-Oriented Understudy for Gisting Evaluation)|ROGUE Scores]]
+- [x] [[LLM Evaluation Metrics#Human Evaluation|Human Evaluation]]
 
 ### Context Management
 - [x] [[Context Window Fundamentals]]
@@ -92,21 +91,6 @@
 - [ ] [[Diffusion Models]]
 - [ ] [[GANs (Generative Adversarial Networks)]]
 - [ ] [[VAEs (Variational Autoencoders)]]
-
----
-
-## Progress Tracking
-
-```dataview
-TABLE
-  status as "Status",
-  difficulty as "Difficulty",
-  last_modified as "Last Updated"
-FROM "01 - ML & AI Concepts/02 - LLMs & Generative AI"
-WHERE contains(tags, "concept")
-SORT file.name ASC
-```
-
 ---
 
 **Back to**: [[ML & AI Index]]

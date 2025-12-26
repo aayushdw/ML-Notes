@@ -1,0 +1,1 @@
+Please create notes for [This topic] ensuring the style requested in CLAUDE.md

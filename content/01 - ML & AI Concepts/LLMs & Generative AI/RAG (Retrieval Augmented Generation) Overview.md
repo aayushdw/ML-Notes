@@ -6,9 +6,6 @@
 It bridges the gap between a model's **reasoning capabilities** and your **dynamic, proprietary data**.
 
 ## Key Ideas / Intuition
-**The "Open Book Exam" Analogy**:
-*   **Standard LLM**: A student taking a test from memory. If they don't know the answer, they might guess (hallucinate).
-*   **RAG**: The same student taking an open-book test. When asked a question, they first search the textbook for the relevant chapter, read it, and then write the answer based on what they found.
 
 ### Visual Understanding
 The Standard RAG Flow:

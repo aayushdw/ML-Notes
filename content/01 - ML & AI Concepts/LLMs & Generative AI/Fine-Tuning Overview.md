@@ -61,7 +61,7 @@ This takes LoRA a step further by compressing the base model.
 - **Impact:** This allows you to fine-tune massive models (like Llama-3-70b) on relatively cheap hardware.
 
 #### Generic Adapter Method
-both LoRA and Adapter methods rely on the exact same linear algebra trick (Low-Rank Matrix Decomposition).
+Both LoRA and Adapter methods rely on the exact same Low-Rank Matrix Decomposition trick.
 They both squash a large vector into a small vector ($d \to r$) and then expand it back ($r \to d$).
 However, the **Topological Placement** and the **Non-Linearity** make them fundamentally different in engineering practice.
 
@@ -122,7 +122,7 @@ You are a helpful AI.<|im_end|>
 {assistant_response}<|im_end|>
 ```
 
-- **Crucial Detail:** `<|im_start|>` is not just text; it is a **single unique token ID** (e.g., ID #32001) added to the vocabulary. It acts as a hard separator that the model learns to recognize as "New Speaker."
+- `<|im_start|>`  is a single unique token ID added to the vocabulary. It acts as a hard separator that the model learns to recognize as "New Speaker."
 
 #### Llama-3 Format
 Llama-3 uses a very specific, verbose set of header tags.
