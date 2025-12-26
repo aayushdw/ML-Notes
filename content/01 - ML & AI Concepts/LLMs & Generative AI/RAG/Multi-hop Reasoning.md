@@ -467,7 +467,7 @@ Answer: "Yes, recent studies show Drug X has significant interactions
 - **Paper**: [Least-to-Most Prompting](https://arxiv.org/abs/2205.10625) - Decomposition strategies
 - **Blog**: [LangChain Agent Loops](https://python.langchain.com/docs/modules/agents/) - Practical implementation
 - **Related**: [[GraphRAG]] - When multi-hop relationships are explicit in a knowledge graph
-- **Related**: [[RAG (Retrieval Augmented Generation) Overview]] - Parent concept
+- **Related**: [[RAG (Retrieval Augmented Generation) Index]] - Parent concept
 
 ## Personal Notes
 *[Space for your thoughts and learnings...]*

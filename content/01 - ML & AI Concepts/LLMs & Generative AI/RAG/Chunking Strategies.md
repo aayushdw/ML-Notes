@@ -94,20 +94,10 @@ By embedding sentence #3 directly, you get a sharp vector match. By returning th
 *   **Q4: Default fallback?**
     *   $\rightarrow$ Use **Recursive Character Chunking** (Chunk size 1024, Overlap 200).
 
-## Visual Intuition
-**Sentence**: *"The dog chased the cat. The cat ran up the tree. Jupyter notebooks are useful for data science."*
-
-*   **Fixed Split**: `[The dog chased the cat. The]`, `[cat ran up the tree. Jupyte]`, ...
-    *   *Critique*: Meaning is destroyed.
-*   **Semantic Split**:
-    *   Check distance("Dog chased cat", "Cat ran tree") $\rightarrow$ **High Similarity** (Keep together).
-    *   Check distance("Cat ran tree", "Jupyter notebooks...") $\rightarrow$ **Low Similarity** (SPLIT HERE).
-    *   *Result*: `[The dog chased the cat. The cat ran up the tree.]`, `[Jupyter notebooks are useful for data science.]`
-
 ## Resources
 *   **LangChain**: [Text Splitters Documentation](https://python.langchain.com/docs/modules/data_connection/document_transformers/)
 *   **LlamaIndex**: [Node Parsers](https://docs.llamaindex.ai/en/stable/module_guides/loading/node_parsers/)
 *   **Article**: [5 Levels of Text Splitting](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb)
 *   **Visualizer**: [LangChain Chunk Visualizer](https://chunkviz.up.railway.app/)
  ---
-**Back to**: [[RAG (Retrieval Augmented Generation) Overview]]
+**Back to**: [[RAG (Retrieval Augmented Generation) Index]]

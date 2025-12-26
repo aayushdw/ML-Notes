@@ -186,4 +186,4 @@ User Input
 - [RLHF Explained](https://www.youtube.com/watch?v=qPN_XZcJf_s)
 
 ---
-**Back to**: [[02 - LLMs & Generative AI Index]]
+**Back to**: [[02 - LLMs & Generative AI Index]] | [[ML & AI Index]]

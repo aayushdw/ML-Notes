@@ -6,7 +6,7 @@
 
 ### Why Re-ranking Matters
 
-From the [[RAG (Retrieval Augmented Generation) Overview#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
+From the [[RAG (Retrieval Augmented Generation) Index#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
 - **Imperfect Initial Retrieval**: Dense retrievers (vector search) and sparse retrievers (BM25) often rank relevant documents below irrelevant ones
 - **Lost in the Middle**: More relevant documents may be ranked 3rd or 4th, while the LLM uses only the top results; re-ranking ensures truly relevant docs appear first
 - **Noise Reduction**: Retrieved results often include false positives; re-ranking filters these out
@@ -572,7 +572,7 @@ Final Answer
 ---
 
 ## See Also
-- [[RAG (Retrieval Augmented Generation) Overview#Phase 3 Advanced Retrieval|Advanced Retrieval Phase]] - Where re-ranking fits in
+- [[RAG (Retrieval Augmented Generation) Index#Phase 3 Advanced Retrieval|Advanced Retrieval Phase]] - Where re-ranking fits in
 - [[Hybrid Search]] - Initial retrieval stage before re-ranking
 - [[Query Transformations]] - Query preprocessing (before retrieval)
 - [[RAG Evaluation Metrics]] - Measuring re-ranking impact on pipeline quality

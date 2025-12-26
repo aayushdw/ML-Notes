@@ -1,17 +1,9 @@
-# RAG (Retrieval Augmented Generation) Overview
-
 ## Overview
-**Retrieval Augmented Generation (RAG)** is a technique that connects a Large Language Model (LLM) to external, private data. Instead of relying solely on the model's internal training data (parametric memory), RAG allows the model to "browse" a curated database (non-parametric memory) to find relevant information before generating an answer.
+RAG is a technique that connects a Large Language Model (LLM) to external, private data. Instead of relying solely on the model's internal training data , RAG allows the model to "browse" a curated database to find relevant information before generating an answer.
 
-It bridges the gap between a model's **reasoning capabilities** and your **dynamic, proprietary data**.
-
-## Key Ideas / Intuition
-
-### Visual Understanding
-The Standard RAG Flow:
-
+### Standard RAG Flow
 ```mermaid
-graph LR
+graph TD
     User[User Question] --> Retriever
     Database[(Vector Database)] -->|Similar Chunks| Retriever
     Retriever -->|Context + Question| LLM[LLM Generator]
@@ -22,18 +14,14 @@ graph LR
 2.  **Augmentation**: These chunks are pasted into the prompt as context.
 3.  **Generation**: The LLM answers the question using the provided context.
 
-## The RAG Learning Path
-Follow this curriculum to master RAG, from "Hello World" to agentic systems.
-
-### Phase 1: Foundations
-*Measurements: Accuracy, latency.*
+### Foundation
 *   [[Naive RAG Pipeline]]: The basic "Load -> Split -> Embed -> Store -> Retrieve" loop.
-*   **Core Components**:
+*   Core Components:
     *   **Orchestrator**: Chains (LangChain/LlamaIndex).
     *   **Prompt Engineering**: The standard RAG prompt template ("Answer based strictly on the context below").
 
 ### Phase 2: The Retrieval Engine (Data Engineering)
-*Garbage In, Garbage Out. If you retrieve the wrong text, the LLM cannot save you.*
+*   [[Document Parsing]]: Extracting text from PDFs, tables, and images before chunking. Tools: Unstructured, LlamaParse, PyMuPDF, Docling.
 *   [[Chunking Strategies]]:
     *   **Fixed-size**: Simple character retrieval (e.g., 512 chars).
     *   **Recursive**: Respecting document structure (paragraphs, headers).
@@ -48,6 +36,7 @@ Follow this curriculum to master RAG, from "Hello World" to agentic systems.
     *   **HyDE (Hypothetical Document Embeddings)**: Hallucinating a fake answer to find real documents.
     *   **Multi-Query**: Breaking a complex question into sub-questions.
 *   [[Re-ranking]]: Using a Cross-Encoder to re-score the top-K results for higher precision.
+*   [[Contextual Retrieval]]: Prepending document/section context to chunks before embedding. Significantly improves retrieval accuracy. Related: Late Chunking.
 
 ### Phase 4: Generation & Synthesis
 *   **Context Window Management**: Handling "Lost in the Middle" and token limits.
@@ -61,20 +50,13 @@ Follow this curriculum to master RAG, from "Hello World" to agentic systems.
     *   **Context Relevance**: Is the retrieved text actually useful?
     *   **Groundedness/Faithfulness**: Is the answer derived *only* from the context?
     *   **Answer Relevance**: Did we answer the user's question?
-*   **Tools**: RAGAS, TruLens.
+*   **Tools**: RAGAS, TruLens, Phoenix (Arize).
+*   **Synthetic Test Set Generation**: Using LLMs to generate question-answer pairs from your corpus for evaluation. Often the bottleneck in proper RAG evaluation.
 
 ### Phase 6: The Frontier
 *   [[GraphRAG]]: Using Knowledge Graphs to capture structural relationships between entities.
 *   [[Agentic RAG]]: Giving an agent tools to decide *when* to search, *what* to search, and if it needs to search *again* (e.g., Self-RAG).
-
-## Mathematical Foundation
-Formally, RAG models the probability of generating an output sequence $y$ given input $x$ by marginalizing over retrieved documents $z$:
-
-$$P_{rag}(y|x) \approx \sum_{z \in \text{TopK}(x)} P_{\eta}(y|z, x) P_{\phi}(z|x)$$
-
-Where:
-*   $P_{\phi}(z|x)$ is the **Retriever**: Probability of selecting document $z$ given query $x$ (often just the dot product score $E(x)^T E(z)$).
-*   $P_{\eta}(y|z, x)$ is the **Generator**: Probability of generating answer $y$ given the context $z$ and query $x$.
+*   [[Multimodal RAG]]: Embedding and retrieving images, diagrams, and tables. Uses CLIP-style embeddings or vision-language models for document understanding.
 
 ## Comparisons
 
@@ -104,6 +86,11 @@ Where:
 - **Latency**: Retrieval adds overhead to inference. Solution: Caching, pre-computation, or Approximate Nearest Neighbor (ANN) optimization.
 - **Index Staleness**: If data updates frequently, retrieval might miss recent changes. Solution: Hybrid with live data + caching strategies.
 
+### Security Concerns
+- **Prompt Injection via Retrieved Content**: Malicious content in your corpus can inject instructions into the LLM context. Mitigation: Sanitize indexed content, use content delimiters, apply output validation.
+- **Data Access Control**: Ensuring users only retrieve documents they're authorized to see. Solution: Metadata filtering with user permissions, document-level ACLs.
+- **PII Leakage**: Sensitive information in retrieved chunks may be exposed unintentionally. Solution: PII detection/redaction before indexing.
+
 ## Use Cases Where RAG Excels
 - **Customer Support**: Searching knowledge base / FAQs for relevant answers.
 - **Document Q&A**: Querying long contracts, reports, or manuals without losing details.
@@ -126,21 +113,27 @@ Where:
 | **Query Expansion** | Broader coverage | Risk of noise | Rare terms / jargon |
 | **Routing** | Efficient (avoids unnecessary retrieval) | Requires classifier training | Intent-based systems |
 
-### Indexing Strategy
-- **Flat Index**: All documents in one pool. Simple but doesn't scale.
-- **Hierarchical/Summary Index**: Parent summaries → child details. Reduces noise but adds latency.
-- **Multi-Vector Index**: Store multiple embeddings per chunk (title, content, summaries). Increases storage but better retrieval.
-- **Metadata Filtering**: Index metadata (date, category, author) alongside embeddings. Enables pre-filtering before semantic search.
+## Production Considerations
 
-### Prompt Engineering for RAG
-- **In-Context Examples**: Few-shot examples in the prompt improve answer quality.
-- **Chain-of-Thought**: Asking the LLM to explain its reasoning reduces hallucinations.
-- **Constraints**: "Use only the provided context" + "Cite sources" helps enforce groundedness.
-- **Role-Playing**: "You are an expert in X..." can improve specialized domain answers.
+### Observability & Monitoring
+- **Tracing**: Track the full pipeline (query → retrieval → generation) for debugging. Tools: LangSmith, Phoenix, Langfuse.
+- **Metrics to Monitor**: Latency (p50/p95/p99), retrieval hit rate, token usage, user feedback signals.
+- **Logging**: Store queries, retrieved chunks, and responses for offline analysis and evaluation.
+
+### Cost Optimization
+- **Semantic Caching**: Cache responses for semantically similar queries to reduce redundant LLM calls.
+- **Token Budgeting**: Set limits on context size per request. Use compression or summarization when approaching limits.
+- **Tiered Retrieval**: Use cheaper/faster retrieval for simple queries, full pipeline for complex ones.
+
+### Deployment Patterns
+- **Async Indexing**: Decouple document ingestion from retrieval to avoid blocking.
+- **Index Versioning**: Maintain versioned indices for rollback and A/B testing.
+- **Fallback Strategies**: Graceful degradation when retrieval fails (e.g., answer from LLM knowledge with disclaimer).
 
 ## Resources
 *  [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - The original RAG paper.
 *  [Pinecone: Generative AI with RAG](https://www.pinecone.io/learn/retrieval-augmented-generation/)
 *  [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch) - Excellent video series for the learning path.
 *  [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172)
+*  [Anthropic: Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval) - Prepending context to chunks before embedding.
 
