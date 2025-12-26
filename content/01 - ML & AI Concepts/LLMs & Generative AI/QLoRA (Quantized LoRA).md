@@ -51,7 +51,9 @@ This number defines the "Range" of this block.
 
 **Step B: Calculate the Constant (Scaling Factor)**
 We need to map our largest number (2.5) to the largest container slot available (7).
+
 $$Constant = \frac{\text{Absolute Max of Block}}{\text{Max Integer Container}}$$
+
 $$Constant = \frac{2.5}{7} \approx 0.357$$
 **This `0.357` is your Quantization Constant.** It is the "key" to this specific block.
 
@@ -80,8 +82,10 @@ Imagine you have a block of 64 numbers.
 - **1 of them is huge** (e.g., `100.0`).
 
 If you calculate the Constant based on the 100.0:
+
 $$Constant = 100 / 7 = 14.2$$
 Now try to quantize the small number 0.1:
+
 $$0.1 / 14.2 = 0.007 \rightarrow \text{Round to } \mathbf{0}$$
 The outlier destroyed the precision of the small numbers. All your detailed small weights became zeros.
 By breaking the model into small blocks (64 weights), we isolate the outliers. If one block has a huge number, only that block gets a large Constant. The neighbor block might have small numbers and a small Constant, preserving its precision.
@@ -151,7 +155,7 @@ QLoRA uses a "De-quantize on the fly" mechanism.
     - The de-quantized Bfloat16 weights are discarded (clearing memory).
 3. **Adapter ($A, B$):** The LoRA adapters are always kept in **Bfloat16** or **Float32**. They are never quantized.
 
-The Math:
+
 $$Y = (\text{dequant}(W_{4bit}) + BA) X$$
 
 This hybrid approach gives you the **memory footprint of 4-bit** storage but the **mathematical precision of 16-bit** computation.

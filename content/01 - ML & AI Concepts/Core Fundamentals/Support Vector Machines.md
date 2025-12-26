@@ -33,14 +33,17 @@ Imagine two groups of points (red and blue). Many lines could separate them, but
 ### Linear SVM (Separable Case)
 
 We want to find a hyperplane defined by weights $w$ and bias $b$:
+
 $$f(x) = w^T x + b$$
 
 **Decision rule**: Classify as positive if $f(x) \geq 0$, negative otherwise.
 
 **The optimization problem**:
+
 $$\min_{w,b} \frac{1}{2}\|w\|^2$$
 
 Subject to constraints:
+
 $$y_i(w^T x_i + b) \geq 1 \quad \text{for all } i$$
 
 This ensures all points are correctly classified with at least margin 1.
@@ -50,10 +53,13 @@ This ensures all points are correctly classified with at least margin 1.
 ### Soft-Margin SVM (Non-Separable Case)
 
 Real data isn't perfectly separable. We introduce **slack variables** $\xi_i$ to allow some mistakes:
+
 $$\min_{w,b,\xi} \frac{1}{2}\|w\|^2 + C\sum_{i=1}^{n}\xi_i$$
 
 Subject to:
+
 $$y_i(w^T x_i + b) \geq 1 - \xi_i$$
+
 $$\xi_i \geq 0$$
 
 **C parameter** (regularization):
@@ -71,16 +77,19 @@ For non-linearly separable data, SVMs use the **kernel trick** to implicitly map
 #### Common Kernels
 
 **Linear Kernel**: 
+
 $$K(x_i, x_j) = x_i^T x_j$$
 - No transformation, fastest
 - Use when data is already linearly separable
 
 **Polynomial Kernel**: 
+
 $$K(x_i, x_j) = (\gamma x_i^T x_j + r)^d$$
 - Creates polynomial feature combinations
 - Degree $d$ controls complexity
 
 **RBF (Radial Basis Function/Gaussian)**: 
+
 $$K(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)$$
 - Most popular, can model any decision boundary
 - $\gamma$ controls influence radius of support vectors
@@ -89,6 +98,7 @@ $$K(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)$$
 - Maps points into Infinite dimensional space (Taylor Series Expansion of exp(z) function )
 
 **Sigmoid Kernel**: 
+
 $$K(x_i, x_j) = \tanh(\gamma x_i^T x_j + r)$$
 - Similar to neural network activation
 

@@ -81,9 +81,5 @@ If we treat $\theta_1 \dots \theta_L$ as independent variables, the optimization
 P-Tuning introduces a function $f$ to **reparameterize** the prompt embeddings. Instead of training the embeddings directly, we train the parameters of a small neural network (the Encoder) that _generates_ the embeddings.
 
 
-
-TODO (https://gemini.google.com/gem/efe5a0156c9d/a45ca66d5f6f5430)
-
-
 ---
 **Back to**: [[ML & AI Index]]

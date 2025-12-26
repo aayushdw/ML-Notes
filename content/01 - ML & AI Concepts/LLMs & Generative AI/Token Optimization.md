@@ -73,6 +73,7 @@ graph TD
 
 ### KV Cache Size Calculation
 The memory required to store the KV cache for a **single** request is:
+
 $$
 \text{Mem}_{KV} = 2 \times L \times H_{kv} \times D_{head} \times S \times P_{\text{bytes}}
 $$

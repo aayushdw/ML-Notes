@@ -37,6 +37,7 @@ We test a **Null Hypothesis** ($H_0$) against an **Alternative Hypothesis** ($H_
 
 ### 3. Sample Size Calculation
 The number of users $N$ required depends on the **Minimum Detectable Effect (MDE)** ($\delta$) and Variance ($\sigma^2$).
+
 $$ N \approx 16 \frac{\sigma^2}{\delta^2} $$
 - **Takeaway**: To detect a smaller improvement ($\delta \downarrow$), you need quadratically more users ($N \uparrow^2$).
 - **Takeaway**: Reducing metric variance ($\sigma^2$) (e.g., using CUPED) allows for faster experiments.

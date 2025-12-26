@@ -62,6 +62,7 @@ The core challenge in categorical encoding is the **Bias-Variance Tradeoff** reg
 ### Handling Low Cardinality
 #### One-Hot Encoding (OHE)
 Maps a variable with cardinality $K$ to a vector of size $K$.
+
 $$x \rightarrow [0, 0, \dots, 1, \dots, 0] \in \{0, 1\}^K$$
 - **Mathematical Implication:** It assumes **orthogonality**. By placing every category on a separate axis, you are telling the model that the distance between "Apple" and "Banana" is exactly equal to the distance between "Apple" and "Car".
     

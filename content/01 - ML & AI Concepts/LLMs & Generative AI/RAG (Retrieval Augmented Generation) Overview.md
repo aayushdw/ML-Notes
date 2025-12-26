@@ -142,7 +142,7 @@ Where:
 - **Role-Playing**: "You are an expert in X..." can improve specialized domain answers.
 
 ## Resources
-*   [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - The original RAG paper.
+*  [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - The original RAG paper.
 *  [Pinecone: Generative AI with RAG](https://www.pinecone.io/learn/retrieval-augmented-generation/)
 *  [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch) - Excellent video series for the learning path.
 *  [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172)

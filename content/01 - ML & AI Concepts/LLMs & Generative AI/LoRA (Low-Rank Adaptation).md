@@ -141,7 +141,7 @@ Therefore, if you find a configuration that works:
 - $r=16, \alpha=16, LR=2e^{-4}$
 
 And you decide to change Alpha to 32:
-- $r=16, \alpha=32$ ... you should probably **halve** your LR to $1e^{-4}$ to keep the training dynamics similar.
+- $r=16, \alpha=32$ ... you should probably halve your LR to $1e^{-4}$ to keep the training dynamics similar.
 
 **Pro Tip:** To avoid headaches, practitioners usually **fix Alpha** (e.g., always at 16 or 32) and then strictly tune the Learning Rate. Do not try to tune both simultaneously; you will chase your tail.
 ### Inference: The "Merge" Trick

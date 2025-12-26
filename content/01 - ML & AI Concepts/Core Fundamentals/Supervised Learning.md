@@ -18,8 +18,10 @@ The goal is to find a hypothesis $h$ from some hypothesis space $\mathcal{H}$ th
 ### The Learning Objective
 We assume there exists some true (but unknown) function $f: \mathcal{X} \rightarrow \mathcal{Y}$ that generates our labels, possibly with noise. Our training data comes from some joint distribution $P(X, Y)$.
 **Goal**: Find $h^* \in \mathcal{H}$ that minimizes the **expected risk** (generalization error): 
+
 $$R(h) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\mathcal{L}(h(x), y)]$$
 where $\mathcal{L}$ is a loss function measuring prediction error. Since we don't know $P(X,Y)$, we minimize the **empirical risk** instead: 
+
 $$\hat{R}(h) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h(x_i), y_i)$$
 
 ### Common Loss Functions
@@ -36,6 +38,7 @@ $$\hat{R}(h) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h(x_i), y_i)$$
 
 ### [[Gradient Descent and Optimization]]
 To minimize empirical risk, we use gradient descent. For a parameterized model $h_\theta(x)$ with parameters $\theta$: 
+
 $$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_\theta \hat{R}(\theta)$$
 
 where $\eta$ is the learning rate.
@@ -59,11 +62,15 @@ where $B$ is a randomly sampled batch.
 Hypothesis: $h_\theta(x) = \theta^T x = \sum_{j=0}^{d}\theta_j x_j$ (where $x_0 = 1$ for bias)
 Loss: MSE: $\mathcal{L}(h_\theta(x), y) = (h_\theta(x) - y)^2$
 Gradient for one example: 
+
 $$\nabla_\theta \mathcal{L} = 2(h_\theta(x) - y)x$$
 Update rule: 
+
 $$\theta := \theta - \eta \cdot 2(h_\theta(x) - y)x$$
 **Closed-form solution** exists for linear regression: 
+
 $$\theta^* = (X^T X)^{-1}X^T y$$
+
 where $X$ is the design matrix and $y$ is the vector of labels.
 
 #### [[Bias-Variance Tradeoff]]
@@ -75,6 +82,7 @@ $$\mathbb{E}[(h(x) - y)^2] = \text{Bias}^2 + \text{Variance} + \text{Irreducible
 - **Irreducible Error**: Noise in the data itself 
 
 [[Regularization Techniques]] help balance this tradeoff by adding a penalty term: 
+
 $$\hat{R}_{reg}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h_\theta(x_i), y_i) + \lambda \Omega(\theta)$$
 Common choices: $\Omega(\theta) = \|\theta\|_2^2$ (L2/Ridge) or $\|\theta\|_1$ (L1/Lasso).
 
