@@ -34,14 +34,17 @@ We treat each feature as a random variable $X_i$ and compare its probability den
 ### 1. Numerical Features (Continuous)
 For continuous features (e.g., Price, Temperature), we compare Cumulative Distribution Functions (CDFs) or binned PDFs.
 - **Wasserstein Distance ($W_1$)**: Robust to non-overlapping supports.
-- **Kolmogorov-Smirnov (KS) Test**:$$ D_{KS} = \sup_x |F_{ref}(x) - F_{curr}(x)| $$
+- **Kolmogorov-Smirnov (KS) Test**:
+	$$ D_{KS} = \sup_x |F_{ref}(x) - F_{curr}(x)| $$
+	
     Good for detecting shifts in the *center* or *spread*.
 
 ### 2. Categorical Features (Discrete)
 For discrete features (e.g., State, Color), we compare the relative frequency of categories.
 - **Chi-Square Test ($\chi^2$)**:$$ \chi^2 = \sum \frac{(O_i - E_i)^2}{E_i} $$
     Where $O$ is observed frequency (current) and $E$ is expected (reference).
-- **L-Infinity Norm ($L_\infty$)**: The maximum difference in probability for any single category.$$ L_\infty(P, Q) = \max_k |P_k - Q_k| $$
+- **L-Infinity Norm ($L_\infty$)**: The maximum difference in probability for any single category.
+	- $$ L_\infty(P, Q) = \max_k |P_k - Q_k| $$
 ## Practical Application
 ### The "Drift-Importance" Matrix
 In MLOps dashboards, simply listing all drifting features is noisy. The industry standard is to plot **Drift Magnitude** vs. **Feature Importance**.
@@ -93,14 +96,5 @@ Modern MLOps (GenAI/LLMs) deals with text and images where single "columns" don'
     - [Deepchecks](https://github.com/deepchecks/deepchecks) (Great for feature-level breakdown)
     - [NannyML](https://github.com/NannyML/nannyml) (Good visualizer for drift vs performance)
 
-## Personal Notes
-<!-- User thoughts -->
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts
-- [ ] Review math (KS Test, Chi-Square)
-- [ ] Hands-on practice (Visualize Bimodal shift)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+---
+**Back to**: [[00 - MLOps & Infrastructure Index]]

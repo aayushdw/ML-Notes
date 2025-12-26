@@ -33,13 +33,11 @@ Imagine two groups of points (red and blue). Many lines could separate them, but
 ### Linear SVM (Separable Case)
 
 We want to find a hyperplane defined by weights $w$ and bias $b$:
-
 $$f(x) = w^T x + b$$
 
 **Decision rule**: Classify as positive if $f(x) \geq 0$, negative otherwise.
 
 **The optimization problem**:
-
 $$\min_{w,b} \frac{1}{2}\|w\|^2$$
 
 Subject to constraints:
@@ -52,7 +50,6 @@ This ensures all points are correctly classified with at least margin 1.
 ### Soft-Margin SVM (Non-Separable Case)
 
 Real data isn't perfectly separable. We introduce **slack variables** $\xi_i$ to allow some mistakes:
-
 $$\min_{w,b,\xi} \frac{1}{2}\|w\|^2 + C\sum_{i=1}^{n}\xi_i$$
 
 Subject to:
@@ -168,42 +165,10 @@ The support vectors are like the "most difficult" examples - the ones closest to
 | **Overfitting risk** | Medium         | Low                 | Low-Medium    |
 
 ## Related Concepts
-<!-- Link to related notes -->
-- [[]]
-- [[]]
+- [[Supervised Learning]]
 
 ## Resources
-### Papers
-- 
-
-### Articles & Blog Posts
-- 
-
-### Videos & Tutorials
 - https://www.youtube.com/watch?v=tV5X77lGYP4 - RBF Kernel
-
-### Code Examples
-- 
-
-### Books
-- 
-
-## Questions / Further Research
-- [ ] 
-- [ ] 
-
-## Personal Notes
-<!-- Your own insights, experiments, and learnings -->
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [ ] Can explain to others
 
 ---
 **Back to**: [[ML & AI Index]]

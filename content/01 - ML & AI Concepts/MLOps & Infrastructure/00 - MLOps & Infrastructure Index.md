@@ -1,11 +1,8 @@
-# 03 - MLOps & Infrastructure
-
-## Overview
-Learn to deploy, monitor, and scale ML systems in production. Master the tools and practices for reliable, efficient machine learning operations.
+# MLOps & Infrastructure
 
 ---
 
-## 🔄 Model Lifecycle Management
+## Model Lifecycle Management
 
 ### Version Control
 - [ ] [[ML Version Control Fundamentals]]
@@ -46,7 +43,7 @@ Learn to deploy, monitor, and scale ML systems in production. Master the tools a
 
 ---
 
-## 🏗️ Infrastructure & Scaling
+## Infrastructure & Scaling
 
 ### Compute Resources
 - [ ] [[GPU Fundamentals for ML]]

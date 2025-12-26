@@ -1,5 +1,3 @@
-# Naive RAG Pipeline
-
 ## Overview
 **Naive RAG** represents the standard, baseline architecture for Retrieval-Augmented Generation. It follows a strictly linear process: indexing documents into vector embeddings, retrieving the top-$k$ most similar chunks based on a user query, and feeding them directly into the LLM context window.
 
@@ -113,14 +111,9 @@ print(qa.do_run(query))
 | **Outdated Info** | If the vector DB isn't updated, the model confidently hallucinates based on old data. |
 
 ## Resources
-*   **Documentation**: [LangChain Retrieval](https://python.langchain.com/docs/modules/data_connection/)
-*   **Article**: [The Guide to Vector Databases](https://www.pinecone.io/learn/vector-database/)
-*   **Code**: [OpenAI Cookbook: Question Answering using Embeddings](https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_embeddings.ipynb)
+*   [LangChain Retrieval](https://python.langchain.com/docs/modules/data_connection/)
+*  [The Guide to Vector Databases](https://www.pinecone.io/learn/vector-database/)
+*  [OpenAI Cookbook: Question Answering using Embeddings](https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_embeddings.ipynb)
 
-## Progress Checklist
-- [x] Read overview
-- [x] Understand the 5 steps
-- [x] Review Cosine Similarity math
-- [x] Can explain "Why Naive?"
-
+---
 **Back to**: [[RAG (Retrieval Augmented Generation) Overview]]

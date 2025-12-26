@@ -1,11 +1,11 @@
-# 04 - Software Engineering for AI
+# Software Engineering for AI
 
 ## Overview
-Apply software engineering best practices to AI systems. Build maintainable, scalable, and robust ML applications.
+Applying software engineering best practices to AI systems. Building maintainable, scalable, and robust ML applications.
 
 ---
 
-## 🏛️ System Design for AI
+## System Design for AI
 
 ### API Design
 - [ ] [[ML API Design Principles]]
@@ -65,7 +65,7 @@ Apply software engineering best practices to AI systems. Build maintainable, sca
 
 ---
 
-## ✅ Code Quality & Testing
+## Code Quality & Testing
 
 ### Testing Strategies
 - [ ] [[Testing ML Systems Overview]]
@@ -120,7 +120,7 @@ Apply software engineering best practices to AI systems. Build maintainable, sca
 
 ---
 
-## 📊 Progress Tracking
+## Progress Tracking
 
 ```dataview
 TABLE
@@ -131,18 +131,6 @@ FROM "01 - ML & AI Concepts/04 - Software Engineering"
 WHERE contains(tags, "concept")
 SORT file.name ASC
 ```
-
----
-
-## 🎓 Learning Path
-
-**Recommended Order:**
-1. Start with ML API Design and Architecture Patterns
-2. Learn Data Pipeline Design
-3. Study Inference Patterns and Caching
-4. Master Testing Strategies
-5. Focus on Code Quality and Documentation
-6. Advanced: Scalability and Performance Optimization
 
 ---
 

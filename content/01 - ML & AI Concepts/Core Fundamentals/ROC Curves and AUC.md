@@ -35,13 +35,13 @@
 
 ## When to Use ROC/AUC
 
-✅ **Good for**:
+**Good for**:
 - Comparing different models
 - Balanced classes or equal importance of both classes
 - Threshold-independent evaluation
 - Understanding trade-offs between TPR and FPR
 
-⚠️ **Be cautious with**:
+**Caution**:
 - Severe class imbalance (consider Precision-Recall curves instead)
 - When false positives and false negatives have very different costs
 
@@ -56,7 +56,6 @@ Different use cases need different operating points on the ROC curve:
 ## Sample Example
 ![[Pasted image 20251114124012.png]]
 ## References
-
 - [Fawcett (2006) - An Introduction to ROC Analysis](https://people.inf.elte.hu/kiss/13dwhdm/roc.pdf)
 - [Scikit-learn ROC Documentation](https://scikit-learn.org/stable/modules/model_evaluation.html#roc-metrics)
 - [Google ML Course - ROC and AUC](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc)

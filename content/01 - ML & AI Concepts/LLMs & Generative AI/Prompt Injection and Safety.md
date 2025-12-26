@@ -66,17 +66,4 @@ Even if an attack gets through, you can stop the malicious _response_ from reach
 
 
 ---
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [x] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
-
----
 **Back to**: [[ML & AI Index]]

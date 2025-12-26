@@ -1,5 +1,3 @@
-# Multi-hop Reasoning
-
 ## Overview
 **Multi-hop Reasoning** is an advanced RAG technique that chains multiple retrieval and reasoning steps to answer questions that cannot be solved with a single retrieval pass. Instead of retrieving once and generating an answer, the system iteratively retrieves information, reasons about intermediate results, and performs additional retrievals based on that reasoning.
 

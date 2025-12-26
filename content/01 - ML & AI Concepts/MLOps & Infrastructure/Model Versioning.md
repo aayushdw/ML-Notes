@@ -66,11 +66,5 @@ This allows you to update the model in the background (by promoting a new versio
     *   [WandB Model Registry](https://docs.wandb.ai/guides/model_registry)
 
 
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts (Registry, Lineage, Promotion)
-- [ ] Review differences between Git and Registry
-- [ ] Hands-on practice (Register a dummy model in MLflow)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+---
+**Back to**: [[00 - MLOps & Infrastructure Index]]

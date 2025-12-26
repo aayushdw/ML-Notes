@@ -116,15 +116,5 @@ TPUs compile the compute graph (XLA) before running.
 *   **Google Cloud**: [TPU Architecture documentation](https://cloud.google.com/tpu/docs/system-architecture-tpu-vm).
 *   **Video**: [Google I/O: Cloud TPU Pods](https://www.youtube.com/watch?v=MXxN4fv01c8) - great visuals of the layout.
 
-## Personal Notes
-*   *Note*: Accessing TPUs usually requires a specific VM setup (TPU VM) where you can SSH directly into the host attached to the accelerator.
-*   *Observation*: `bfloat16` has become the industry standard for LLM training on GPUs now too (Ampere+ supports it), validating Google's early design choice.
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts (Systolic Arrays, MXU)
-- [ ] Review math (bfloat16 range vs precision)
-- [ ] Hands-on practice (Run a JAX "Hello World" on Colab TPU)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+---
+**Back to**: [[00 - MLOps & Infrastructure Index]]

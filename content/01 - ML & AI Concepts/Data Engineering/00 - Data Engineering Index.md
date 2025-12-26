@@ -1,4 +1,4 @@
-# 05 - Data Engineering
+# Data Engineering
 
 ## Overview
 Master data pipelines, infrastructure, and management practices essential for ML systems. Learn to build robust data foundations for AI applications.

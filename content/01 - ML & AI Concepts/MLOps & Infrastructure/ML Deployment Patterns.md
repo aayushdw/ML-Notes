@@ -167,15 +167,5 @@ $$L_{total} = L_{network} + L_{queue} + L_{inference} + L_{processing}$$
 - **Docs**: [Google Cloud Architecture: MLOps: Continuous delivery and automation pipelines in machine learning](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)
 - **Article**: [Martin Fowler: Continuous Delivery for Machine Learning](https://martinfowler.com/articles/cd4ml.html)
 
-## Personal Notes
-- *Shadow deployment is underrated for major model architecture changes (e.g., XGBoost -> Deep Learning).*
-- *Always prefer Batch serving if the delay is acceptable. Online serving accounts for 90% of on-call incidents.*
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts
-- [ ] Review math (Latency/Traffic)
-- [ ] Hands-on practice (Deploy a dummy model)
-- [ ] Can explain to others
-
+---
 **Back to**: [[MLOps & Infrastructure Index]]

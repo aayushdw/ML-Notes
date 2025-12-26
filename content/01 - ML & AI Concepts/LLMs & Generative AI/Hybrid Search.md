@@ -1,5 +1,3 @@
-# Hybrid Search
-
 ## Overview
 
 **Hybrid Search** is the gold standard for production RAG systems. It combines two fundamentally different retrieval approaches:
@@ -20,7 +18,7 @@ Hybrid Search exists to solve a fundamental problem in information retrieval:
 **Synonym/Paraphrase Mismatch**
 - Query: "car"
 - Relevant document: "Find an affordable **automobile**"
-- Result: ❌ Missed! BM25 only matches exact keywords.
+- Result: Missed! BM25 only matches exact keywords.
 
 **Why it matters**: Users don't always use the exact terminology as the documents. A technical support bot searching for "fix the printer" shouldn't miss documents about "troubleshooting devices" or "resolving hardware issues."
 
@@ -29,7 +27,7 @@ Hybrid Search exists to solve a fundamental problem in information retrieval:
 - Query: "XJ-900 specifications"
 - Document A: "The **XJ-900** is our flagship product..."
 - Document B: "This generic vehicle part is commonly used..."
-- Result: ⚠️ Dense models struggle. They're trained on general text, not technical specifications or product codes.
+- Result: Dense models struggle. They're trained on general text, not technical specifications or product codes.
 
 **Why it matters**: In specialized domains (legal, medical, engineering), exact terminology is critical. A general embedding model may not understand that "ICD-10-CM" is more important than words like "the" or "and".
 
@@ -124,13 +122,13 @@ List 1  List 2       (Two independent ranked lists)
 
 ## Sparse vs Dense: Side-by-Side Comparison
 
-| Query | Document | BM25 | Dense | Verdict |
-|-------|----------|------|-------|---------|
-| "Python tutorial" | "Learn Python programming" | ✅ Perfect match | ✅ Perfect match | Both find it |
-| "How to fix a flat" | "Tire repair instructions" | ❌ No keyword overlap | ✅ Semantic match | Dense wins |
-| "GPU performance" | "Graphics Processing Unit speed" | ❌ "GPU" ≠ "Graphics Processing Unit" | ⚠️ Some match | BM25 wins |
-| "XJ-900 specs" | "The XJ-900 is a..." | ✅ Exact match | ⚠️ May miss (unfamiliar token) | BM25 wins |
-| "vehicle" | "types of cars and trucks" | ❌ No exact match | ✅ Semantic match | Dense wins |
+| Query               | Document                         | BM25                               | Dense                       | Verdict      |
+| ------------------- | -------------------------------- | ---------------------------------- | --------------------------- | ------------ |
+| "Python tutorial"   | "Learn Python programming"       | Perfect match                      | Perfect match               | Both find it |
+| "How to fix a flat" | "Tire repair instructions"       | No keyword overlap                 | Semantic match              | Dense wins   |
+| "GPU performance"   | "Graphics Processing Unit speed" | "GPU" ≠ "Graphics Processing Unit" | Some match                  | BM25 wins    |
+| "XJ-900 specs"      | "The XJ-900 is a..."             | Exact match                        | May miss (unfamiliar token) | BM25 wins    |
+| "vehicle"           | "types of cars and trucks"       | No exact match                     | Semantic match              | Dense wins   |
 
 **Observation**: Each method misses cases the other catches. Hybrid Search combines them to avoid missing anything.
 
@@ -161,15 +159,15 @@ Where:
 - With α = 0.5 (50-50 split): Final = 0.5 × 0.72 + 0.5 × 0.85 = **0.785**
 
 **Pros**:
-- ✅ Intuitive (literally averaging the methods)
-- ✅ Direct control over trade-off (tune α)
-- ✅ Can give different weights to sparse vs dense
+- Intuitive (literally averaging the methods)
+- Direct control over trade-off (tune α)
+- Can give different weights to sparse vs dense
 
 **Cons**:
-- ❌ Requires score normalization (adds complexity)
-- ❌ Sensitive to score distribution (changes per query type)
-- ❌ Requires tuning α for your use case
-- ❌ May need different α values for different domains
+- Requires score normalization (adds complexity)
+- Sensitive to score distribution (changes per query type)
+- Requires tuning α for your use case
+- May need different α values for different domains
 
 **When to use**:
 - You have domain knowledge and want explicit control
@@ -184,7 +182,7 @@ Where:
 
 ---
 
-### Strategy 2: Reciprocal Rank Fusion (RRF) ⭐ **RECOMMENDED**
+### Strategy 2: Reciprocal Rank Fusion (RRF) - Recommended
 
 **Idea**: Don't use scores at all. Just use the **rank** (position) of each document in each retriever's result list.
 
@@ -208,17 +206,17 @@ Notice: Both get the same RRF score (≈0.032), but for different reasons!
 - Being #100 in both lists = nearly irrelevant (too far down)
 
 **Pros**:
-- ✅ No score normalization needed
-- ✅ Robust across all query types (no tuning required)
-- ✅ No hyperparameter to tune (k=60 is standard)
-- ✅ Industry standard (widely used in production)
-- ✅ Handles score distribution differences automatically
-- ✅ Simple to implement
+- No score normalization needed
+- Robust across all query types (no tuning required)
+- No hyperparameter to tune (k=60 is standard)
+- Industry standard (widely used in production)
+- Handles score distribution differences automatically
+- Simple to implement
 
 **Cons**:
-- ❌ Loses granular score information
-- ❌ Less flexible if you want explicit weighting
-- ❌ Less interpretable than weighted sum
+- Loses granular score information
+- Less flexible if you want explicit weighting
+- Less interpretable than weighted sum
 
 **When to use**:
 - **Default choice** for most production systems
@@ -360,14 +358,14 @@ These approaches try to solve limitations of basic Hybrid Search:
 - Result: Docs with "vehicle" are found even though they don't have "car"!
 
 **Pros**:
-- ✅ Combines sparse efficiency with semantic understanding
-- ✅ Interpretable (can see which terms matched)
-- ✅ No dense vectors needed (smaller index)
+- Combines sparse efficiency with semantic understanding
+- Interpretable (can see which terms matched)
+- No dense vectors needed (smaller index)
 
 **Cons**:
-- ❌ Requires SPLADE-specific indexing (not all databases support it)
-- ❌ Less mature than basic Hybrid
-- ❌ Training required
+- Requires SPLADE-specific indexing (not all databases support it)
+- Less mature than basic Hybrid
+- Training required
 
 **When to use**: When you want semantic understanding WITHOUT the index overhead of dense vectors. Cutting-edge, not yet mainstream.
 
@@ -404,14 +402,14 @@ Overall score: 0.99 + 0.98 + 0.97 = 2.94 (very high!)
 ```
 
 **Pros**:
-- ✅ SOTA (state-of-the-art) accuracy
-- ✅ Fine-grained token-level matching
-- ✅ Handles phrase matching naturally
+- SOTA accuracy
+- Fine-grained token-level matching
+- Handles phrase matching naturally
 
 **Cons**:
-- ❌ Index size ~100x larger (vectors for every token!)
-- ❌ Slower inference (more computation)
-- ❌ Higher cost (storage + compute)
+- Index size ~100x larger (vectors for every token!)
+- Slower inference (more computation)
+- Higher cost (storage + compute)
 
 **When to use**: When accuracy is critical and budget permits (legal discovery, financial research, high-stakes applications). Not for real-time / cost-sensitive scenarios.
 
@@ -504,10 +502,10 @@ hybrid_retriever = EnsembleRetriever(
 | **Latency** | 5ms | 50ms | ~55ms | 5ms | 100ms |
 | **Index Size** | 100MB | 500MB | 600MB | 200MB | 5GB |
 | **Training Needed** | No | Pre-trained | No | Yes | Pre-trained |
-| **Domain Shift** | Robust | ⚠️ Weak | ✅ Robust | ✅ Robust | ✅ Robust |
-| **Exact Match** | ✅ Excellent | ⚠️ Poor | ✅ Excellent | ✅ Excellent | ✅ Excellent |
-| **Synonym Match** | ❌ Poor | ✅ Excellent | ✅ Excellent | ✅ Excellent | ✅ Excellent |
-| **Production Ready** | ✅ Yes | ✅ Yes | ✅ Yes | ⚠️ Emerging | ⚠️ Expensive |
+| **Domain Shift** | Robust | Weak | Robust | Robust | Robust |
+| **Exact Match** | Excellent | Poor | Excellent | Excellent | Excellent |
+| **Synonym Match** | Poor | Excellent | Excellent | Excellent | Excellent |
+| **Production Ready** | Yes | Yes | Yes | Emerging | Expensive |
 | **Setup Complexity** | Simple | Medium | Medium | Hard | Hard |
 | **Cost to Run** | Low | Medium | Medium-High | Medium | High |
 
@@ -603,9 +601,9 @@ Before building Hybrid Search, ensure you have:
 
 **Hybrid Search is the industry standard** for production RAG systems because it combines the strengths of two fundamentally different retrieval approaches:
 
-✅ **BM25 (Sparse)**: Fast, exact keyword matching, no training needed, robust across domains
-✅ **Dense (Semantic)**: Understands synonyms, paraphrases, and concepts
-✅ **RRF Fusion**: Simple, no tuning, robust across query types
+- **BM25 (Sparse)**: Fast, exact keyword matching, no training needed, robust across domains
+- **Dense (Semantic)**: Understands synonyms, paraphrases, and concepts
+- **RRF Fusion**: Simple, no tuning, robust across query types
 
 **When to implement**:
 - You want the best relevance (improve Recall by 10-40%)
@@ -636,4 +634,5 @@ Before building Hybrid Search, ensure you have:
 
 ## See Also
 - [[BM25]] - Detailed explanation of BM25 scoring formula
-- [[RAG (Retrieval Augmented Generation) Overview]] - Back to RAG concepts
+
+**Back to**: [[RAG (Retrieval Augmented Generation) Overview]]

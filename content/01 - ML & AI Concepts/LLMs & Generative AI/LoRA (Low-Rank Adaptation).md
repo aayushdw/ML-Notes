@@ -1,5 +1,3 @@
-# LoRA (Low-Rank Adaptation)
-
 ## Overview
 Most popular PEFT technique. (See [[Fine-Tuning Overview]])
 - **Concept:** Instead of updating a massive weight matrix $W$, LoRA injects two small matrices, $A$ and $B$, next to it.
@@ -19,6 +17,7 @@ If a model needs to learn to "speak like a pirate," it doesn't need to change ev
 In a standard dense layer of a neural network, you have a pre-trained weight matrix $W_0$.
 
 In Full Fine-Tuning, you calculate a weight update $\Delta W$ that is the same size as $W_0$.
+
 $$W_{new} = W_0 + \Delta W$$
 In LoRA, we freeze $W_0$. We do not calculate $\Delta W$ directly. Instead, we decompose $\Delta W$ into two significantly smaller matrices, $A$ and $B$.
 
@@ -27,6 +26,7 @@ In LoRA, we freeze $W_0$. We do not calculate $\Delta W$ directly. Instead, we d
 - **$B$ (Trainable):** The "up-projection" matrix
 
 The input $x$ passes through both paths effectively:
+
 $$h = W_0x + BAx$$
 ### Compression
 Let's assume our base layer $W_0$ has dimensions $d \times k$ (where $d$ is the output dimension and $k$ is the input dimension).
@@ -49,12 +49,15 @@ When training starts, we want the model to behave exactly like the pre-trained m
 - **Matrix $A$** is initialized with **random Gaussian initialization**.
 - **Matrix $B$** is initialized to **zeros**.
 Therefore, at step 0:
+
 $$BAx = 0 \cdot A \cdot x = 0$$
+
 $$h = W_0x + 0$$
 i.e. The model starts exactly at the pre-trained baseline.
 
 ### The Scaling Factor ($\alpha$)
 While implementing (like `peft`), you will see a hyperparameter `alpha`. The actual equation used is:
+
 $$h = W_0x + \frac{\alpha}{r} (BAx)$$
 - **$\alpha$ (Alpha):** A scaling constant.
 
@@ -144,6 +147,7 @@ And you decide to change Alpha to 32:
 ### Inference: The "Merge" Trick
 One of the best features of LoRA is that it introduces **zero latency** during inference (production).
 Because $BA$ has the same dimensions as $W_0$, once you are done training, you can simply perform matrix addition to permanently fuse the weights:
+
 $$W_{final} = W_0 + (B \times A) \cdot \frac{\alpha}{r}$$
 You can now discard $A$ and $B$ and serve $W_{final}$ as a standard model.
 
@@ -191,36 +195,6 @@ After the Attention step, the token "Bank" knows it refers to a river. Now it ne
 ### Embedding / Unembedding head
 We usually **do not** apply LoRA to the `lm_head` (the very final layer that predicts the next word) or the `embed_tokens` (the very first layer), unless you are adding new tokens to the vocabulary (like training a model on a new language with new characters).
 ## Resources
-### Papers
-- 
-
-### Articles & Blog Posts
-- 
-
-### Videos & Tutorials
-- 
-
-### Code Examples
-- 
-
-### Books
-- 
-
-## Questions / Further Research
-- [ ] 
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [x] Review mathematical foundations
-- [x] Study implementations
-- [x] Complete hands-on practice
-- [x] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
 
 ---
 **Back to**: [[ML & AI Index]]

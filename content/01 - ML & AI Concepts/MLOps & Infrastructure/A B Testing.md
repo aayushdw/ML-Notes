@@ -12,12 +12,12 @@
 ### 1. Statistical Foundations
 We test a **Null Hypothesis** ($H_0$) against an **Alternative Hypothesis** ($H_1$).
 
-> [!TIP] **Intuition: The Courtroom Analogy**
-> * **$H_0$ (Null Hypothesis)**: The defendant is **Innocent** (The new model has *no effect*).
-> * **Goal**: Prosecutors must prove guilt beyond a reasonable doubt. We assume $H_0$ is true until evidence (data) proves otherwise.
+> [!TIP] **Intuition**
+> * **$H_0$ (Null Hypothesis)**: The new model has *no effect*.
+> * **Goal**: We assume $H_0$ is true until evidence (data) proves otherwise.
 > * **P-Value**: The probability that the evidence appeared purely by coincidence.
->     * Low P-Value (< 0.05) → "It's extremely unlikely this happened by chance." → **Guilty** ($H_1$ is true).
->     * High P-Value → "Evidence is weak." → **Not Guilty** (Stick with $H_0$).
+>     * Low P-Value (< 0.05) → "It's extremely unlikely this happened by chance." → $H_1$ is true.
+>     * High P-Value → "Evidence is weak." → Stick with $H_0$.
 
 #### Errors
 | Decision | Reality: $H_0$ is True (No Diff) | Reality: $H_0$ is False (Diff exists) |
@@ -79,13 +79,6 @@ In two-sided marketplaces (Uber/Airbnb), treating one user affects others (e.g.,
 ## Resources
 - **Paper**: [Overlapping Experiment Infrastructure: More, Better, Faster Experimentation (Google)](https://research.google/pubs/pub36500/)
 - **Book**: "Trustworthy Online Controlled Experiments" (Kohavi, Tang, Xu).
-- **library**: `scipy.stats` for T-tests.
 
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand Type I/II errors
-- [ ] Review calculating Sample Size
-- [ ] Check for SRM in a dummy dataset
-- [ ] Can explain to others
 
 **Back to**: [[ML Deployment Patterns]]

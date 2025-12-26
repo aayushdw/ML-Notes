@@ -72,14 +72,5 @@ Where $v$ denotes the version snapshot.
 *   **Video**: [DVC in 5 Minutes](https://www.youtube.com/watch?v=kGLh1erjn1Y)
 *   **Concept**: [[MLOps Level 0 to Level 2]] (Google Cloud Maturity Model)
 
-## Personal Notes
-*   
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts (Trinity of Artifacts)
-- [ ] Review math
-- [ ] Hands-on practice (Try `dvc init` in a toy repo)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+--- 
+**Back to**: [[00 - MLOps & Infrastructure Index]]

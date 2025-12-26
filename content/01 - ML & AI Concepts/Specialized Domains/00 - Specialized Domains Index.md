@@ -1,11 +1,11 @@
-# 06 - Specialized Domains
+# Specialized Domains
 
 ## Overview
-Deep dive into specific application areas of AI. Master domain-specific techniques, models, and best practices.
+Deep diving into specific application areas of AI. Master domain-specific techniques, models, and best practices.
 
 ---
 
-## 👁️ Computer Vision
+## Computer Vision
 
 ### Fundamentals
 - [ ] [[Computer Vision Overview]]
@@ -63,7 +63,7 @@ Deep dive into specific application areas of AI. Master domain-specific techniqu
 
 ---
 
-## 📝 Natural Language Processing
+## Natural Language Processing
 
 ### Text Preprocessing
 - [ ] [[Text Preprocessing Techniques]]
@@ -124,7 +124,7 @@ Deep dive into specific application areas of AI. Master domain-specific techniqu
 
 ---
 
-## ⚖️ Ethics & Responsible AI
+## Ethics & Responsible AI
 
 ### Bias & Fairness
 - [ ] [[Bias in ML Systems]]
@@ -181,7 +181,7 @@ Deep dive into specific application areas of AI. Master domain-specific techniqu
 
 ---
 
-## 📊 Progress Tracking
+## Progress Tracking
 
 ```dataview
 TABLE
@@ -192,31 +192,6 @@ FROM "01 - ML & AI Concepts/06 - Specialized Domains"
 WHERE contains(tags, "concept")
 SORT file.name ASC
 ```
-
----
-
-## 🎓 Learning Path
-
-**Computer Vision Path:**
-1. Start with Fundamentals and Preprocessing
-2. Learn Image Classification and Transfer Learning
-3. Master Object Detection
-4. Study Segmentation techniques
-5. Explore Generative Models
-
-**NLP Path:**
-1. Begin with Text Preprocessing
-2. Learn Word Embeddings
-3. Study Language Models
-4. Master NER and Information Extraction
-5. Explore Advanced topics (Seq2Seq, Semantic Search)
-
-**Ethics Path:**
-- This should be studied alongside all technical topics
-- Start with Bias & Fairness
-- Learn Interpretability techniques
-- Understand Security and Privacy
-- Stay updated on Regulations
 
 ---
 

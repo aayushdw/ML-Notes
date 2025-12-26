@@ -1,21 +1,15 @@
-
-# Fine-Tuning Overview
-
 ## Overview
 Fine-tuning is effectively the bridge between a "generic knowledgeable" model (like a base GPT or Llama model) and a "specialized expert" model (like a medical coding assistant or a brand-specific customer support agent).
 
-Here is a structured deep dive into the most critical topics regarding LLM Fine-Tuning.
-
 ## LLM Lifecycle
-To understand SFT, you must visualize where it sits in the lifecycle of an LLM.
 1. **Pre-Training (Unsupervised):** The model reads trillions of tokens (internet data) to learn probability distributions. It learns that after "The capital of France is," the next word is likely "Paris."
 2. **SFT (Supervised):** We feed the model specific `{Instruction, Response}` pairs. We tell it: "When a user asks X, you should reply with Y."
 3. **RLHF/DPO (Preference Alignment):** (Optional) We further refine the model based on human preferences (ranking which answer is better).
 
-## How SFT is Achieved: The Mechanics
+## How SFT is Achieved
 Technically, SFT uses the same underlying mechanism as pre-training—**Next Token Prediction**—but with a crucial twist regarding the data and the loss function.
 ### The Dataset Structure
-In pre-training, data is raw text. In SFT, data is structured. A typical SFT entry looks like this:
+In pre-training, data is raw text. In SFT, data is structured. A typical SFT entry looks like:
 - **Prompt:** "Explain quantum entanglement like I'm five."
 - **Completion:** "Imagine you have two magic dice..."
 
@@ -48,19 +42,17 @@ You load the entire model into memory and update _every single parameter_ (weigh
 - **Risk:** Catastrophic Forgetting (the model learns the new task but forgets general English).
 
 
-
-
 ### PEFT (Parameter-Efficient Fine-Tuning)
 Industry standard for 95% of use cases. Instead of updating all weights, we freeze the base model and only train a tiny subset of new parameters.
 
 #### [[LoRA (Low-Rank Adaptation)]]
 Most popular PEFT technique.
 - **Concept:** Instead of updating a massive weight matrix $W$, LoRA injects two small matrices, $A$ and $B$, next to it.
-- **The Math:** The new output is $h = W_0x + BAx$.
+- The new output is $h = W_0x + BAx$.
     - $W_0$ is frozen (the original model).
     - $A$ and $B$ are trainable "adapter" matrices.
 
-- **Result:** You can fine-tune a 70B model on a single consumer GPU because you are only training <1% of the parameters.
+- This way you can fine-tune a 70B model on a single consumer GPU because you are only training <1% of the parameters.
 
 #### [[QLoRA (Quantized LoRA)]]
 This takes LoRA a step further by compressing the base model.
@@ -75,10 +67,14 @@ However, the **Topological Placement** and the **Non-Linearity** make them funda
 
 ##### The Critical Difference: Non-Linearity
 This is the most important distinction that prevents standard Adapters from being merged.
-- Bottleneck Adapter: Has a non-linear activation function (ReLU, GELU) between the down and up projections.2
+- Bottleneck Adapter: Has a non-linear activation function (ReLU, GELU) between the down and up projections.
+
 $$h_{out} = h_{in} + W_{up} \cdot \mathbf{ReLU}(W_{down} \cdot h_{in})$$
+
 - LoRA: Is purely linear. There is no activation function between the two matrices.
+
 $$h_{out} = h_{in} + W_{up} \cdot W_{down} \cdot h_{in}$$
+
 
 Because LoRA is purely linear, $W_{up} \cdot W_{down}$ collapses into a single matrix $\Delta W$. This allows you to add it directly to the frozen weights: $W_{frozen} + \Delta W$.
 You cannot do this with Adapters because the ReLU makes the operation non-linear. You cannot merge $W_{up} \cdot \text{ReLU}(W_{down})$ into a single linear matrix.
@@ -155,8 +151,6 @@ You are a helpful AI.<|eot_id|><|start_header_id|>user<|end_header_id|>
 - **Labels:** `[-100, -100, -100, 44, 55, 67]` (Model is only graded on "Ho<|end|>")
 
 
-
-
 ## Important Considerations
 
 ### The "Instruction Following" Tax
@@ -167,18 +161,6 @@ In Pre-training, quantity is important. In SFT, quality is important.
 
 ## Resources
 
----
-
-**Progress**: 
-- [ ] Read overview materials
-- [ ] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [ ] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
 
 ---
 **Back to**: [[ML & AI Index]]

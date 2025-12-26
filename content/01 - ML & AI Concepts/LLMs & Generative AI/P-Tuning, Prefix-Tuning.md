@@ -1,5 +1,3 @@
-# P-Tuning
-
 ## Overview
 P-Tuning is an approach to get around the constraints / difficulty of "Prompt Tuning / Engineering".
 Discrete prompting is an NP-hard search problem over a non-differentiable landscape. We are forcing a continuous model to be steered by discrete inputs.
@@ -13,9 +11,11 @@ In standard interaction with an LLM, we treat the model as a function $M$ that t
 Let an input sequence be $x$ and a target output be $y$.
 We want to find a prompt $P$ (a sequence of tokens $[p_1, p_2, \dots, p_L]$) that maximizes the likelihood of $y$.
 The Objective Function:
+
 $$\hat{P} = \underset{P}{\text{argmax}} \sum_{(x,y) \in \mathcal{D}} \log P(y | x, P; \Theta)$$
 
 The Constraint:
+
 $$\forall p_i \in P, \quad p_i \in \mathcal{V}$$
 #### **Why this is mathematically problematic:**
 1. **Non-Differentiable:** The operation of selecting a token $p_i$ from vocabulary $\mathcal{V}$ is a discrete indexing operation. You cannot compute the gradient $\nabla_P \mathcal{L}$ because $P$ is not a continuous variable. The loss landscape is a series of step functions, not a smooth curve.
@@ -41,10 +41,12 @@ Because natural language evolved for human communication, not for steering high-
 
 P-Tuning applies a mathematical trick common in optimization called **Relaxation**. We relax the constraint that our prompt tokens must be integers mapping to rows in $E$.
 Instead, we define the prompt $P$ as a sequence of **free** vectors:
+
 $$P = [\theta_1, \theta_2, \dots, \theta_L]$$
 Where each $\theta_i \in \mathbb{R}^d$.
 
 The New Objective Function:
+
 $$\hat{\theta} = \underset{\theta}{\text{argmax}} \sum_{(x,y) \in \mathcal{D}} \log P(y | x, \theta; \Theta_{fixed})$$
 **Why this changes everything:**
 1. Differentiability: Because $\theta$ operates in continuous space, the loss function is now fully differentiable with respect to $\theta$.
@@ -58,10 +60,12 @@ $$\hat{\theta} = \underset{\theta}{\text{argmax}} \sum_{(x,y) \in \mathcal{D}} \
 
 Let's look at the input processing of the first Transformer block.
 Standard (Discrete):
+
 $$H_0 = [E(p_1), E(p_2), \dots, E(x_1), \dots]$$
 The prompt vectors are frozen lookup values.
 
 P-Tuning (Continuous):
+
 $$H_0 = [\theta_1, \theta_2, \dots, E(x_1), \dots]$$
 Here, $\theta_i$ are trainable parameters.
 
@@ -80,20 +84,6 @@ P-Tuning introduces a function $f$ to **reparameterize** the prompt embeddings. 
 
 TODO (https://gemini.google.com/gem/efe5a0156c9d/a45ca66d5f6f5430)
 
-
-
----
-
-**Progress**: 
-- [ ] Read overview materials
-- [ ] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [ ] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
 
 ---
 **Back to**: [[ML & AI Index]]

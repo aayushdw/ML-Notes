@@ -1,10 +1,5 @@
-# Supervised Learning
-
 ## Overview
 Model trained using labeled data.
-
-## Key Ideas
-- [[Loss Function]]: Measures how wrong your predictions are compared to the true labels. The training process aims to minimize this error.
 
 ## Types
 - Classification: Predicting Discrete Categories
@@ -22,7 +17,11 @@ In supervised learning, we have:
 The goal is to find a hypothesis $h$ from some hypothesis space $\mathcal{H}$ that generalizes well to unseen data.
 ### The Learning Objective
 We assume there exists some true (but unknown) function $f: \mathcal{X} \rightarrow \mathcal{Y}$ that generates our labels, possibly with noise. Our training data comes from some joint distribution $P(X, Y)$.
-**Goal**: Find $h^* \in \mathcal{H}$ that minimizes the **expected risk** (generalization error): $$R(h) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\mathcal{L}(h(x), y)]$$where $\mathcal{L}$ is a loss function measuring prediction error. Since we don't know $P(X,Y)$, we minimize the **empirical risk** instead: $$\hat{R}(h) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h(x_i), y_i)$$
+**Goal**: Find $h^* \in \mathcal{H}$ that minimizes the **expected risk** (generalization error): 
+$$R(h) = \mathbb{E}_{(x,y) \sim P(X,Y)}[\mathcal{L}(h(x), y)]$$
+where $\mathcal{L}$ is a loss function measuring prediction error. Since we don't know $P(X,Y)$, we minimize the **empirical risk** instead: 
+$$\hat{R}(h) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h(x_i), y_i)$$
+
 ### Common Loss Functions
 **For Regression** ($\mathcal{Y} = \mathbb{R}$):
 - **Mean Squared Error (MSE)**: $\mathcal{L}(h(x), y) = (h(x) - y)^2$
@@ -36,29 +35,47 @@ We assume there exists some true (but unknown) function $f: \mathcal{X} \rightar
  - **Categorical Cross-Entropy**: $\mathcal{L}(\hat{y}, y) = -\sum_{k=1}^{K} y_k \log(\hat{y}_k)$ where $y$ is one-hot encoded and $\hat{y}$ is a probability distribution over classes.
 
 ### [[Gradient Descent and Optimization]]
-To minimize empirical risk, we use gradient descent. For a parameterized model $h_\theta(x)$ with parameters $\theta$: $$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_\theta \hat{R}(\theta)$$where $\eta$ is the learning rate.
+To minimize empirical risk, we use gradient descent. For a parameterized model $h_\theta(x)$ with parameters $\theta$: 
+$$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_\theta \hat{R}(\theta)$$
+where $\eta$ is the learning rate.
 
-If $\theta = [\theta_0, \theta_1, ..., \theta_p]$, then: $$\nabla_\theta \hat{R}(\theta) = \begin{bmatrix} \frac{\partial \hat{R}}{\partial \theta_0} \\ \frac{\partial \hat{R}}{\partial \theta_1} \\ \vdots \\ \frac{\partial \hat{R}}{\partial \theta_p} \end{bmatrix}$$
+If $\theta = [\theta_0, \theta_1, ..., \theta_p]$, then: 
+$$\nabla_\theta \hat{R}(\theta) = \begin{bmatrix} \frac{\partial \hat{R}}{\partial \theta_0} \\ \frac{\partial \hat{R}}{\partial \theta_1} \\ \vdots \\ \frac{\partial \hat{R}}{\partial \theta_p} \end{bmatrix}$$
+
 
 Each component shows how much the loss changes when adjusting that specific parameter.
-$$\nabla_\theta \hat{R}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$[[SGD (Stochastic Gradient Descent)]] approximates this using mini-batches: $$\theta^{(t+1)} = \theta^{(t)} - \eta \cdot \frac{1}{|B|}\sum_{i \in B}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$where $B$ is a randomly sampled batch.
+
+$$\nabla_\theta \hat{R}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$
+[[SGD (Stochastic Gradient Descent)]] approximates this using mini-batches: 
+$$\theta^{(t+1)} = \theta^{(t)} - \eta \cdot \frac{1}{|B|}\sum_{i \in B}\nabla_\theta \mathcal{L}(h_\theta(x_i), y_i)$$
+where $B$ is a randomly sampled batch.
 
 ### Example: Linear Regression
 Hypothesis: $h_\theta(x) = \theta^T x = \sum_{j=0}^{d}\theta_j x_j$ (where $x_0 = 1$ for bias)
 Loss: MSE: $\mathcal{L}(h_\theta(x), y) = (h_\theta(x) - y)^2$
-Gradient for one example: $$\nabla_\theta \mathcal{L} = 2(h_\theta(x) - y)x$$ Update rule: $$\theta := \theta - \eta \cdot 2(h_\theta(x) - y)x$$ **Closed-form solution** exists for linear regression: $$\theta^* = (X^T X)^{-1}X^T y$$ where $X$ is the design matrix and $y$ is the vector of labels.
+Gradient for one example: 
+$$\nabla_\theta \mathcal{L} = 2(h_\theta(x) - y)x$$
+Update rule: 
+$$\theta := \theta - \eta \cdot 2(h_\theta(x) - y)x$$
+**Closed-form solution** exists for linear regression: 
+$$\theta^* = (X^T X)^{-1}X^T y$$
+where $X$ is the design matrix and $y$ is the vector of labels.
 
 #### [[Bias-Variance Tradeoff]]
-The expected error for MSE loss function decomposes as: $$\mathbb{E}[(h(x) - y)^2] = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$$
+The expected error for MSE loss function decomposes as: 
+$$\mathbb{E}[(h(x) - y)^2] = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$$
+
 - **Bias**: Error from wrong assumptions (under-fitting)
 - **Variance**: Error from sensitivity to training data fluctuations (overfitting)
 - **Irreducible Error**: Noise in the data itself 
 
-[[Regularization Techniques]] help balance this tradeoff by adding a penalty term: $$\hat{R}_{reg}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h_\theta(x_i), y_i) + \lambda \Omega(\theta)$$ Common choices: $\Omega(\theta) = \|\theta\|_2^2$ (L2/Ridge) or $\|\theta\|_1$ (L1/Lasso).
+[[Regularization Techniques]] help balance this tradeoff by adding a penalty term: 
+$$\hat{R}_{reg}(\theta) = \frac{1}{n}\sum_{i=1}^{n}\mathcal{L}(h_\theta(x_i), y_i) + \lambda \Omega(\theta)$$
+Common choices: $\Omega(\theta) = \|\theta\|_2^2$ (L2/Ridge) or $\|\theta\|_1$ (L1/Lasso).
 
 
 
-## Comparison Table(To Do)
+## Comparison Table
 
 | Algorithm                       | Interpretability | Speed     | Accuracy  | Overfitting Risk | Best For                   |
 | ------------------------------- | ---------------- | --------- | --------- | ---------------- | -------------------------- |
@@ -71,44 +88,8 @@ The expected error for MSE loss function decomposes as: $$\mathbb{E}[(h(x) - y)^
 | **KNN**                         | High             | Slow      | Medium    | High             | Small datasets             |
 | **Neural Networks**             | Very Low         | Slow      | Very High | High             | Complex patterns, images   |
 
-## Key Resources to Explore- 
-- 
-
 ## Related Concepts
-<!-- Link to related notes -->
 - [[Support Vector Machines]]
-- [[]]
-
-## Resources
-### Papers
-- 
-
-### Articles & Blog Posts
-- 
-
-### Videos & Tutorials
-- 
-
-### Code Examples
-- 
-
-### Books
-- 
-
-## Questions / Further Research
-- [ ] 
-- [ ] 
-
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [x] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [ ] Can explain to others
 
 ---
 **Back to**: [[ML & AI Index]]

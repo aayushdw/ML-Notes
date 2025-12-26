@@ -1,19 +1,8 @@
----
-tags:
-  - index
-  - ml-ai
-  - llm
-  - generative-ai
----
-
-# 02 - LLMs & Generative AI
-
-## Overview
-Master Large Language Models and Generative AI systems. Learn how to work with, optimize, and deploy modern language models in production environments.
+# LLMs & Generative AI
 
 ---
 
-## 🔧 LLM Operations
+## LLM Operations
 
 ### Prompt Engineering
 - [ ] [[Prompt Engineering Fundamentals]]
@@ -46,7 +35,7 @@ Master Large Language Models and Generative AI systems. Learn how to work with, 
 
 ---
 
-## 🚀 Production LLM Systems
+## Production LLM Systems
 
 ### Model Serving & Inference
 - [ ] [[Model Serving Architecture]]
@@ -106,7 +95,7 @@ Master Large Language Models and Generative AI systems. Learn how to work with, 
 
 ---
 
-## 📊 Progress Tracking
+## Progress Tracking
 
 ```dataview
 TABLE
@@ -117,18 +106,6 @@ FROM "01 - ML & AI Concepts/02 - LLMs & Generative AI"
 WHERE contains(tags, "concept")
 SORT file.name ASC
 ```
-
----
-
-## 🎓 Learning Path
-
-**Recommended Order:**
-1. Start with Prompt Engineering basics
-2. Understand Context Management
-3. Learn Fine-Tuning Strategies
-4. Study RAG Systems
-5. Explore Production considerations (Serving, Caching, Safety)
-6. Advanced: Agent Systems and Multi-Modal
 
 ---
 

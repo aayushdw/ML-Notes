@@ -1,12 +1,9 @@
-# Chunking Strategies
-
 ## Overview
-**Chunking** is the process of breaking down large documents into smaller, manageable pieces (chunks) that fit within an LLM's context window.
+Chunking is the process of breaking down large documents into smaller, manageable pieces (chunks) that fit within an LLM's context window.
 
 It adheres to the **Goldilocks Principle**:
 *   **Too Small**: You lose context. (e.g., "He said yes." -> Who is he? Yes to what?)
 *   **Too Big**: You introduce noise, dilute specific information, and hit token limits.
-*   **Just Right**: Captures a complete thought or topic.
 
 ## Core Strategies
 
@@ -79,13 +76,13 @@ By embedding sentence #3 directly, you get a sharp vector match. By returning th
 
 ### Strategy vs Trade-offs
 
-| Strategy | Computational Cost | Semantic Preservation | Indexing Speed | Best Use Case |
-| :--- | :--- | :--- | :--- | :--- |
-| **Fixed-Size** | ⚡️ Lowest | 🔴 Poor | 🚀 Fastest | MVP, Uniform raw text |
-| **Recursive** | 🟢 Low | 🟡 Good | 🚄 Fast | General Purpose Documents |
-| **Markdown/Code** | 🟢 Low | 🟢 Excellent | 🚄 Fast | Technical Documentation, Codebases |
-| **Semantic** | 🔴 High | 🟢 Excellent | 🐢 Slow | Noisy, unstructured essays/transcripts |
-| **Parent Doc** | 🟡 Medium | 🟢 Excellent | 🚗 Medium | High-accuracy Production RAG |
+| Strategy          | Computational Cost | Semantic Preservation | Indexing Speed | Best Use Case                          |
+| :---------------- | :----------------- | :-------------------- | :------------- | :------------------------------------- |
+| **Fixed-Size**    | Lowest             | Poor                  | Fastest        | MVP, Uniform raw text                  |
+| **Recursive**     | Low                | Good                  | Fast           | General Purpose Documents              |
+| **Markdown/Code** | Low                | Excellent             | Fast           | Technical Documentation, Codebases     |
+| **Semantic**      | High               | Excellent             | Slow           | Noisy, unstructured essays/transcripts |
+| **Parent Doc**    | Medium             | Excellent             | Medium         | High-accuracy Production RAG           |
 
 ### Decision Matrix
 *   **Q1: Is the data structured (Code/Markdown/JSON)?**
@@ -112,12 +109,5 @@ By embedding sentence #3 directly, you get a sharp vector match. By returning th
 *   **LlamaIndex**: [Node Parsers](https://docs.llamaindex.ai/en/stable/module_guides/loading/node_parsers/)
 *   **Article**: [5 Levels of Text Splitting](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/5_levels_of_text_splitting.ipynb)
 *   **Visualizer**: [LangChain Chunk Visualizer](https://chunkviz.up.railway.app/)
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand Recursive vs Fixed
-- [ ] Understand the trade-off of Semantic Chunking
-- [ ] Understand Parent Document Retrieval logic
-- [ ] Can choose a strategy for a new project
-
+ ---
 **Back to**: [[RAG (Retrieval Augmented Generation) Overview]]

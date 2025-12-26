@@ -89,37 +89,7 @@ For LLMs, the API must support the **Data Flywheel**(using user data to create c
 ### A. The "Feedback" Endpoint
 Every generation endpoint should return a `request_id` or `trace_id`. The API must have a companion endpoint to capture human feedback on that specific trace.
 
-## Resources
-### Papers
-- 
-
-### Articles & Blog Posts
-- 
-
-### Videos & Tutorials
-- 
-
-### Code Examples
-- 
-
-### Books
-- 
-
-## Questions / Further Research
-- [ ] 
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [x] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
+# Resources
 
 ---
 **Back to**: [[ML & AI Index]]

@@ -1,9 +1,7 @@
-# Context Window Fundamentals
-
 ## Overview
 The context window is the maximum amount of text that an LLM can "see" at once—including both input and output.
 
-### What Consumes Your Context Window?
+### What Consumes Context Window?
 
 Everything that goes into the model counts toward the limit:
 
@@ -36,11 +34,11 @@ Information in the **middle** of a very long context is often overlooked or forg
 ### Summarization and Compression
 - When conversations get long, summarize earlier exchanges.
 - Summarize at conversations exceeding 30-40% of context window.
-### Chunking Large Documents - RAG
+### Chunking Large Documents - RAG (TODO)
 
 
 ## Code Examples
-- 
+
 ### Token Counting
 
 #### OpenAI's Tiktoken (Library)

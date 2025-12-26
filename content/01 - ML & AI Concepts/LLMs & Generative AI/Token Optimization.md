@@ -114,14 +114,5 @@ $$
     - [vLLM Blog Post](https://vllm.ai/)
     - [HuggingFace: Optimizing LLMs for Speed and Memory](https://huggingface.co/docs/transformers/llm_tutorial_optimization)
 
-## Personal Notes
-<!-- Add your own insights here. -->
 
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand key concepts (FlashAttention, Speculative Decoding)
-- [ ] Review math (HBM access reduction)
-- [ ] Hands-on practice (Try vLLM or calculate cache size)
-- [ ] Can explain to others
-
-**Back to**: [[02 - LLMs & Generative AI Index]]
+**Back to**: [[00 - LLMs & Generative AI Index]]

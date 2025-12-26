@@ -17,13 +17,18 @@ Imagine a binary classification problem (Spam vs. Not Spam).
 
 ## Mathematical Foundation
 Formally, Concept Drift is defined as a change in the joint distribution $P(X, Y)$ such that:
+
 $$ P_{t0}(X, Y) \neq P_{t1}(X, Y) $$
+
 Where the change is specifically driven by the conditional probability:
+
 $$ P_{t0}(Y|X) \neq P_{t1}(Y|X) $$
+
 while the marginal distribution $P(X)$ (the input distribution) *may or may not* change.
 
 ### Decomposition
 $$ P(X, Y) = P(Y|X) \cdot P(X) $$
+
 -   **Concept Drift**: Change in $P(Y|X)$. (The mapping changes).
 -   **Data Drift (Covariate Shift)**: Change in $P(X)$. (The inputs change).
 
@@ -135,15 +140,5 @@ Once drift is detected, you must adapt.
 -   **Articles**:
     -   [Machine Learning Engineering for Production (Coursera) - Drift Section](https://www.coursera.org/learn/machine-learning-data-lifecycle)
 
-## Personal Notes
-<!-- User thoughts -->
 
-## Progress Checklist
-- [ ] Read overview and definition
-- [ ] Understand key difference from Data Drift ($P(Y|X)$ vs $P(X)$)
-- [ ] Review types of drift (Sudden, Gradual)
-- [ ] Learn detection methods (DDM, ADWIN)
-- [ ] Hands-on: Try `river` for online learning
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+**Back to**: [[00 - MLOps & Infrastructure Index]]

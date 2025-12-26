@@ -1,11 +1,8 @@
-
 Regression metrics are quantitative measures used to evaluate how well a machine learning model predicts continuous numerical values. 
 ## Core Purpose
-
 These metrics answer the fundamental question: "How far off are my predictions from reality?" Different metrics emphasize different aspects of prediction error, giving you various lenses through which to assess model performance.
 
 ---
-
 ## 1. Mean Absolute Error (MAE)
 
 **Formula:** `MAE = (1/n) × Σ|yᵢ - ŷᵢ|`
@@ -18,7 +15,7 @@ These metrics answer the fundamental question: "How far off are my predictions f
 - Robust to outliers compared to MSE
 - Easy to interpret
 
-**When to Use:** When you want straightforward interpretability and all errors should be weighted equally.
+**When to Use:** Straightforward interpretability and all errors should be weighted equally.
 
 **Range:** [0, ∞) where 0 is perfect prediction
 
@@ -36,7 +33,7 @@ These metrics answer the fundamental question: "How far off are my predictions f
 - Sensitive to outliers
 - Differentiable everywhere (good for optimization)
 
-**When to Use:** When large errors are particularly undesirable in your application.
+**When to Use:** When large errors are particularly undesirable.
 
 **Range:** [0, ∞) where 0 is perfect prediction
 
@@ -93,7 +90,7 @@ where `n` = number of samples, `p` = number of predictors
 - Better for comparing models with different numbers of features
 - Can be negative
 
-**When to Use:** When comparing models with different numbers of features or avoiding overfitting.
+**When to Use:** Comparing models with different numbers of features or avoiding overfitting.
 
 **Range:** (-∞, 1] where 1 is perfect prediction
 
@@ -111,7 +108,7 @@ where `n` = number of samples, `p` = number of predictors
 - Cannot be used when actual values are zero
 - Asymmetric (penalizes over-predictions more than under-predictions)
 
-**When to Use:** When you need scale-independent comparison across datasets or percentage error is meaningful.
+**When to Use:** Need scale-independent comparison across datasets or percentage error is meaningful.
 
 **Range:** [0, ∞) where 0 is perfect prediction
 
@@ -129,7 +126,7 @@ where `n` = number of samples, `p` = number of predictors
 - Cares about relative rather than absolute differences
 - Only works with non-negative values
 
-**When to Use:** When predicting values across wide ranges or when relative error matters more than absolute error.
+**When to Use:** To Predict values across wide ranges or when relative error matters more than absolute error.
 
 **Range:** [0, ∞) where 0 is perfect prediction
 
@@ -190,7 +187,7 @@ L(y, ŷ) = {
 - Same units as target variable
 - Useful for safety-critical applications
 
-**When to Use:** When you need to ensure no single prediction exceeds a threshold.
+**When to Use:** To ensure no single prediction exceeds a threshold.
 
 **Range:** [0, ∞) where 0 is perfect prediction
 

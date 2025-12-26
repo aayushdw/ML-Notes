@@ -1,11 +1,11 @@
-# 01 - Core Fundamentals
+# Core Fundamentals
 
 ## Overview
 Mastering the foundational concepts of Machine Learning and Deep Learning. These are the building blocks that underpin all modern AI systems.
 
 ---
 
-## 🎯 Machine Learning Basics
+## Machine Learning Basics
 
 ### Learning Paradigms
 - [x] [[Supervised Learning]]
@@ -36,7 +36,7 @@ Mastering the foundational concepts of Machine Learning and Deep Learning. These
 
 ---
 
-## 🧠 Deep Learning Architecture
+## Deep Learning Architecture
 
 ### Neural Network Fundamentals
 - [ ] [[Neural Networks Basics]]
@@ -83,33 +83,6 @@ Mastering the foundational concepts of Machine Learning and Deep Learning. These
 - [ ] [[Batch Normalization]]
 - [ ] [[Layer Normalization]]
 - [ ] [[Dropout and Regularization]]
-
----
-
-## 📊 Progress Tracking
-
-```dataview
-TABLE
-  status as "Status",
-  difficulty as "Difficulty",
-  last_modified as "Last Updated"
-FROM "01 - ML & AI Concepts/01 - Core Fundamentals"
-WHERE contains(tags, "concept")
-SORT file.name ASC
-```
-
----
-
-## 🎓 Learning Path
-
-**Recommended Order:**
-1. Start with Machine Learning Basics → Learning Paradigms
-2. Understand Model Training & Evaluation
-3. Learn Neural Network Fundamentals
-4. Study Optimization Algorithms
-5. Master CNNs and RNNs
-6. Finally, dive into Transformers
-
 ---
 
 **Back to**: [[ML & AI Index]]

@@ -74,14 +74,6 @@ The goal here is rapid experimentation. We want to update the *pipeline structur
 *   **Guide**: [Google Cloud: MLOps Continuous Delivery and Automation Pipelines](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)
 *   **Related Note**: [[ML Version Control Fundamentals]]
 
-## Personal Notes
-*   
+---
 
-## Progress Checklist
-- [ ] Read overview
-- [ ] Understand the "Chasm" between Level 0 and 1
-- [ ] Visualise the added complexity of CT and CI/CD
-- [ ] Hands-on practice (Build a simple Level 1 pipeline with Prefect/Airflow)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+**Back to**: [[00 - MLOps & Infrastructure Index]]

@@ -45,6 +45,7 @@ xychart-beta
 *(Note: Imagine the first bar is Reference and the second overlapping bar is Current. The drastic change in height represents drift.)*
 
 **Step-by-Step Calculation**:
+
 $$ D_{KL} = \sum P(i) \ln \frac{P(i)}{Q(i)} $$
 1.  **Mobile Bin**:
     $$ 0.1 \times \ln(\frac{0.1}{0.5}) = 0.1 \times \ln(0.2) \approx 0.1 \times (-1.61) = -0.161 $$
@@ -75,12 +76,14 @@ Unlike P-values (where 0.05 is standard) or PSI (where 0.1 is standard), **KL Di
 
 ### 2. Kolmogorov-Smirnov (KS) Test
 A non-parametric test that compares the cumulative distribution functions (CDF) of two samples.
+
 $$ D_{KS} = \sup_{x} | F_{P}(x) - F_{Q}(x) | $$
 - **Intuition**: It finds the maximum vertical distance between the two CDF curves. If this distance is large enough (based on a p-value), we reject the null hypothesis that they come from the same distribution.
 - **When to use**: Continuous numerical features. It is robust to scale changes.
 
 ### 3. Population Stability Index (PSI)
 A popular metric in credit risk scoring (finance) to measure the stability of model scores or features.
+
 $$ PSI = \sum_{i=1}^{B} (P_i - Q_i) \ln \frac{P_i}{Q_i} $$
 where $B$ is the number of bins, $P_i$ is the actual proportion in bin $i$, and $Q_i$ is the expected proportion.
 - **Thresholds**:
@@ -90,6 +93,7 @@ where $B$ is the number of bins, $P_i$ is the actual proportion in bin $i$, and 
 
 ### 4. Wasserstein Distance (Earth Mover's Distance)
 Measures the minimum amount of "work" required to transform one distribution into the other.
+
 $$ W_1(P, Q) = \inf_{\gamma \in \Gamma(P, Q)} \mathbb{E}_{(x, y) \sim \gamma} [|x - y|] $$
 
 - **Intuition**: If the distributions were piles of dirt, how much dirt x distance do you need to move?
@@ -126,14 +130,5 @@ Don't confuse weekly patterns with drift. If your traffic dips on weekends, comp
     - [Alibi Detect](https://github.com/SeldonIO/alibi-detect)
 - **Articles**: https://medium.com/@anicomanesh/model-drift-identifying-and-monitoring-for-model-drift-in-machine-learning-engineering-and-0f74b2aa2fb0 
 
-## Personal Notes
-<!-- User thoughts -->
 
-## Progress Checklist
-- [ ] Read overview materials
-- [ ] Understand key concepts
-- [ ] Review math (KL, KS, PSI)
-- [ ] Hands-on practice (EvidentlyAI tutorial)
-- [ ] Can explain to others
-
-**Back to**: [[03 - MLOps & Infrastructure Index]]
+**Back to**: [[00 - MLOps & Infrastructure Index]]

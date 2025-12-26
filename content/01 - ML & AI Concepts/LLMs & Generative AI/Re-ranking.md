@@ -1,5 +1,3 @@
-# Re-ranking
-
 ## Overview
 
 **Re-ranking** is a post-retrieval refinement step that re-scores and reorders the top-K candidates retrieved by the initial retrieval system. Instead of relying solely on the first retrieval pass (which uses approximate/fast similarity metrics), re-ranking applies a more sophisticated, expensive model to re-evaluate and reorder results for higher precision.
@@ -578,19 +576,3 @@ Final Answer
 - [[Hybrid Search]] - Initial retrieval stage before re-ranking
 - [[Query Transformations]] - Query preprocessing (before retrieval)
 - [[RAG Evaluation Metrics]] - Measuring re-ranking impact on pipeline quality
-
----
-
-## Personal Notes
-*[Space for your thoughts...]*
-
-## Progress Checklist
-- [ ] Understand why re-ranking matters (bi-encoder vs cross-encoder)
-- [ ] Know the difference between pointwise, pairwise, listwise
-- [ ] Understand latency vs accuracy trade-offs
-- [ ] Implement basic cross-encoder re-ranking
-- [ ] Benchmark re-ranking impact on your data
-- [ ] Optimize for your latency requirements
-- [ ] Can explain to others
-
-**Back to**: [[01 - ML & AI Concepts/Index]]

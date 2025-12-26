@@ -1,11 +1,11 @@
-# 07 - Business & Strategy
+# Business & Strategy
 
 ## Overview
 Bridge the gap between technical AI expertise and business value. Learn to lead AI initiatives, communicate effectively, and drive strategic impact.
 
 ---
 
-## 💼 Strategic Skills
+## Strategic Skills
 
 ### Problem Framing
 - [ ] [[Translating Business Problems to ML Problems]]
@@ -45,7 +45,7 @@ Bridge the gap between technical AI expertise and business value. Learn to lead 
 
 ---
 
-## 👥 Leadership & Communication
+## Leadership & Communication
 
 ### Technical Leadership
 - [ ] [[Technical Leadership in AI]]
@@ -90,7 +90,7 @@ Bridge the gap between technical AI expertise and business value. Learn to lead 
 
 ---
 
-## 📈 Strategy & Innovation
+## Strategy & Innovation
 
 ### AI Strategy
 - [ ] [[Developing AI Strategy]]
@@ -109,32 +109,6 @@ Bridge the gap between technical AI expertise and business value. Learn to lead 
 - [ ] [[AI Industry Landscape]]
 - [ ] [[Emerging AI Technologies]]
 - [ ] [[Market Dynamics in AI]]
-
----
-
-## 📊 Progress Tracking
-
-```dataview
-TABLE
-  status as "Status",
-  difficulty as "Difficulty",
-  last_modified as "Last Updated"
-FROM "01 - ML & AI Concepts/07 - Business & Strategy"
-WHERE contains(tags, "concept")
-SORT file.name ASC
-```
-
----
-
-## 🎓 Learning Path
-
-**Recommended Order:**
-1. Start with Problem Framing and Cost-Benefit Analysis
-2. Learn Success Metrics definition
-3. Study Communication Skills
-4. Master Stakeholder Management
-5. Develop Leadership skills
-6. Advanced: Strategy and Innovation
 
 ---
 

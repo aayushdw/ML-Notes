@@ -1,9 +1,7 @@
-# Precision, Recall, and F1-Score
-
 ## Overview
 These are classification metrics used to evaluate how well a binary classification model performs. While accuracy is the most intuitive metric, it can be misleading on imbalanced datasets. Precision, Recall, and F1-Score provide a more nuanced view of the model's errors.
 
-## Key Ideas / Intuition
+## Intuition
 ### The "Fishing Net" Analogy
 Imagine you are a fisherman trying to catch a specific type of high-value fish (e.g., Tuna) in a lake that also contains junk (boots, cans) and other fish.
 
@@ -18,7 +16,6 @@ Imagine you are a fisherman trying to catch a specific type of high-value fish (
     *   *High Recall*: You use a massive net and catch every single Tuna in the lake. However, you also catch a lot of boots and cans.
 
 ### Visual Understanding
-Think of the trade-off as a slider.
 *   **Aggressive Model (High Recall)**: "Flag everything that looks remotely like a fish." (Catches all fish, but high noise).
 *   **Conservative Model (High Precision)**: "Only flag it if you are 100% sure it's a fish." (Very clean results, but misses hard-to-spot fish).
 
@@ -38,18 +35,22 @@ $$
 
 **1. Precision**
 The fraction of positive predictions that are actually correct.
+
 $$ \text{Precision} = \frac{TP}{TP + FP} $$
 
 **2. Recall (Sensitivity)**
 The fraction of actual positives that were identified correctly.
+
 $$ \text{Recall} = \frac{TP}{TP + FN} $$
 
 **3. F1-Score**
 The harmonic mean of Precision and Recall. It punishes extreme values (e.g., if Precision is 100% but Recall is 0%, F1 will be 0).
+
 $$ F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} $$
 
 **4. Accuracy**
 The fraction of total predictions that were correct.
+
 $$ \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN} $$
 
 ## Practical Application
@@ -82,13 +83,5 @@ $$ \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN} $$
     *   [Precision, Recall & F1 Score Intuitively Explained (YouTube)](https://www.youtube.com/watch?v=Kdsp6soqA7g)
     *   [StatQuest: Precision and Recall](https://www.youtube.com/watch?v=j-EB6RsqqG0)
 
-## Personal Notes
-<!-- Add your own insights here -->
-
-## Progress Checklist
-- [ ] Read overview
-- [ ] Review mathematical formulas
-- [ ] Hands-on practice (Scikit-Learn `classification_report`)
-- [ ] Can explain the Precision/Recall trade-off to others
 
 **Back to**: [[ML & AI Index]]

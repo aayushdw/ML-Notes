@@ -1,8 +1,3 @@
-# Prompt Engineering Fundamentals
-
-## Overview
-<!-- Brief explanation of the concept (2-3 sentences) -->
-
 ## Basic Prompting Principles
 The foundation of effective prompt engineering lies in clear communication. This includes:
 - **Clarity & Specificity**: Being precise about what you want rather than vague. "Summarize this article in 3 bullet points" vs. "Tell me about this article."
@@ -169,20 +164,6 @@ Systematic improvement of prompt performance:
 - **Benchmarking**: Testing against standard datasets or creating custom test suites.
 - **User Feedback Integration**: Incorporating real-world usage patterns and failures.
 - **Iterative Refinement**: The cycle of test → analyze → modify → retest.
-
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [ ] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [x] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
 
 ---
 **Back to**: [[ML & AI Index]]
