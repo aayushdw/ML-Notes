@@ -1,5 +1,8 @@
 ## Overview
-**Naive RAG** represents the standard, baseline architecture for Retrieval-Augmented Generation. It follows a strictly linear process: indexing documents into vector embeddings, retrieving the top-$k$ most similar chunks based on a user query, and feeding them directly into the LLM context window.
+**Naive RAG** represents the standard, baseline architecture for Retrieval-Augmented Generation. It follows a strictly linear process: 
+1. Indexing documents into vector embeddings
+2. Retrieving the top-$k$ most similar chunks based on a user query
+3. Feeding them directly into the LLM context window
 
 It is "Naive" because it assumes that **semantic similarity equals ground truth relevance**, which is not always true. It forms the foundation upon which all advanced RAG techniques ([[Hybrid Search]], [[Re-ranking]], [[Agentic RAG]]) are built.
 
@@ -7,9 +10,9 @@ It is "Naive" because it assumes that **semantic similarity equals ground truth 
 
 ### Why "Naive"?
 The approach makes several simplifying assumptions that break down in real-world scenarios:
-- **Assumption 1**: The top-$k$ semantically similar chunks contain the answer. *Reality*: Semantic similarity $\neq$ relevance to the question.
-- **Assumption 2**: Chunks are self-contained. *Reality*: Information often spans multiple chunks or requires context from surrounding text.
-- **Assumption 3**: A single retrieval pass is sufficient. *Reality*: Complex questions require multi-hop reasoning across multiple retrievals.
+- Assumption 1: The top-$k$ semantically similar chunks contain the answer. *Reality*: Semantic similarity $\neq$ relevance to the question.
+- Assumption 2: Chunks are self-contained. *Reality*: Information often spans multiple chunks or requires context from surrounding text.
+- Assumption 3: A single retrieval pass is sufficient. *Reality*: Complex questions require multi-hop reasoning across multiple retrievals.
 
 ### Linear Pipeline
 ```mermaid
@@ -40,8 +43,6 @@ graph TD
 ```
 
 The entire pipeline is deterministic except for the final LLM generation. Given the same query and the same indexed documents, you will always retrieve the same chunks.
-
----
 
 ## Pipeline Steps
 
@@ -91,35 +92,33 @@ Embeddings are stored in a Vector Database optimized for similarity search at sc
 **The Challenge**:
 Given a query vector $\mathbf{v}_q$, find the $k$ most similar vectors among potentially millions of stored vectors.
 
-TODO(Revisit this and move this to a separate note)/
+TODO(Revisit various ANN algorithms and move below comparision to a separate note)
 
 This is done using Approximate Nearest Neighbor (ANN) Algorithms.
 
-| Algorithm | How It Works | Trade-off |
-|:---|:---|:---|
-| **HNSW** (Hierarchical Navigable Small Worlds) | Graph-based; builds hierarchical layers for fast traversal | High recall, high memory |
-| **IVF** (Inverted File Index) | Clusters vectors; searches only relevant clusters | Faster indexing, lower recall |
-| **PQ** (Product Quantization) | Compresses vectors; trades accuracy for memory | Low memory, lower accuracy |
-| **ScaNN** | Hybrid of quantization + reordering | Google's approach; good accuracy/speed |
+| Algorithm                                      | How It Works                                               | Trade-off                              |
+| :--------------------------------------------- | :--------------------------------------------------------- | :------------------------------------- |
+| **HNSW** (Hierarchical Navigable Small Worlds) | Graph-based; builds hierarchical layers for fast traversal | High recall, high memory               |
+| **IVF** (Inverted File Index)                  | Clusters vectors; searches only relevant clusters          | Faster indexing, lower recall          |
+| **PQ** (Product Quantization)                  | Compresses vectors; trades accuracy for memory             | Low memory, lower accuracy             |
+| **ScaNN**                                      | Hybrid of quantization + reordering                        | Google's approach, good accuracy/speed |
 
 **Popular Vector Databases**:
 
-| Database | Type | Best For |
-|:---|:---|:---|
-| **FAISS** | Library (Meta) | Local prototyping, high performance |
-| **Pinecone** | Managed SaaS | Production, serverless, zero-ops |
-| **Weaviate** | Open-source | Hybrid search (vectors + keywords) |
-| **Qdrant** | Open-source | Filtering, payload storage |
-| **Chroma** | Open-source | Simple setup, good for small projects |
-| **pgvector** | Postgres extension | When you already use Postgres |
+| Database     | Type               | Best For                              |
+| :----------- | :----------------- | :------------------------------------ |
+| **FAISS**    | Library            | Local prototyping, high performance   |
+| **Pinecone** | Managed SaaS       | Production, serverless, zero-ops      |
+| **Weaviate** | Open-source        | Hybrid search (vectors + keywords)    |
+| **Qdrant**   | Open-source        | Filtering, payload storage            |
+| **Chroma**   | Open-source        | Simple setup, good for small projects |
+| **pgvector** | Postgres extension | When you already use Postgres         |
 
 **Metadata Storage**:
 Store metadata alongside vectors for filtering:
 This enables queries like: "Find similar chunks from documents published after 2023".
 
 See [[Vector Databases]] for detailed comparisons.
-
----
 
 ### Step 5: Retrieval
 When a user submits a query, we find the most relevant chunks.
@@ -133,7 +132,7 @@ When a user submits a query, we find the most relevant chunks.
 | Small     | Precise, less noise, cheaper | May miss relevant information                      |
 | Large     | Higher recall, more context  | More noise, "lost in the middle" effect, expensive |
 
-Ensure to Pre-filter by metadata before similarity search:
+Ensure to pre-filter by metadata **before** similarity search.
 
 ### Step 6: Generation
 The retrieved chunks are assembled into a prompt and sent to the LLM.
@@ -152,24 +151,23 @@ Question: {user_query}
 Answer:
 ```
 
-**Prompt Engineering Considerations**:
-- **Grounding instruction**: "Answer ONLY based on the context" reduces hallucination
-- **Uncertainty handling**: Tell the model what to do when context is insufficient
-- **Citation requests**: "Cite the source document for each claim" improves verifiability
+**Prompt Considerations**:
+- Grounding instruction - "Answer ONLY based on the context" reduces hallucination
+- Uncertainty handling: - Telling the model what to do when context is insufficient
+- Request citations - "Cite the source document for each claim" improves verifiability
 
 **Context Window Management**:
 If retrieved chunks exceed the context window:
-1. **Truncate**: Drop chunks beyond the limit (risks losing relevant info)
-2. **Summarize**: Compress chunks before insertion
-3. **Rerank and select**: Use a [[Re-ranking]] model to keep only the most relevant
+1. **Summarize**: Compress chunks before insertion
+2. **Rerank and select**: Use a [[Re-ranking]] model to keep only the most relevant
 
 ## Practical Application
 
-### When to Use Naive RAG
-- **Prototyping**: Quick proof-of-concept to validate RAG feasibility
+### Naive RAG is sufficient for
+- **Prototyping**: Quick POC to validate feasibility
 - **Simple Q&A**: Single-hop questions with answers contained in one chunk
 - **Well-structured data**: Clean documents with clear topic boundaries
-- **Limited budget**: When advanced techniques add unacceptable cost/latency
+- **Limited budget**
 
 ### When NOT to Use Naive RAG
 - **Multi-hop reasoning**: Questions requiring synthesis across multiple documents (use [[Multi-hop Reasoning]])
@@ -177,40 +175,20 @@ If retrieved chunks exceed the context window:
 - **Keyword-sensitive queries**: Specific IDs, codes, names (add [[Hybrid Search]] with BM25)
 - **Large-scale production**: When retrieval quality directly impacts business metrics
 
-### Common Pitfalls
+### Latency & Cost
 
-| Pitfall                     | Symptom                               | Solution                                       |
-| :-------------------------- | :------------------------------------ | :--------------------------------------------- |
-| **Wrong embedding model**   | Retrieval misses obvious matches      | Use domain-appropriate model; evaluate on MTEB |
-| **Chunks too small**        | Retrieved chunks lack context         | Increase chunk size or add overlap             |
-| **Chunks too large**        | Irrelevant content dilutes signal     | Decrease chunk size; use semantic chunking     |
-| **No metadata filtering**   | Retrieves outdated/irrelevant docs    | Add date, source, category metadata            |
-| **Mismatched embed models** | Query/doc vectors incompatible        | Always use same model for indexing & querying  |
-| **$k$ too low**             | Missing relevant information          | Increase $k$, but watch for noise              |
-| **$k$ too high**            | LLM confused by contradictory context | Decrease $k$ or add reranking                  |
-
-### Latency & Cost Considerations
-
-**Latency Breakdown**:
-
-| Stage | Time | Notes |
-|:---|:---|:---|
-| Query embedding | 50-200ms | API call to embedding service |
-| Vector search | 10-50ms | Depends on index size and algorithm |
-| LLM generation | 500-3000ms | Dominates total latency |
-| **Total** | ~1-4 seconds | |
+**Latency**:
+Query Embedding and Vector search are generally much faster compared to LLM generation in these pipelines.
 
 **Cost Drivers**:
-1. **Embedding API calls**: Per-token pricing (indexing is one-time; queries are ongoing)
-2. **Vector DB hosting**: Storage + queries (managed services charge per GB + per query)
+1. **Embedding API calls**: Per-token pricing
+2. **Vector DB hosting**: Storage + queries
 3. **LLM tokens**: Input (retrieved chunks) + output (generated answer)
 
-**Optimization**:
+**Potential Optimizations**:
 - Cache frequently-asked query embeddings
 - Compress/summarize chunks to reduce LLM input tokens
 - Batch embedding calls during indexing
-
----
 
 ## Comparisons
 
@@ -234,10 +212,10 @@ If retrieved chunks exceed the context window:
 - [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch)
 
 ### Tools & Libraries
-- [LangChain](https://github.com/langchain-ai/langchain) - Popular orchestration framework
-- [LlamaIndex](https://github.com/run-llama/llama_index) - Data framework for LLM applications
-- [FAISS](https://github.com/facebookresearch/faiss) - Efficient similarity search library
+- [LangChain](https://github.com/langchain-ai/langchain) - Orchestration framework
+- [LlamaIndex](https://github.com/run-llama/llama_index)
+- [FAISS](https://github.com/facebookresearch/faiss) - Efficient similarity search
 
 ---
 
-**Back to**: [[RAG (Retrieval Augmented Generation) Index]]
+**Back to**: [[RAG Index]]

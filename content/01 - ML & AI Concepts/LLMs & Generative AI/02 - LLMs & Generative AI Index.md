@@ -58,7 +58,7 @@
 - [x] [[LLM Safety Fundamentals#Red Teaming|Red Teaming]]
 
 ### RAG Systems
-- [ ] [[RAG (Retrieval Augmented Generation) Index]]
+- [ ] [[RAG Index]]
 - [ ] [[Vector Databases for RAG]]
 - [ ] [[Embedding Models]]
 - [ ] [[Retrieval Strategies]]

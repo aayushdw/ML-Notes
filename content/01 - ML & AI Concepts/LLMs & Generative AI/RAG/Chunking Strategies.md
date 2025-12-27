@@ -100,4 +100,4 @@ By embedding sentence #3 directly, you get a sharp vector match. By returning th
 *   **Article**: [5 Levels of Text Splitting](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb)
 *   **Visualizer**: [LangChain Chunk Visualizer](https://chunkviz.up.railway.app/)
  ---
-**Back to**: [[RAG (Retrieval Augmented Generation) Index]]
+**Back to**: [[RAG Index]]

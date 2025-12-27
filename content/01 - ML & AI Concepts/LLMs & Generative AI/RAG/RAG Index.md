@@ -1,5 +1,5 @@
 ## Overview
-RAG is a technique that connects a Large Language Model (LLM) to external, private data. Instead of relying solely on the model's internal training data , RAG allows the model to "browse" a curated database to find relevant information before generating an answer.
+RAG (Retrieval Augmented Generation) is a technique that connects a Large Language Model (LLM) to external / private data. Instead of relying solely on the model's internal training data , RAG allows the model to "browse" a curated database to find relevant information before generating an answer.
 
 ### Standard RAG Flow
 ```mermaid
@@ -17,16 +17,16 @@ graph TD
 ### Foundation
 *   [[Naive RAG Pipeline]]: The basic "Load -> Split -> Embed -> Store -> Retrieve" loop.
 *   Core Components:
-    *   **Orchestrator**: Chains (LangChain/LlamaIndex).
-    *   **Prompt Engineering**: The standard RAG prompt template ("Answer based strictly on the context below").
+    *   **Orchestrator**: LangChain / LlamaIndex
+    *   **Prompt Engineering**: Minimizes hallucinations.
 
 ### Phase 2: The Retrieval Engine (Data Engineering)
-*   [[Document Parsing]]: Extracting text from PDFs, tables, and images before chunking. Tools: Unstructured, LlamaParse, PyMuPDF, Docling.
+*   [[Document Parsing]](TODO): Extracting text from PDFs, tables, and images before chunking.
 *   [[Chunking Strategies]]:
-    *   **Fixed-size**: Simple character retrieval (e.g., 512 chars).
-    *   **Recursive**: Respecting document structure (paragraphs, headers).
+    *   **Fixed-size**: Simple character retrieval
+    *   **Recursive**: Respecting document structure.
     *   **Semantic**: Grouping by meaning.
-*   [[Embeddings]]: converting text to vectors ($v \in \mathbb{R}^d$). Understanding MTEB benchmarks.
+*   [[Embeddings]]: Converting text to embedding vectors. Understanding MTEB benchmarks.
 *   [[Vector Databases]]: Managing the index (HNSW, IVF-Flat).
 
 ### Phase 3: Advanced Retrieval
@@ -39,7 +39,7 @@ graph TD
 *   [[Contextual Retrieval]]: Prepending document/section context to chunks before embedding. Significantly improves retrieval accuracy. Related: Late Chunking.
 
 ### Phase 4: Generation & Synthesis
-*   **Context Window Management**: Handling "Lost in the Middle" and token limits.
+*   **Context Window Management**: Handling token limits.
 *   **[[Multi-hop Reasoning]]**: When a single retrieval isn't enough—chaining multiple retrievals to answer complex questions (e.g., "Who founded the company that built X?").
 *   **Citation & Attribution**: Techniques to force the LLM to reference specific chunk IDs and their sources.
 *   **Compression Techniques**: Using summaries or extractive compression to fit more relevant context into token limits.
@@ -73,14 +73,13 @@ graph TD
 
 ### Retrieval Problems
 - **Poor Chunk Quality**: Overlapping or fragmented chunks can confuse the retriever. Solution: Carefully tune chunking strategy.
-- **Semantic Drift**: Embedding model mismatches (querying with one model, indexing with another). Solution: Use consistent embeddings throughout.
 - **Context Mismatch**: Retrieved context doesn't contain the actual answer because of poor chunking or embedding quality. Measure with Context Relevance metrics.
-- **Noise Injection**: Including irrelevant context can mislead the LLM ("Lost in the Middle" effect). Solution: Use re-ranking or stricter filtering.
+- **Noise Injection**: Including irrelevant context can mislead the LLM ("Lost in the Middle" effect). Solution: Use [[Re-ranking]] or stricter filtering.
 
 ### Generation Problems
 - **Hallucination Outside Context**: LLM generates information not in retrieved documents. Mitigation: Better prompting ("answer only from context") + faithfulness evaluation.
 - **Conflicting Information**: Multiple retrieved documents contradict each other. Solution: Use LLM to detect conflicts or re-rank for consensus.
-- **Token Overflow**: Too much context → truncation → relevant info lost. Solution: Use compression, hierarchical retrieval, or summary-index pattern.
+- **Token Overflow**: Too much context → truncation → relevant info lost. Solution: Use compression, hierarchical retrieval.
 
 ### Scalability & Performance
 - **Latency**: Retrieval adds overhead to inference. Solution: Caching, pre-computation, or Approximate Nearest Neighbor (ANN) optimization.
@@ -91,15 +90,14 @@ graph TD
 - **Data Access Control**: Ensuring users only retrieve documents they're authorized to see. Solution: Metadata filtering with user permissions, document-level ACLs.
 - **PII Leakage**: Sensitive information in retrieved chunks may be exposed unintentionally. Solution: PII detection/redaction before indexing.
 
-## Use Cases Where RAG Excels
+## Where RAG Excels
 - **Customer Support**: Searching knowledge base / FAQs for relevant answers.
-- **Document Q&A**: Querying long contracts, reports, or manuals without losing details.
-- **Fact-Based Retrieval**: News summarization, medical records, legal research.
-- **Proprietary Knowledge**: Internal company docs, customer data, confidential information.
+- **Document Q&A**: Querying long documents without losing details.
+- **Fact-Based Retrieval**
 - **Real-time Information**: Combining current web search results with reasoning.
 
-## Use Cases Where RAG Struggles
-- **Creative Tasks**: Requires creativity beyond retrieval + generation (e.g., brainstorming, writing novels).
+## Where RAG Struggles
+- **Creative Tasks**: Requires creativity beyond retrieval + generation (e.g. writing novels).
 - **Complex Reasoning**: Multi-step logic that isn't explicitly stated in documents.
 - **Conversational Memory**: Maintaining state across turns (use conversation history separately).
 
@@ -116,9 +114,9 @@ graph TD
 ## Production Considerations
 
 ### Observability & Monitoring
-- **Tracing**: Track the full pipeline (query → retrieval → generation) for debugging. Tools: LangSmith, Phoenix, Langfuse.
+- **Tracing**: Track the full pipeline (query → retrieval → generation) for debugging.
 - **Metrics to Monitor**: Latency (p50/p95/p99), retrieval hit rate, token usage, user feedback signals.
-- **Logging**: Store queries, retrieved chunks, and responses for offline analysis and evaluation.
+- **Logging**: Store queries, retrieved chunks, and responses for offline analysis.
 
 ### Cost Optimization
 - **Semantic Caching**: Cache responses for semantically similar queries to reduce redundant LLM calls.
@@ -128,12 +126,11 @@ graph TD
 ### Deployment Patterns
 - **Async Indexing**: Decouple document ingestion from retrieval to avoid blocking.
 - **Index Versioning**: Maintain versioned indices for rollback and A/B testing.
-- **Fallback Strategies**: Graceful degradation when retrieval fails (e.g., answer from LLM knowledge with disclaimer).
 
 ## Resources
 *  [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - The original RAG paper.
 *  [Pinecone: Generative AI with RAG](https://www.pinecone.io/learn/retrieval-augmented-generation/)
-*  [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch) - Excellent video series for the learning path.
+*  [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch)
 *  [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172)
-*  [Anthropic: Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval) - Prepending context to chunks before embedding.
+*  [Anthropic: Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 
