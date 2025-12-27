@@ -1,10 +1,5 @@
 # Core Fundamentals
 
-## Overview
-Mastering the foundational concepts of Machine Learning and Deep Learning. These are the building blocks that underpin all modern AI systems.
-
----
-
 ## Machine Learning Basics
 
 ### Learning Paradigms
@@ -23,7 +18,7 @@ Mastering the foundational concepts of Machine Learning and Deep Learning. These
 - [ ] [[Bias-Variance Tradeoff]]
 
 ### Feature Engineering
-- [ ] [[Feature Engineering Principles]]
+- [x] [[Feature Engineering Principles]]
 - [ ] [[Feature Selection Methods]]
 - [ ] [[Feature Scaling and Normalization]]
 - [ ] [[Dimensionality Reduction]]

@@ -45,7 +45,6 @@ graph TD
 *   **Compression Techniques**: Using summaries or extractive compression to fit more relevant context into token limits.
 
 ### Phase 5: Evaluation
-*How do you know it works?*
 *   [[RAG Evaluation Metrics]]:
     *   **Context Relevance**: Is the retrieved text actually useful?
     *   **Groundedness/Faithfulness**: Is the answer derived *only* from the context?
