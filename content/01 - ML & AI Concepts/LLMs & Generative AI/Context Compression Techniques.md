@@ -13,7 +13,7 @@ Consider a [[Naive RAG Pipeline|RAG pipeline]] that retrieves 10 documents of 50
 
 ## The Compression Spectrum
 
-![[Context Compression Techniques 2025-12-30 14.58.36.excalidraw]]
+![[Context Compression Techniques 2025-12-30 14.58.36.excalidraw.svg]]
 
 ### The Information Bottleneck Intuition
 
