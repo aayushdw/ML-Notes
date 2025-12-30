@@ -311,7 +311,7 @@ See [[LLM Safety Fundamentals#Red Teaming]] for detailed methodology.
 - [[Prompt Engineering Fundamentals]]
 - [[LLM Agents Fundamentals]]
 - [[Tool Use and Function Calling]]
-- [[RAG Index]] (indirect injection vector)
+- [[01 - RAG Index]] (indirect injection vector)
 
 ---
 

@@ -1,17 +1,11 @@
 ## Overview
 The context window is the maximum amount of text that an LLM can "see" at once, including both input and output.
 
-### What Consumes Context Window?
+## What Consumes Context Window?
 
 Everything that goes into the model counts toward the limit:
 
-1. System Instructions (often invisible to users)
-```
-"You are Claude, created by Anthropic..."
-[Entire system prompt with behavior guidelines]
-~ 1,000-3,000 tokens typically
-```
-
+1. System Instructions (often invisible to users) (1,000-3,000 tokens typically)
 2. Conversation History: both user messages and assistant responses
 3. Current Message
 4. Uploaded Documents
@@ -35,7 +29,6 @@ Information in the **middle** of a very long context is often overlooked or forg
 - When conversations get long, summarize earlier exchanges.
 - Summarize at conversations exceeding 30-40% of context window.
 ### Chunking Large Documents - RAG (TODO)
-
 
 ---
 **Back to**: [[ML & AI Index]]

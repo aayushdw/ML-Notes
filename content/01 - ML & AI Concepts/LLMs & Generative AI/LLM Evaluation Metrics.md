@@ -209,7 +209,7 @@ Compares two outputs directly.
 
 ## RAG-Specific Evaluation (RAGAS Framework)
 
-[[RAG Index]] systems require specialized metrics that evaluate both retrieval and generation.
+[[01 - RAG Index]] systems require specialized metrics that evaluate both retrieval and generation.
 
 ### The RAG Triad
 

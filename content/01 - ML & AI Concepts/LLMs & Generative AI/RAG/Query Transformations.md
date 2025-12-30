@@ -8,7 +8,7 @@
 
 ### Why Query Transformations Matter
 
-From the [[RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
+From the [[01 - RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
 - **Vocabulary Mismatch**: User asks "How do I fix my car's engine?" but documents use "automotive mechanics" or "mechanical repair"
 - **Implicit Intent**: "I'm planning a trip" could need information on flights, hotels, travel guides, weather, visas, etc.
 - **Context Loss**: Short queries like "Pricing" lack context about what product, service, or use case is being asked about
@@ -473,7 +473,7 @@ graph LR
 ```
 
 ### Connection to Advanced Retrieval Phase
-As noted in the [[RAG Index#Phase 3 Advanced Retrieval|RAG Overview]], query transformations are part of improving signal-to-noise ratio:
+As noted in the [[01 - RAG Index#Phase 3 Advanced Retrieval|RAG Overview]], query transformations are part of improving signal-to-noise ratio:
 
 - **Before**: Raw user query → Embedding → Retrieval
   - Problem: Question syntax doesn't match document syntax
@@ -591,7 +591,7 @@ def adaptive_transform(query):
 ---
 
 ## See Also
-- [[RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval Phase]] - Where query transformations fit
+- [[01 - RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval Phase]] - Where query transformations fit
 - [[Hybrid Search]] - Often used with query transformations
 - [[Re-ranking]] - Post-retrieval refinement (complements query transformation)
 - [[RAG Evaluation Metrics]] - Measuring retrieval quality after transformations

@@ -218,4 +218,4 @@ Query Embedding and Vector search are generally much faster compared to LLM gene
 
 ---
 
-**Back to**: [[RAG Index]]
+**Back to**: [[01 - RAG Index]]

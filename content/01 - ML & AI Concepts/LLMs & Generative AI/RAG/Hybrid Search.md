@@ -635,4 +635,4 @@ Before building Hybrid Search, ensure you have:
 ## See Also
 - [[BM25]] - Detailed explanation of BM25 scoring formula
 
-**Back to**: [[RAG Index]]
+**Back to**: [[01 - RAG Index]]
