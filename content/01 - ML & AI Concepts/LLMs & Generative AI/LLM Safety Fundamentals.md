@@ -1,8 +1,8 @@
 ## Overview
-LLM Safety refers to the broad set of techniques, research, and practices aimed at ensuring large language models behave in ways that are helpful, honest, and harmless. This is not just about filtering bad words—it encompasses the entire pipeline from pre-training data curation to post-deployment monitoring. Safety sits at the intersection of [[Fine-Tuning Overview]], [[Reinforcement Learning]], and adversarial machine learning.
+LLM Safety refers to the broad set of techniques, research, and practices aimed at ensuring large language models behave in ways that are helpful, honest, and harmless. This is not just about filtering bad words, it encompasses the entire pipeline from pre-training data curation to post-deployment monitoring. Safety sits at the intersection of [[Fine-Tuning Overview]], [[Reinforcement Learning]], and adversarial machine learning.
 
 ### The Alignment Problem
-The fundamental challenge is that LLMs learn to predict the next token—they do not inherently "understand" human values. An unaligned model will produce harmful content if that content appeared in its training data.
+The fundamental challenge is that LLMs learn to predict the next token, they do not inherently "understand" human values. An unaligned model will produce harmful content if that content appeared in its training data.
 
 ### Three Pillars of LLM Safety
 
@@ -61,7 +61,7 @@ Where:
 - $D_{KL}(\pi_\theta \| \pi_{ref})$ is the KL divergence from the reference (original SFT) policy
 - $\beta$ controls the strength of the KL penalty
 
-**Why the KL penalty?** Without it, the model would "reward hack"—finding degenerate outputs that score high on the reward model but are actually nonsense. The KL term keeps the model close to its original behavior.
+**Why the KL penalty?** Without it, the model would "reward hack", finding degenerate outputs that score high on the reward model but are actually nonsense. The KL term keeps the model close to its original behavior.
 
 ### Direct Preference Optimization (DPO)
 

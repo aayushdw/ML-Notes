@@ -1,7 +1,7 @@
 # Support Vector Machines
 
 ## Overview
-Support Vector Machines find the optimal hyperplane that separates classes with the maximum margin. The "support vectors" are the data points closest to the decision boundary—they're the critical examples that define where the boundary goes.
+Support Vector Machines find the optimal hyperplane that separates classes with the maximum margin. The "support vectors" are the data points closest to the decision boundary, they're the critical examples that define where the boundary goes.
 
 ## Key Ideas
 - **Maximum Margin**: Among all possible separating hyperplanes, choose the one with the widest margin between classes

@@ -255,7 +255,7 @@ def hybrid_rerank(query, candidates, cross_encoder, bm25, metadata_filters):
 
 ## Integration with the RAG Pipeline
 
-Re-ranking appears at a critical juncture—after initial retrieval but before LLM generation:
+Re-ranking appears at a critical juncture, after initial retrieval but before LLM generation:
 
 ```
 ┌─────────────────────────────────────────────────────┐

@@ -4,7 +4,7 @@
 
 **Query Transformations** are preprocessing and expansion techniques applied to user queries *before* retrieval to improve the relevance of retrieved documents. Instead of using the user's raw question as-is, these techniques reframe, expand, or decompose the query to capture different angles, semantic variations, and implicit information.
 
-**Core Insight**: A user's original query is often imperfect—it may be ambiguous, lack context, use different terminology than the indexed documents, or require multiple pieces of information to answer. Query transformations bridge this gap by generating alternative representations of the same intent.
+**Core Insight**: A user's original query is often imperfect, it may be ambiguous, lack context, use different terminology than the indexed documents, or require multiple pieces of information to answer. Query transformations bridge this gap by generating alternative representations of the same intent.
 
 ### Why Query Transformations Matter
 
@@ -41,25 +41,8 @@ HyDE Step 3 - Retrieve documents similar to the hypothetical answer
 → Now you'll find documents about remote work benefits, employee testimonials, case studies, etc.
 ```
 
-**Implementation**:
-```python
-# Pseudocode
-def hyde_retrieval(user_query, llm, embedding_model, vector_store):
-    # Step 1: Generate hypothetical document
-    hypothetical_doc = llm.generate(
-        prompt=f"Write a detailed answer to: {user_query}"
-    )
-
-    # Step 2: Embed hypothetical document
-    query_embedding = embedding_model.embed(hypothetical_doc)
-
-    # Step 3: Retrieve using the embedding
-    results = vector_store.similarity_search(query_embedding, top_k=5)
-    return results
-```
-
 **Strengths**:
-- Simple and elegant—leverages LLM's ability to write natural documents
+- Simple and elegant, leverages LLM's ability to write natural documents
 - Works well for factual, answer-seeking questions
 - Single forward pass through embedding model
 

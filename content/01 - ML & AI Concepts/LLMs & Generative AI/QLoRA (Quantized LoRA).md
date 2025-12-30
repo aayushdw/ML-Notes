@@ -103,14 +103,14 @@ NF4 is effectively a mathematically generated Lookup Table.
 - The **Quantization Constant** is still used to stretch or shrink that Bell Curve to fit the specific block's magnitude.
 
 ### Paged Optimizers
-This is a failsafe feature. Occasionally during training, you get a "gradient spike"—a complex batch causes memory usage to explode momentarily. Usually, this crashes your run (OOM Error).
+This is a failsafe feature. Occasionally during training, you get a "gradient spike", a complex batch causes memory usage to explode momentarily. Usually, this crashes your run (OOM Error).
 
 QLoRA utilizes **Unified Memory** (a feature of NVIDIA GPUs).
 - If VRAM fills up, it automatically "pages" the Optimizer States (the training memory) to your computer's **System RAM (CPU RAM)**.
 - It's slower, but it prevents the crash. Once the spike passes, it moves data back to VRAM.
 
 #### What causes CUDA OOM?
-It is rarely the model itself that kills you—it is the **Optimizer**.
+It is rarely the model itself that kills you, it is the **Optimizer**.
 
 When you train a model, you are not just storing the weights ($W$). You are also storing the "notes" the optimizer keeps to decide how to update those weights.
 
@@ -122,8 +122,8 @@ Most LLM training uses the **AdamW** optimizer. AdamW is smart, but memory-hungr
 **The Math of the Memory Footprint:**
 - **Model Weight:** 4-bit (0.5 bytes).
 - **Gradient:** Bfloat16 (2 bytes).
-- **Optimizer State 1 ($m$):** FP32 (4 bytes) — _High precision required here._
-- **Optimizer State 2 ($v$):** FP32 (4 bytes) — _High precision required here._
+- **Optimizer State 1 ($m$):** FP32 (4 bytes) ,  _High precision required here._
+- **Optimizer State 2 ($v$):** FP32 (4 bytes) , _High precision required here._
 
 The "metadata" for the optimizer (8 bytes per parameter) is 16 times larger than the model weight itself (0.5 bytes per parameter)!
 

@@ -26,7 +26,7 @@
 
 ### Evaluation Metrics
 - [x] [[Regression Metrics]]
-- [x] [[Precision, Recall, and F1-Score]]
+- [x] [[Precision, Recall and F1 Score]]
 - [x] [[ROC Curves and AUC]]
 
 ---

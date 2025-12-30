@@ -7,7 +7,7 @@ Fine-tuning is effectively the bridge between a "generic knowledgeable" model (l
 3. **RLHF/DPO (Preference Alignment):** (Optional) We further refine the model based on human preferences (ranking which answer is better).
 
 ## How SFT is Achieved
-Technically, SFT uses the same underlying mechanism as pre-training—**Next Token Prediction**—but with a crucial twist regarding the data and the loss function.
+Technically, SFT uses the same underlying mechanism as pre-training, **Next Token Prediction**, but with a crucial twist regarding the data and the loss function.
 ### The Dataset Structure
 In pre-training, data is raw text. In SFT, data is structured. A typical SFT entry looks like:
 - **Prompt:** "Explain quantum entanglement like I'm five."

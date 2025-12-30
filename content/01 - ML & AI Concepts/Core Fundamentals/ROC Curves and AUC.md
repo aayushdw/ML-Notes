@@ -1,6 +1,6 @@
 ## What is ROC?
 **ROC (Receiver Operating Characteristic)** visualizes binary classifier performance across ALL possible thresholds by plotting:
-- **Y-axis**: TPR (True Positive Rate) = TP / (TP + FN) — also called Sensitivity/Recall
+- **Y-axis**: TPR (True Positive Rate) = TP / (TP + FN) ( also called Sensitivity / Recall )
 - **X-axis**: FPR (False Positive Rate) = FP / (FP + TN)
 
 ## What is AUC?

@@ -40,7 +40,7 @@ graph TD
 
 ### Phase 4: Generation & Synthesis
 *   **Context Window Management**: Handling token limits.
-*   **[[Multi-hop Reasoning]]**: When a single retrieval isn't enough—chaining multiple retrievals to answer complex questions (e.g., "Who founded the company that built X?").
+*   **[[Multi-hop Reasoning]]**: When a single retrieval isn't enough, chaining multiple retrievals to answer complex questions (e.g., "Who founded the company that built X?").
 *   **Citation & Attribution**: Techniques to force the LLM to reference specific chunk IDs and their sources.
 *   **Compression Techniques**: Using summaries or extractive compression to fit more relevant context into token limits.
 

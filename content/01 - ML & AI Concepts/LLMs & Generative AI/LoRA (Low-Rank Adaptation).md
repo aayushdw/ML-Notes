@@ -125,7 +125,7 @@ The Rank determines the **capacity** of your fine-tuning. It controls how "compl
 
 - **High Rank ($r = 64, 128, 256$):**
     - **Use Case:** Complex reasoning, teaching the model _new_ knowledge it didn't have before, or heavy logic tasks (e.g., coding, math).
-    - **Why:** If you are trying to teach the model details about a specific biology textbook it has never seen, the update is not "low rank"—it involves complex new connections. You need a larger matrix to store this information.
+    - **Why:** If you are trying to teach the model details about a specific biology textbook it has never seen, the update is not "low rank", it involves complex new connections. You need a larger matrix to store this information.
     - **Note:** There are diminishing returns. Going from $r=8$ to $r=64$ often boosts performance. Going from $r=64$ to $r=256$ often yields barely any improvement but triples the training cost.
 
 
