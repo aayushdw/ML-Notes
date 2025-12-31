@@ -29,6 +29,22 @@
 - [x] [[Precision, Recall and F1 Score]]
 - [x] [[ROC Curves and AUC]]
 
+### Classical ML Algorithms
+- [ ] [[Linear Regression]]
+- [ ] [[Logistic Regression]]
+- [ ] [[Decision Trees]]
+- [ ] [[Random Forests]]
+- [ ] [[Gradient Boosting]] (XGBoost, LightGBM, CatBoost)
+- [ ] [[Support Vector Machines (SVM)]]
+- [ ] [[K-Nearest Neighbors (KNN)]]
+- [ ] [[Naive Bayes]]
+- [ ] [[Ensemble Methods]]
+
+### Clustering
+- [ ] [[K-Means Clustering]]
+- [ ] [[DBSCAN]]
+- [ ] [[Hierarchical Clustering]]
+
 ---
 
 ## Deep Learning Architecture

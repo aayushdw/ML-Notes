@@ -16,18 +16,7 @@ Support Vector Machines find the optimal hyperplane that separates classes with 
 
 Imagine two groups of points (red and blue). Many lines could separate them, but SVM finds the line with the widest "street" between the groups. The points touching the edges of this street are the support vectors.
 
-```
-     blue                          
-  •     •     ║               
-    •       • ║    margin        
-  •     •     ║               
-══════════════╬══════════════  ← decision boundary
-  ○     ○     ║               
-    ○       ○ ║    margin        
-  ○     ○     ║               
-     red
-```
-
+![[Support Vector Machines 2025-12-30 16.22.26.excalidraw.svg]]
 ## Mathematical Foundation
 
 ### Linear SVM (Separable Case)
