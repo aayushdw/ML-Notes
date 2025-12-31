@@ -6,17 +6,7 @@ The fundamental challenge is that LLMs learn to predict the next token, they do 
 
 ### Three Pillars of LLM Safety
 
-```
-                    LLM Safety
-                        │
-        ┌───────────────┼───────────────┐
-        │               │               │
-   Alignment      Robustness       Monitoring
-   (Training)     (Attacks)       (Deployment)
-        │               │               │
-     RLHF, CAI      Red Teaming     Guardrails
-     DPO, SFT      Jailbreaks       Logging
-```
+![[LLM Safety Fundamentals 2025-12-30 17.58.38.excalidraw.svg]]
 
 1. Alignment: Training the model to follow human preferences and refuse harmful requests.
 2. Robustness: Ensuring the model maintains safe behavior under adversarial attack (see [[Prompt Injection and Safety]]).
@@ -130,27 +120,7 @@ Alignment training is necessary but not sufficient. Production systems need runt
 
 ### Layered Defense Architecture
 
-```
-User Input
-    │
-    ▼
-┌─────────────────┐
-│  Input Filter   │ ← Blocklist, Classifier
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   Main LLM      │ ← Aligned via RLHF/DPO
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Output Filter  │ ← Toxicity, PII Scan
-└────────┬────────┘
-         │
-         ▼
-    User Output
-```
+![[LLM Safety Fundamentals 2025-12-30 17.52.44.excalidraw.svg]]
 
 ## Practical Considerations
 

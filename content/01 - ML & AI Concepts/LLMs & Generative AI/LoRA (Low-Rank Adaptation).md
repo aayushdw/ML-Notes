@@ -1,11 +1,13 @@
 ## Overview
 Most popular PEFT technique. (See [[Fine-Tuning Overview]])
 - **Concept:** Instead of updating a massive weight matrix $W$, LoRA injects two small matrices, $A$ and $B$, next to it.
-- **The Math:** The new output is $h = W_0x + BAx$.
-    - $W_0$ is frozen (the original model).
-    - $A$ and $B$ are trainable "adapter" matrices.
+	- The new output is $h = W_0x + BAx$.
+	    - $W_0$ is frozen (the original model).
+	    - $A$ and $B$ are trainable "adapter" matrices.
 
 - **Result:** You can fine-tune a 70B model on a single consumer GPU because you are only training <1% of the parameters.
+
+![[LoRA (Low-Rank Adaptation) 2025-12-30 22.06.21.excalidraw.svg]]
 
 ## Intuition
 
@@ -132,7 +134,7 @@ The Rank determines the **capacity** of your fine-tuning. It controls how "compl
 ### How to choose Alpha ($\alpha$)
 
 Empirically, using a higher Alpha often stabilizes training for LoRA. It acts like a momentum booster.
-**($\alpha = 2r$) (Most Popular)
+**($\alpha = 2r$)
 
 It is critical to understand that **Alpha and Learning Rate (LR) are mathematically coupled.**
 If you double your Alpha, you are mathematically doubling the magnitude of your update. This is roughly equivalent to doubling your Learning Rate.
@@ -143,8 +145,8 @@ Therefore, if you find a configuration that works:
 And you decide to change Alpha to 32:
 - $r=16, \alpha=32$ ... you should probably halve your LR to $1e^{-4}$ to keep the training dynamics similar.
 
-**Pro Tip:** To avoid headaches, practitioners usually **fix Alpha** (e.g., always at 16 or 32) and then strictly tune the Learning Rate. Do not try to tune both simultaneously; you will chase your tail.
-### Inference: The "Merge" Trick
+Usually **fix Alpha** (e.g., always at 16 or 32) and then strictly tune the Learning Rate. Do not try to tune both simultaneously; you will chase your tail.
+### Merge for Inference
 One of the best features of LoRA is that it introduces **zero latency** during inference (production).
 Because $BA$ has the same dimensions as $W_0$, once you are done training, you can simply perform matrix addition to permanently fuse the weights:
 
@@ -178,8 +180,6 @@ Imagine the token "Bank" is trying to figure out if it means "River Bank" or "Fi
 ---
 
 ### Department B: The MLP / Feed-Forward (Gate, Up, Down)
-_Function: Processing the information and reasoning._
-
 After the Attention step, the token "Bank" knows it refers to a river. Now it needs to _think_ about that. It enters the MLP (Multi-Layer Perceptron). In Llama-style models, this is a "SwiGLU" architecture, which uses three specific matrices:
 - **`up_proj` (Up Projection):**
     - Takes the input (e.g., dimension 4096) and **explodes** it into a much higher dimension (e.g., 14,336). This is where the model "unpacks" the concept to look at fine-grained details.

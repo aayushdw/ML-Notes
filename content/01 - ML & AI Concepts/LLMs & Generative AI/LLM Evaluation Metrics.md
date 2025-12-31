@@ -166,17 +166,7 @@ Where $P(x_i|x_{<i})$ is the probability of token $x_i$ given all previous token
 Uses a powerful LLM to evaluate another LLM's outputs. This has become the standard for subjective evaluation.
 
 ### How It Works
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant ModelA as Model Under Test
-    participant Judge as Judge LLM (GPT-4)
-
-    User->>ModelA: Question/Prompt
-    ModelA->>Judge: Response + Evaluation Criteria
-    Judge->>User: Score + Reasoning
-```
+![[LLM Evaluation Metrics 2025-12-30 22.16.06.excalidraw.svg]]
 
 ### G-Eval Framework
 
@@ -330,20 +320,7 @@ Where:
 ## Practical Evaluation Framework
 
 ### The Evaluation Stack
-
-```
-┌─────────────────────────────────────────┐
-│         Human Evaluation (Gold)         │ ← Expensive, slow, gold standard
-├─────────────────────────────────────────┤
-│      LLM-as-Judge (GPT-4, Claude)       │ ← Scalable, subjective tasks
-├─────────────────────────────────────────┤
-│   Benchmark Suites (MMLU, HumanEval)    │ ← Standardized comparison
-├─────────────────────────────────────────┤
-│    Automatic Metrics (BLEU, ROUGE)      │ ← Fast, reference-based
-├─────────────────────────────────────────┤
-│     Unit Tests / Assertions             │ ← Functional correctness
-└─────────────────────────────────────────┘
-```
+![[LLM Evaluation Metrics 2025-12-30 22.12.25.excalidraw.svg]]
 
 ### Choosing the Right Metrics
 

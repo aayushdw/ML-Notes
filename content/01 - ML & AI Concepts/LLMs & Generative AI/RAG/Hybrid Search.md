@@ -41,25 +41,8 @@ Combine both strengths:
 
 ## How Hybrid Search Works (High-Level Flow)
 
-```
-Query: "How do I fix a broken printer?"
-       ↓
-    ┌──┴──┐
-    ↓     ↓
-[BM25]  [Dense]
-    ↓     ↓
-List 1  List 2       (Two independent ranked lists)
-    ↓     ↓
-    └──┬──┘
-       ↓
-   [Fusion]          (RRF or Weighted Sum)
-       ↓
-   [Final Ranked List]  (Deduplicated, combined ranking)
-       ↓
-  Return Top-K Results
-```
+![[Hybrid Search 2025-12-30 18.09.20.excalidraw.svg]]
 
-**Key insight**: BM25 and Dense retrieve different documents (partially overlapping). Fusion combines the evidence.
 
 ## The Two Pillars
 

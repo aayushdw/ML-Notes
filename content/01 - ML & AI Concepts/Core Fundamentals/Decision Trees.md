@@ -219,8 +219,6 @@ $$R_\alpha(t) \leq R_\alpha(T_t)$$
 - **Prediction**: $O(\log n)$ per sample (tree depth)
 - **Memory**: $O(\text{nodes})$, typically much smaller than dataset
 
----
-
 ## Feature Importance
 
 Decision trees provide built-in feature importance scores based on the total impurity decrease:
@@ -230,8 +228,6 @@ $$\text{Importance}(f) = \sum_{t: \text{split on } f} \frac{|t|}{|T|} \cdot \tex
 where the sum is over all nodes that split on feature $f$, and $|T|$ is the total number of training samples.
 
 **Caveat**: This can be biased toward high-cardinality features. Consider permutation importance for more reliable estimates.
-
----
 
 ## Comparisons
 

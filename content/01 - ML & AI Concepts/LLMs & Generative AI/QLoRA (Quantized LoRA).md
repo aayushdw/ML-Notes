@@ -1,6 +1,5 @@
-# QLoRA (Quantized LoRA)
 
-## Overview
+# Overview
 **QLoRA (Quantized Low-Rank Adaptation)** is the technique that democratized LLM fine-tuning. Before QLoRA (May 2023), fine-tuning a 70B model required an industrial server cluster. With QLoRA, you can do it on a dual-GPU workstation or even a high-end gaming PC.
 
 QLoRA tackles the biggest memory hog: the frozen base model. It compresses the base model from **16-bit** down to **4-bit**. reducing the memory taken by 75%
@@ -9,7 +8,7 @@ This is called **4-bit Quantization**.
 If it's so simple, why didn't we just do this before?
 The answer is that standard 4-bit quantization destroys model performance. If you dumb down the model too much, it becomes "brain damaged" and can't facilitate the fine-tuning process. It required key innovations to work properly.
 
-## Key Innovations to make QLoRA work
+# Key Innovations to make QLoRA work
 ### 4-bit NormalFloat (NF4)
 Standard quantization (Integer Quantization) assumes data is spread out evenly (Uniform distribution).
 - It chops the range of numbers into equal-sized buckets.
@@ -21,6 +20,9 @@ However, Neural Network weights generally follow a **Normal (Gaussian) Distribut
 - Allocates **fewer buckets** at the extremes.
 
 **Result:** NF4 captures the "resolution" of the model significantly better than standard 4-bit Integers, resulting in almost zero performance degradation compared to 16-bit.
+
+![[QLoRA (Quantized LoRA) 2025-12-30 22.35.06.excalidraw.svg]]
+
 
 ### Double Quantization
 To decompress the 4-bit weights back to 16-bit for math, the model needs "Quantization Constants" (scaling factors).
@@ -139,7 +141,7 @@ If the peak of that rollercoaster goes even 1MB over your GPU's limit, the run c
 Moving data back and forth takes time. 
 But since QLoRA is usually compute-bound (the math takes a long time), the slight delay of copying data over PCIe is often masked by the computation time. You barely notice the slowdown, but you gain the ability to fine-tune significantly larger batches or models.
 
-## Computation Flow
+# Computation Flow
 This is the most critical concept to grasp: **The computation is NOT done in 4-bit.**
 You cannot perform stable Gradient Descent in 4-bit. It's too jagged.
 
