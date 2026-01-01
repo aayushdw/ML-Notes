@@ -1,5 +1,11 @@
 import FlexSearch, { DefaultDocumentSearchResults } from "flexsearch"
-import { ContentDetails } from "../../plugins/emitters/contentIndex"
+import { ContentDetails, ContentIndex } from "../../plugins/emitters/contentIndex"
+
+declare global {
+  interface Window {
+    fetchData: Promise<ContentIndex>
+  }
+}
 import { registerEscapeHandler, removeAllChildren } from "./util"
 import { FullSlug, normalizeRelativeURLs, resolveRelative } from "../../util/path"
 
@@ -141,9 +147,8 @@ function highlight(searchTerm: string, text: string, trim?: boolean) {
     })
     .join(" ")
 
-  return `${startIndex === 0 ? "" : "..."}${slice}${
-    endIndex === tokenizedText.length - 1 ? "" : "..."
-  }`
+  return `${startIndex === 0 ? "" : "..."}${slice}${endIndex === tokenizedText.length - 1 ? "" : "..."
+    }`
 }
 
 function highlightHTML(searchTerm: string, el: HTMLElement) {
@@ -532,7 +537,7 @@ async function fillDocument(data: ContentIndex) {
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   const currentSlug = e.detail.url
-  const data = await fetchData
+  const data = await window.fetchData
   const searchElement = document.getElementsByClassName("search")
   for (const element of searchElement) {
     await setupSearch(element, currentSlug, data)
