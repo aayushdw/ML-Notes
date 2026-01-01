@@ -6,7 +6,7 @@ QLoRA tackles the biggest memory hog: the frozen base model. It compresses the b
 This is called **4-bit Quantization**.
 
 If it's so simple, why didn't we just do this before?
-The answer is that standard 4-bit quantization destroys model performance. If you dumb down the model too much, it becomes "brain damaged" and can't facilitate the fine-tuning process. It required key innovations to work properly.
+The answer is that standard 4-bit quantization destroys model performance. If you dumb down the model too much, it becomes "brain damaged" and can't facilitate the fine-tuning process.
 
 # Key Innovations to make QLoRA work
 ### 4-bit NormalFloat (NF4)
@@ -33,7 +33,7 @@ To decompress the 4-bit weights back to 16-bit for math, the model needs "Quanti
 **Double Quantization** creates a second layer: it **quantizes the quantization constants**.
 - It compresses the 32-bit constants into 8-bit.
 
-**Result:** This saves an extra ~0.5 GB of VRAM on a 65B model without hurting performance.
+**Result:** This saves an extra ~0.5 GB of VRAM on a 65B model without hurting performance significantly.
 
 #### Quantization
 ##### How to squeeze 64 16-bit numbers into 4-bit integers using single constant? (Simplified Example)
@@ -44,7 +44,7 @@ You want to store them as **4-bit Integers**.
 
 We need to "shrink" the real numbers so they fit into the integer box.
 
-Let's look at a simplified "Block" of 3 weights to make the math easy.
+Let's look at a simplified "Block" of 3 weights.
 [0.1, 2.5, -1.5]
 
 **Step A: Find the Absolute Max**
