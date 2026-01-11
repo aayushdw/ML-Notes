@@ -35,7 +35,7 @@ Leverages the structure of known file types.
 ### 4. Semantic Chunking
 Uses the *meaning* of the text to decide where to split, rather than arbitrary characters. It attempts to keep topically related sentences in the same chunk.
 
-#### The Algorithm
+#### Algorithm
 1.  **Sentence Splitting**: Break the document into individual sentences.
 2.  **Embedding**: Calculate the vector embedding for every sentence ($S_1, S_2, ... S_n$).
 3.  **Similarity Check**: exact sequential comparison. Calculate cosine similarity between $S_i$ and $S_{i+1}$.
@@ -44,21 +44,22 @@ Uses the *meaning* of the text to decide where to split, rather than arbitrary c
     *   Identify "valleys" (sudden drops in similarity) which represent a change in topic.
     *   Split the chunk at these valleys.
 
-#### Pros & Cons
-*   **Pros**: High coherence. No "mid-sentence" cuts. Excellent for messy transcripts.
-*   **Cons**:
-    *   **Latency**: Requires $N$ embedding calls before you even start indexing.
-    *   **Noise**: Single outlier sentences can trigger premature splits.
-*   **Production Readiness**: **Medium**. Use for offline indexing pipelines where speed is not critical.
+#### Pros
+* High coherence.
+* No "mid-sentence" cuts. Excellent for messy transcripts.
+#### Cons
+- **Latency**: Requires $N$ embedding calls before you even start indexing.
+* **Noise**: Single outlier sentences can trigger premature splits.
+* **Production Readiness**: Use for offline indexing pipelines where speed is not critical.
 
 ### 5. Parent Document Retrieval (Small-to-Big)
-The Gold Standard for production. It decouples the **Indexing Unit** (what you search) from the **Retrieval Unit** (what you send to the LLM).
+Gold Standard for production. It decouples the **Indexing Unit** (what you search) from the **Retrieval Unit** (what you send to the LLM).
 
 #### Architecture
 *   **Vector Store**: Contains small, dense chunks (e.g., single sentences). Optimized for high-precision search.
 *   **Doc Store (Key-Value)**: Contains the original larger documents or windows.
 
-#### Two Main Flavors
+#### Main Flavors
 1.  **Full Parent Retrieval**:
     *   You stick a "Parent ID" on every small chunk.
     *   When a small chunk is retrieved, you fetch the *entire* parent document (or a large 500-token window) from the Doc Store.
@@ -84,20 +85,11 @@ By embedding sentence #3 directly, you get a sharp vector match. By returning th
 | **Semantic**      | High               | Excellent             | Slow           | Noisy, unstructured essays/transcripts |
 | **Parent Doc**    | Medium             | Excellent             | Medium         | High-accuracy Production RAG           |
 
-### Decision Matrix
-*   **Q1: Is the data structured (Code/Markdown/JSON)?**
-    *   **Yes** $\rightarrow$ Use **Document Specific** splitters.
-*   **Q2: Is high accuracy critical and storage cheap?**
-    *   **Yes** $\rightarrow$ Use **Parent Document Retrieval** (Small-to-Big).
-*   **Q3: Is the text a stream of consciousness (e.g., meeting transcript) with no structure?**
-    *   **Yes** $\rightarrow$ Use **Semantic Chunking**.
-*   **Q4: Default fallback?**
-    *   $\rightarrow$ Use **Recursive Character Chunking** (Chunk size 1024, Overlap 200).
+### Decision Flowchart
+![[Chunking Strategies 2026-01-10 12.58.52.excalidraw.svg]]
 
 ## Resources
-*   **LangChain**: [Text Splitters Documentation](https://python.langchain.com/docs/modules/data_connection/document_transformers/)
-*   **LlamaIndex**: [Node Parsers](https://docs.llamaindex.ai/en/stable/module_guides/loading/node_parsers/)
-*   **Article**: [5 Levels of Text Splitting](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb)
-*   **Visualizer**: [LangChain Chunk Visualizer](https://chunkviz.up.railway.app/)
+* **Article**: [5 Levels of Text Splitting](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb) (Excellent in-depth python notebook)
+* **Visualizer**: [LangChain Chunk Visualizer](https://chunkviz.up.railway.app/)
  ---
 **Back to**: [[01 - RAG Index]]

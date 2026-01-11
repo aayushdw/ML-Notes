@@ -37,7 +37,7 @@ To decompress the 4-bit weights back to 16-bit for math, the model needs "Quanti
 
 #### Quantization
 ##### How to squeeze 64 16-bit numbers into 4-bit integers using single constant? (Simplified Example)
-Imagine you have a list of precise decimal numbers (32-bit Floats). These are your weights.
+Imagine you have a list of precise decimal numbers (32-bit Floats).
 You want to store them as **4-bit Integers**.
 - A 4-bit integer can only hold whole numbers from **-8 to +7**.
 - You cannot fit `2.5` into a box that only accepts integers.
@@ -66,7 +66,7 @@ Now we divide every number in the block by the constant and round to the nearest
 3. **-1.5:** $-1.5 / 0.357 = -4.2 \rightarrow \text{Round to } \mathbf{-4}$
 
 **What we store in memory:**
-- The Weights: `[0, 7, -4]` (These are tiny 4-bit integers).
+- The Weights: `[0, 7, -4]` (Now 4-bit integers).
 - The Constant: `0.357` (This is a 32-bit float).
 ##### De-Quantization (Reading the data)
 When the model needs to use these weights for math during training/inference, it reverses the process.
@@ -142,12 +142,11 @@ Moving data back and forth takes time.
 But since QLoRA is usually compute-bound (the math takes a long time), the slight delay of copying data over PCIe is often masked by the computation time. You barely notice the slowdown, but you gain the ability to fine-tune significantly larger batches or models.
 
 # Computation Flow
-This is the most critical concept to grasp: **The computation is NOT done in 4-bit.**
-You cannot perform stable Gradient Descent in 4-bit. It's too jagged.
+**The computation is NOT done in 4-bit.**
+You cannot perform stable Gradient Descent in 4-bit as it can be too jagged.
 
 QLoRA uses a "De-quantize on the fly" mechanism.
 
-**The Loop:**
 1. **Storage:** The Base Model ($W_0$) sits in VRAM in **4-bit NF4** (Tiny).
 2. **Forward Pass:** As data flows through a layer:
     - The specific block of weights needed is retrieved.
@@ -157,24 +156,9 @@ QLoRA uses a "De-quantize on the fly" mechanism.
     - The de-quantized Bfloat16 weights are discarded (clearing memory).
 3. **Adapter ($A, B$):** The LoRA adapters are always kept in **Bfloat16** or **Float32**. They are never quantized.
 
-
 $$Y = (\text{dequant}(W_{4bit}) + BA) X$$
 
-This hybrid approach gives you the **memory footprint of 4-bit** storage but the **mathematical precision of 16-bit** computation.
-
-
----
-
-**Progress**: 
-- [x] Read overview materials
-- [x] Understand key concepts
-- [x] Review mathematical foundations
-- [ ] Study implementations
-- [ ] Complete hands-on practice
-- [x] Can explain to others
-
-**Status Options**: `not-started` | `in-progress` | `completed` | `review-needed`
-**Difficulty Options**: `beginner` | `intermediate` | `advanced` | `expert`
+This hybrid approach results in the **memory footprint of 4-bit** storage but the **mathematical precision of 16-bit** computation.
 
 ---
 **Back to**: [[ML & AI Index]]

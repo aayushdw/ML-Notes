@@ -10,9 +10,7 @@ Think of training a dog: you don't show it examples of "correct" sits, you rewar
 
 ![[Reinforcement Learning 2025-12-31 15.12.03.excalidraw.svg]]
 
-### The Exploration vs. Exploitation Dilemma
-
-A fundamental tension in RL:
+### Exploration vs Exploitation
 - **Exploitation**: Use current knowledge to maximize immediate reward
 - **Exploration**: Try new actions to potentially discover better strategies
 
@@ -37,7 +35,7 @@ RL problems are typically formalized as MDPs, defined by the tuple $(S, A, P, R,
 | $R(s, a, s')$ | Reward function | Immediate reward for transition |
 | $\gamma$ | Discount factor | $\gamma \in [0, 1]$, determines importance of future rewards |
 
-**The Markov Property**: Future states depend only on the current state, not on the history of how we got there:
+**Markov Property**: Future states depend only on the current state, not on the history of how we got there:
 
 $$P(s_{t+1} | s_t, a_t, s_{t-1}, a_{t-1}, ...) = P(s_{t+1} | s_t, a_t)$$
 
@@ -74,20 +72,19 @@ $$Q^\pi(s, a) = \mathbb{E}_\pi[G_t | S_t = s, A_t = a]$$
 - $V(s)$ tells you: "If I land in this chess position and play optimally from here, what's my expected outcome?"
 - $Q(s, a)$ tells you: "If I land in this chess position and make *this specific move*, then play optimally, what's my expected outcome?"
 
-$Q$ is more actionable because it helps you **compare** different actions directly. Given $Q^*(s, a)$ for all actions, you immediately know the optimal policy: just pick $\arg\max_a Q^*(s, a)$.
+$Q$ is actionable because it helps you **compare** different actions directly. Given $Q^*(s, a)$ for all actions, you immediately know the optimal policy: just pick $\arg\max_a Q^*(s, a)$.
 
 **When to use each**:
 - **$V(s)$**: When you already have a policy and want to evaluate states (e.g., policy iteration, actor-critic critics)
 - **$Q(s, a)$**: When you need to choose actions without an explicit policy (e.g., Q-Learning, DQN)
 
-**Relationship** (how they connect):
 $$V^\pi(s) = \sum_{a \in A} \pi(a|s) \cdot Q^\pi(s, a)$$
 
 i.e., The value of a state is the weighted average of action-values, weighted by the policy's action probabilities. If the policy says "I pick action $a_1$ 70% of the time and $a_2$ 30%," then $V(s) = 0.7 \cdot Q(s, a_1) + 0.3 \cdot Q(s, a_2)$.
 
-### The Bellman Equations
+### Bellman Equations
 
-The core idea: **the value of a state depends on the values of states you can reach from it**. This recursive structure is what makes RL tractable.
+ Core idea: **the value of a state depends on the values of states you can reach from it**. This recursive structure is what makes RL tractable.
 
 #### Bellman Expectation Equation
 

@@ -194,6 +194,14 @@ After the Attention step, the token "Bank" knows it refers to a river. Now it ne
 
 ### Embedding / Unembedding head
 We usually **do not** apply LoRA to the `lm_head` (the very final layer that predicts the next word) or the `embed_tokens` (the very first layer), unless you are adding new tokens to the vocabulary (like training a model on a new language with new characters).
+
+
+## Multi-LoRA (TODO)
+- [ ] Semantic Routing
+- [ ] TIES-merging / DARE
+- [ ] Mixture of LoRA
+																			- [ ] Adapter Fusion
+
 ## Resources
 
 ---

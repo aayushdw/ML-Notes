@@ -1,19 +1,12 @@
-# Concept Drift
-
 ## Overview
-**Concept Drift** occurs when the statistical relationship between the input data $X$ and the target variable $Y$ changes over time. In probabilistic terms, the posterior distribution $P(Y|X)$ changes.
+**Concept Drift** occurs when the statistical relationship between the input data $X$ and the target variable $Y$ changes over time. i.e. the posterior distribution $P(Y|X)$ changes.
 
 Unlike Data Drift (where the *inputs* change), Concept Drift means the *meaning* of the data has changed. A model trained on historical data becomes invalid because the rules of the world have shifted.
 
-## Key Ideas / Intuition
 -   **"The World Has Changed"**: The same user behavior that used to mean "Safe" now means "Fraud".
 -   **Same Input, Different Label**: If you feed exactly the same $X$ into the world today, you get a different $Y$ than you did yesterday.
 -   **Label Latency**: The hardest part about detecting Concept Drift is that you need the *ground truth* (actual labels) to know it's happening. If labels arrive weeks later (e.g., loan default), your drift detection lags by weeks.
 
-### Visual Intuition
-Imagine a binary classification problem (Spam vs. Not Spam).
--   **Yesterday**: The decision boundary was a vertical line. Keyboards were just keyboards.
--   **Today**: Scammers found a new trick. The decision boundary *rotates*. Keyboards with specific patterns are now "Spam".
 
 ## Mathematical Foundation
 Formally, Concept Drift is defined as a change in the joint distribution $P(X, Y)$ such that:
@@ -30,7 +23,7 @@ while the marginal distribution $P(X)$ (the input distribution) *may or may not*
 $$ P(X, Y) = P(Y|X) \cdot P(X) $$
 
 -   **Concept Drift**: Change in $P(Y|X)$. (The mapping changes).
--   **Data Drift (Covariate Shift)**: Change in $P(X)$. (The inputs change).
+-   **Data Drift (Covariate Shift)**: Change in $P(X)$. (inputs change, see [[Data Drift Detection]]).
 
 ## Types of Drift
 Understanding the *speed* and *shape* of the drift dictates how you handle it.
@@ -38,11 +31,9 @@ Understanding the *speed* and *shape* of the drift dictates how you handle it.
 ### 1. Sudden Drift (Abrupt)
 The concept switches overnight.
 -   **Example**: COVID-19 lockdowns. Suddenly, "buying masks" went from niche to essential.
--   **Detection**: Easy to spot if you have labels. Error rate spikes instantly.
 ### 2. Gradual Drift
 The new concept replaces the old one over time.
 -   **Example**: Inflation. \$100 buys less and less over years.
--   **Detection**: Harder. Looks like noise at first.
 ### 3. Incremental Drift
 The concept shifts continuously in one direction.
 -   **Example**: A sensor degrading/wearing out. Readings drift linearly.

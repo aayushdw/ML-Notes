@@ -89,7 +89,7 @@ See [[Embeddings]] for deeper coverage of embedding model architectures and MTEB
 ### Step 4: Vector Storage & Indexing
 Embeddings are stored in a Vector Database optimized for similarity search at scale.
 
-**The Challenge**:
+**Challenge**:
 Given a query vector $\mathbf{v}_q$, find the $k$ most similar vectors among potentially millions of stored vectors.
 
 TODO(Revisit various ANN algorithms and move below comparision to a separate note)
@@ -137,7 +137,7 @@ Ensure to pre-filter by metadata **before** similarity search.
 ### Step 6: Generation
 The retrieved chunks are assembled into a prompt and sent to the LLM.
 
-**Standard RAG Prompt Template**:
+**A sample RAG Prompt Template**:
 ```
 You are a helpful assistant. Answer the user's question based ONLY on
 the following context. If the answer cannot be found in the context,

@@ -7,8 +7,7 @@ Model trained using labeled data.
 
 ## Mathematical Foundation
 
-### The Formal Setup
-In supervised learning, we have:
+### Formal Setup
 - **Input space** $\mathcal{X}$: the domain of possible inputs
 - **Output space** $\mathcal{Y}$: the domain of possible outputs/labels
 - **Training dataset** $D = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$ where $x_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$ 

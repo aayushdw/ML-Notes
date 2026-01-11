@@ -361,14 +361,13 @@ TODO - Link Project specific details here.
 
 ## Resources
 
-- [RAGAS Documentation](https://docs.ragas.io/) - Comprehensive RAG evaluation framework
-- [Judging LLM-as-a-Judge (LMSYS)](https://arxiv.org/abs/2306.05685) - MT-Bench paper
-- [G-Eval: NLG Evaluation using GPT-4](https://arxiv.org/abs/2303.16634) - Chain-of-thought evaluation
-- [HELM: Holistic Evaluation of Language Models](https://crfm.stanford.edu/helm/) - Stanford's comprehensive benchmark
-- [MMLU Paper](https://arxiv.org/abs/2009.03300) - Measuring Massive Multitask Language Understanding
-- [BERTScore Paper](https://arxiv.org/abs/1904.09675) - Evaluating Text Generation with BERT
-- [Lost in the Middle](https://arxiv.org/abs/2307.03172) - How context position affects LLM performance
-- [Chatbot Arena](https://lmarena.ai) - Live Elo-based LLM comparison
+- [Judging LLM-as-a-Judge (LMSYS)](https://arxiv.org/abs/2306.05685)
+- [G-Eval: NLG Evaluation using GPT-4](https://arxiv.org/abs/2303.16634)
+- [HELM: Holistic Evaluation of Language Models](https://crfm.stanford.edu/helm/)
+- [MMLU Paper](https://arxiv.org/abs/2009.03300)
+- [BERTScore Paper](https://arxiv.org/abs/1904.09675) 
+- [Lost in the Middle](https://arxiv.org/abs/2307.03172)
+- [Chatbot Arena](https://lmarena.ai)
 
 ---
 **Back to**: [[02 - LLMs & Generative AI Index]] | [[ML & AI Index]]

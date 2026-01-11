@@ -309,13 +309,13 @@ Benefits: Domain-specific optimization
 
 When evaluating Hybrid Search, measure:
 
-| Metric | What it measures | Target |
-|--------|-----------------|--------|
-| **Recall@k** | "Did we find the right doc in top-k?" | Higher is better |
-| **NDCG@k** | "How well-ranked are the results?" | Higher is better |
-| **MRR** | "How high is the first correct result?" | Higher is better |
-| **Latency** | "How fast is retrieval?" | <100ms for interactive |
-| **Cost** | "Embedding API calls, index size" | Lower is better |
+| Metric       | What it measures                        | Target                 |
+| ------------ | --------------------------------------- | ---------------------- |
+| **Recall@k** | "Did we find the right doc in top-k?"   | Higher is better       |
+| **NDCG@k**   | "How well-ranked are the results?"      | Higher is better       |
+| **MRR**      | "How high is the first correct result?" | Higher is better       |
+| **Latency**  | "How fast is retrieval?"                | <100ms for interactive |
+| **Cost**     | "Embedding API calls, index size"       | Lower is better        |
 
 **Pro tip**: Hybrid Search typically improves Recall@k and NDCG@k by 10-40% vs single methods.
 
@@ -525,9 +525,9 @@ Before building Hybrid Search, ensure you have:
 - [ ] **Vector Database**: Set up (Pinecone, Weaviate, Milvus, etc.)
 - [ ] **Embedding Model**: Chosen (OpenAI, Hugging Face, etc.)
 - [ ] **BM25 Index**: Built (Elasticsearch, Lucene, etc.)
-- [ ] **Fusion Strategy**: Decided (RRF recommended)
+- [ ] **Fusion Strategy**: (RRF recommended)
 - [ ] **Test Set**: Created for evaluation
-- [ ] **Metrics**: Decided (Recall@k, NDCG@k, MRR)
+- [ ] **Metrics**: (Recall@k, NDCG@k, MRR)
 - [ ] **Baseline**: BM25-only results (to compare against)
 
 ---
@@ -541,7 +541,7 @@ Before building Hybrid Search, ensure you have:
 **A**: With RRF, no tuning required. With Weighted Sum, you need to tune α.
 
 ### Q: What if I can't store dense vectors due to space?
-**A**: Try SPLADE (learned sparse representations) or use BM25 + re-ranking instead.
+**A**: Try [[#1. SPLADE (Sparse Lexical and Expansion)|SPLADE]] (learned sparse representations) or use BM25 + re-ranking instead.
 
 ### Q: Do I need to fine-tune embeddings?
 **A**: Only if you're in a specialized domain and have labeled data. For most cases, pre-trained embeddings are fine.
@@ -600,22 +600,4 @@ Before building Hybrid Search, ensure you have:
 - You're doing keyword-only search (use BM25)
 
 ---
-
-## Progress Checklist
-
-- [ ] Understand the Vocabulary Mismatch Problem
-- [ ] Compare Sparse (BM25) vs Dense (Semantic) retrieval
-- [ ] Learn the difference between Weighted Sum and RRF
-- [ ] Read [[BM25]] for detailed formula explanation
-- [ ] Understand when to use BM25-only vs Dense-only
-- [ ] Implement basic Hybrid Search with RRF
-- [ ] Evaluate using Recall@k, NDCG@k, and MRR
-- [ ] Explore advanced architectures (SPLADE, ColBERT) if needed
-- [ ] Set up two-stage retrieval for large datasets
-
----
-
-## See Also
-- [[BM25]] - Detailed explanation of BM25 scoring formula
-
 **Back to**: [[01 - RAG Index]]

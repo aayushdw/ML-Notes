@@ -1,10 +1,10 @@
-# ReAct Pattern: Reasoning and Acting in Language Models
+# Reasoning and Acting in Language Models
 
 ## Overview
 ReAct (Reasoning + Acting) is interleaves reasoning traces with task-specific actions, enabling language models to solve complex tasks through a synergistic combination of verbal reasoning and interactive decision-making. This approach significantly enhances an AI system's ability to handle tasks requiring multi-step planning, external information retrieval, and dynamic problem-solving.
 
-## Key Ideas
-**Synergy Between Thought and Action** Traditional language models either reason internally without taking actions or execute actions without explicit reasoning. ReAct combines both: the model generates reasoning traces (thoughts about what to do next and why) and action steps (actual operations like searching, calculating, or calling APIs) in an alternating pattern.
+## Synergy Between Thought and Action
+Traditional language models either reason internally without taking actions or execute actions without explicit reasoning. ReAct combines both: the model generates reasoning traces (thoughts about what to do next and why) and action steps (actual operations like searching, calculating, or calling APIs) in an alternating pattern.
 
 **Structured Output Format** ReAct prompts guide the model to produce outputs in a specific format, typically:
 - **Thought**: Internal reasoning about the current state and next steps

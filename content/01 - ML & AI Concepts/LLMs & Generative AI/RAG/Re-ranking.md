@@ -6,7 +6,7 @@
 
 ### Why Re-ranking Matters
 
-From the [[01 - RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
+From the [[01 - RAG Index#Advanced Retrieval|Advanced Retrieval]] phase:
 - **Imperfect Initial Retrieval**: Dense retrievers (vector search) and sparse retrievers (BM25) often rank relevant documents below irrelevant ones
 - **Lost in the Middle**: More relevant documents may be ranked 3rd or 4th, while the LLM uses only the top results; re-ranking ensures truly relevant docs appear first
 - **Noise Reduction**: Retrieved results often include false positives; re-ranking filters these out
@@ -14,27 +14,13 @@ From the [[01 - RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval]] phase:
 
 ### The Two-Stage Retrieval Paradigm
 
-```
-Stage 1 (Retrieval): Fast, Approximate, High Recall
-├─ Sparse (BM25): Keyword matching
-├─ Dense (Vector Search): Semantic similarity
-└─ Hybrid: Combination of both
-
-    ↓ (returns ~100 candidates)
-
-Stage 2 (Re-ranking): Slow, Exact, High Precision
-└─ Cross-Encoder: Fine-grained relevance scoring
-
-    ↓ (returns reordered top-10)
-
-Final Context for LLM
-```
+![[Re-ranking 2026-01-10 13.14.33.excalidraw.svg]]
 
 ---
 
 ## Core Concept: Cross-Encoder vs Bi-Encoder
 
-### Bi-Encoder (Dual-Encoder) - Initial Retrieval
+### Bi-Encoder - Initial Retrieval
 
 **Architecture**: Separately encode the query and documents, then compute similarity (usually dot product or cosine).
 
@@ -56,7 +42,6 @@ Document: "Debugging techniques in Python"    [vector: 768 dims] ← (Encoder 2)
 
 **Example Models**: Sentence-BERT, DPR (Dense Passage Retrieval)
 
----
 
 ### Cross-Encoder - Re-ranking
 
@@ -127,10 +112,9 @@ Re-rank by score (highest first):
 
 **Best For**:
 - General Q&A systems
-- When you need interpretable relevance scores
+- When interpretable relevance scores needed
 - Filtering and thresholding decisions
 
----
 
 ### 2. Pairwise Re-ranking
 
@@ -145,30 +129,9 @@ Compare documents pairwise:
 Derive total order: doc3 > doc1 > doc2
 ```
 
-**Implementation**:
-```python
-# Pseudocode - LambdaMART or RankNet style
-def pairwise_rerank(query, candidates, pairwise_model):
-    # Model trained to predict: which of two docs is more relevant?
-    scores = []
-
-    for i, doc1 in enumerate(candidates):
-        for j, doc2 in enumerate(candidates[i+1:]):
-            # Model outputs: 1 if doc1 more relevant, 0 if doc2 more relevant
-            preference = pairwise_model.score_pair(query, doc1, doc2)
-            if preference == 1:
-                # doc1 wins this comparison
-                pass
-
-    # Aggregate pairwise preferences into total order
-    reranked = compute_total_order(preferences)
-    return reranked
-```
-
 **Strengths**:
 - Can be more accurate than pointwise (uses comparison information)
 - Better at handling ranking tasks where relative order matters most
-- Used in learning-to-rank (LambdaMART, RankNet)
 
 **Limitations**:
 - Requires pairwise training data (expensive to create)
@@ -180,38 +143,10 @@ def pairwise_rerank(query, candidates, pairwise_model):
 - When you need perfect ordering, not just relevance scores
 - Systems with access to pairwise training data
 
----
 
-## Re-ranking Models & Strategies
+### 3. Hybrid Re-ranking
 
-### 1. Cross-Encoder Models
-
-**Pre-trained Models** (fine-tuned on MS MARCO, Natural Questions, etc.):
-- `cross-encoder/ms-marco-MiniLM-L-12-v2`: Fast, good accuracy
-- `cross-encoder/mmarco-MiniLMv2-L12-H384-v1`: Multilingual
-- `cross-encoder/qnli-distilroberta-base`: Lightweight
-- `cross-encoder/ms-marco-TinyBERT-L-2-v2`: Ultra-fast, lower accuracy
-
-**Cost-Accuracy Trade-off**:
-```
-Accuracy ↑
-     ^
-     |  Large BERT
-     |   •
-     |      •  MiniLM
-     |         •   DistilBERT
-     |            •
-     |   TinyBERT    •
-     |      •
-     +──────────────────→ Latency
-     Latency ↑
-```
-
----
-
-### 2. Hybrid Re-ranking
-
-**Concept**: Combine multiple re-ranking signals (cross-encoder score + BM25 + metadata filters + LLM judgment).
+Combine multiple re-ranking signals (cross-encoder score + BM25 + metadata filters + LLM judgment).
 
 **Example**:
 ```python
@@ -248,7 +183,6 @@ def hybrid_rerank(query, candidates, cross_encoder, bm25, metadata_filters):
 
 **Best For**:
 - Production systems with diverse requirements
-- When metadata is available and meaningful
 - Systems with different document types
 
 ---
@@ -257,47 +191,9 @@ def hybrid_rerank(query, candidates, cross_encoder, bm25, metadata_filters):
 
 Re-ranking appears at a critical juncture, after initial retrieval but before LLM generation:
 
-```
-┌─────────────────────────────────────────────────────┐
-│ User Query                                          │
-└──────────────────────┬────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────────┐
-│ Query Transformation (Optional)                     │
-│ [[Query Transformations]] - HyDE, Multi-Query, etc. │
-└──────────────────────┬────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────────┐
-│ Stage 1: Initial Retrieval (Fast, High Recall)     │
-│ [[Hybrid Search]] - BM25 + Dense                   │
-│ ↓                                                   │
-│ Returns ~100 candidates                             │
-└──────────────────────┬────────────────────────────┘
-                       ↓
-        ╔══════════════════════════════════╗
-        ║  Stage 2: RE-RANKING (THIS PAGE) ║  ← YOU ARE HERE
-        ║  Cross-Encoder Re-scoring        ║
-        ║  ↓                               ║
-        ║  Returns reordered top-K         ║
-        ╚══════════════════════════════════╝
-                       ↓
-┌─────────────────────────────────────────────────────┐
-│ Context Assembly                                    │
-│ Chunk & format top-K for prompt                    │
-└──────────────────────┬────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────────┐
-│ LLM Generation                                      │
-│ Answer question using reranked context             │
-└──────────────────────┬────────────────────────────┘
-                       ↓
-┌─────────────────────────────────────────────────────┐
-│ Final Answer                                        │
-└─────────────────────────────────────────────────────┘
-```
+![[Re-ranking 2026-01-10 13.31.36.excalidraw.svg]]
 
-### Why This Ordering Matters
-
+### Why This Ordering Matters:
 1. **Query Transformation** → Makes query better match document vocabulary
 2. **Initial Retrieval** → Casts a wide net, prioritizes recall
 3. **Re-ranking** → Filters and reorders for precision (THIS STAGE)
@@ -326,19 +222,13 @@ Without re-ranking, the LLM works with whatever the retriever found, which may i
 - Accuracy: Highest
 - Use when: Accuracy matters more than latency (offline, batch)
 
-**Decision Matrix**:
-```
-             Latency Critical    Balanced         Accuracy Critical
-             (< 100ms)          (< 500ms)         (No limit)
 
-No Reranking    ✓ Good          ✗ Poor           ✗ Poor
-Fast Model      ✗ Slow          ✓ Good           ✓ Good
-Large Model     ✗ Too Slow      ✗ Too Slow       ✓ Excellent
-```
+![[Re-ranking 2026-01-10 13.34.43.excalidraw.svg]]
+
 
 ---
 
-## Implementation Patterns
+## Sample Implementation Patterns
 
 ### Pattern 1: Basic Cross-Encoder Re-ranking
 
@@ -415,7 +305,8 @@ def multi_stage_rerank(query, vector_store, fast_model, slow_model):
     return [doc for doc, score in slow_ranked]
 ```
 
-This pattern balances cost (only top 20 see the slow model) and accuracy.
+This pattern balances cost and accuracy.
+- Only top 20 see the slow model
 
 ---
 
@@ -423,56 +314,37 @@ This pattern balances cost (only top 20 see the slow model) and accuracy.
 
 ### Key Metrics for Re-ranking
 
-**NDCG@K (Normalized Discounted Cumulative Gain)**:
+#### NDCG@K (Normalized Discounted Cumulative Gain)
 - Measure: How good is the ranking compared to ideal ranking?
-- Formula: `NDCG = DCG / IDCG` where DCG penalizes lower-ranked relevant docs
+- Formula: $NDCG@K = \frac{DCG@K}{IDCG@K}$
 - Range: 0-1 (1 is perfect ranking)
-- Use: Standard for ranking quality
+- Gold standard for ranking quality
 
-**MRR@K (Mean Reciprocal Rank)**:
+**DCG (Discounted Cumulative Gain)**: Sum of relevance scores, with lower-ranked documents receiving diminishing credit:
+
+$$DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i + 1)}$$
+
+Where $rel_i$ = relevance score at position $i$. 
+
+**IDCG (Ideal DCG)**: The *best possible* DCG, computed by sorting all documents by relevance (highest first) and calculating DCG on this ideal ordering. Provides the theoretical ceiling for normalization.
+
+#### MRR@K (Mean Reciprocal Rank):
 - Measure: On average, how early is the first relevant result?
 - Formula: `MRR = 1/rank_of_first_relevant`
 - Best for: Single-answer scenarios (FAQ, entity lookup)
 
-**MAP@K (Mean Average Precision)**:
+#### MAP@K (Mean Average Precision)
 - Measure: Precision at each relevant document
 - Good for: Evaluating comprehensive answer retrieval
 
-**Recall@K**:
+#### Recall@K:
 - Measure: Out of all relevant documents, what % did we retrieve?
 - Formula: `relevant_retrieved / total_relevant`
 
-**Example Evaluation**:
-```
-Query: "How to fix a NaN error in PyTorch?"
 
-Ideal ranking (by humans):
-1. "Debugging NaN in PyTorch Loss" [Relevance: 2/2]
-2. "Numerical Stability in Neural Nets" [Relevance: 2/2]
-3. "PyTorch Debugging Best Practices" [Relevance: 1/2]
+## Common Pitfalls ( and  Potential Solutions )
 
-Before reranking:
-1. "PyTorch Documentation" [Score: 0.85] [Relevance: 1/2]
-2. "Debugging NaN in PyTorch Loss" [Score: 0.78] [Relevance: 2/2]
-3. "Related: GPU Memory Issues" [Score: 0.75] [Relevance: 0/2]
-
-NDCG@3 before = 0.72
-
-After reranking (with cross-encoder):
-1. "Debugging NaN in PyTorch Loss" [Score: 0.92] [Relevance: 2/2]
-2. "Numerical Stability in Neural Nets" [Score: 0.88] [Relevance: 2/2]
-3. "PyTorch Debugging Best Practices" [Score: 0.81] [Relevance: 1/2]
-
-NDCG@3 after = 0.98
-
-Improvement: +26%
-```
-
----
-
-## Common Pitfalls & Solutions
-
-### Pitfall 1: Over-Relying on Re-ranking
+### Over-Relying on Re-ranking
 
 **Problem**: Using re-ranking to compensate for poor initial retrieval.
 - If retrieval gets only 50% recall, re-ranking can't fix this (can't rerank what wasn't retrieved)
@@ -481,9 +353,7 @@ Improvement: +26%
 - First optimize initial retrieval ([[Hybrid Search]], [[Query Transformations]])
 - Use re-ranking as refinement, not rescue
 
----
-
-### Pitfall 2: Model-Data Mismatch
+### Model-Data Mismatch
 
 **Problem**: Using cross-encoder trained on MS MARCO for medical documents.
 - Mismatch between training data and target domain
@@ -493,9 +363,7 @@ Improvement: +26%
 - Use small cross-encoder (faster to fine-tune)
 - Fall back to ensemble methods if fine-tuning unavailable
 
----
-
-### Pitfall 3: Computational Overhead
+### Computational Overhead
 
 **Problem**: Re-ranking 1000 candidates with large BERT model = 10+ seconds.
 - Defeats the purpose of fast retrieval
@@ -506,9 +374,7 @@ Improvement: +26%
 - Use lighter models (MiniLM, TinyBERT)
 - Selective re-ranking: only rerank top-K from initial retrieval
 
----
-
-### Pitfall 4: Score Miscalibration
+### Score Mis-calibration
 
 **Problem**: Cross-encoder outputs [0.92, 0.78, 0.45] but you don't know what these mean absolutely (just relative).
 - Can't use raw scores for filtering/thresholding
@@ -518,61 +384,27 @@ Improvement: +26%
 - Don't rely on absolute score values; use relative ranking
 - Test thresholds empirically on your data
 
----
 
 ## Comparison with Alternatives
+Latency numbers are an estimation here (obviously) just the provide a vague idea.
 
-| Approach | Latency | Accuracy | Complexity | Cost | Best For |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **No Re-ranking** | 50ms | Low | 0 | $0 | Real-time, low stakes |
-| **Cross-Encoder (Fast)** | 200ms | Medium | 1 | Low | Balanced systems |
-| **Cross-Encoder (Large)** | 1-2s | High | 1 | Medium | Accuracy-critical |
-| **LLM Re-ranking** | 2-5s | Very High | 2 | High | Complex relevance |
-| **Hybrid** | 300-500ms | High | 3 | Medium | Production systems |
-| **Learning-to-Rank** | 100-300ms | Very High | 4 | High | Search engines |
+| Approach                  | Latency*  | Accuracy  | Complexity | Cost   | Best For              |
+| :------------------------ | :-------- | :-------- | :--------- | :----- | :-------------------- |
+| **No Re-ranking**         | 50ms      | Low       | 0          | $0     | Real-time, low stakes |
+| **Cross-Encoder (Fast)**  | 200ms     | Medium    | 1          | Low    | Balanced systems      |
+| **Cross-Encoder (Large)** | 1-2s      | High      | 1          | Medium | Accuracy-critical     |
+| **LLM Re-ranking**        | 2-5s      | Very High | 2          | High   | Complex relevance     |
+| **Hybrid**                | 300-500ms | High      | 3          | Medium | Production systems    |
+| **Learning-to-Rank**      | 100-300ms | Very High | 4          | High   | Search engines        |
 
----
 
 ## Integration with Query Transformations and Hybrid Search
 
-**Full Advanced Retrieval Pipeline**:
+![[Re-ranking 2026-01-10 13.44.02.excalidraw.svg]]
 
-```
-User Query
-    ↓
-[Query Transformations] [[Query Transformations]]
-├─ HyDE: Hypothetical answer
-├─ Multi-Query: Decompose into sub-queries
-└─ Query Expansion: Add synonyms
-    ↓ (Multiple refined queries)
-[Hybrid Search] [[Hybrid Search]]
-├─ Sparse (BM25): Keyword match
-├─ Dense (Vector): Semantic match
-└─ Combine: Union or weighted sum
-    ↓ (100+ candidates)
-[RE-RANKING] (THIS PAGE)
-├─ Cross-Encoder: Fine-grained scoring
-├─ Pointwise: Score each doc independently
-└─ Reorder: Put best docs first
-    ↓ (10 top candidates)
-[LLM Generation]
-├─ Context assembly
-├─ Prompt engineering
-└─ Answer generation
-    ↓
-Final Answer
-```
-
-**Key Synergies**:
-1. **Query Transformation** makes retrieval catch more relevant docs
-2. **Hybrid Search** gets broad coverage (recall)
-3. **Re-ranking** filters and orders for precision
-4. Together → best docs with high probability end up in top-K
-
----
 
 ## See Also
-- [[01 - RAG Index#Phase 3 Advanced Retrieval|Advanced Retrieval Phase]] - Where re-ranking fits in
+- [[01 - RAG Index#Advanced Retrieval|Advanced Retrieval Phase]] - Where re-ranking fits in
 - [[Hybrid Search]] - Initial retrieval stage before re-ranking
 - [[Query Transformations]] - Query preprocessing (before retrieval)
 - [[RAG Evaluation Metrics]] - Measuring re-ranking impact on pipeline quality

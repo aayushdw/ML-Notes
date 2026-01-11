@@ -74,7 +74,7 @@ Gist tokens are **learned virtual tokens** that summarize longer contexts into a
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  Original: "The quick brown fox jumps over the lazy dog"        │
+│  Original: "The quick brown fox jumps over the lazy dog"         │
 │                              ↓                                   │
 │  Gist Compression (k=2 gist tokens)                              │
 │                              ↓                                   │
@@ -89,7 +89,7 @@ Gist tokens are **learned virtual tokens** that summarize longer contexts into a
 - Gist tokens are prepended to the actual input
 - Model learns to condition on gist tokens for downstream tasks
 
-**Relation to [[P-Tuning, Prefix-Tuning|Prefix-Tuning]]**: Gisting is conceptually similar, but the goal is compression rather than task adaptation. The "prefix" here summarizes the context.
+**Relation to [[P-Tuning|Prefix-Tuning]]**: Gisting is conceptually similar, but the goal is compression rather than task adaptation. The "prefix" here summarizes the context.
 
 ### 4. AutoCompressors
 
@@ -119,6 +119,7 @@ The most straightforward approach: use an LLM to summarize retrieved documents b
 - **Abstractive**: Generate a condensed paraphrase
 
 **Trade-offs**:
+
 | Aspect | Extractive | Abstractive |
 |:-------|:-----------|:------------|
 | Faithfulness | High (original text) | Risk of hallucination |

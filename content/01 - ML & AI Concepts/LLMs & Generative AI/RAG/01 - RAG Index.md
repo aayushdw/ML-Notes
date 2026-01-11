@@ -20,8 +20,8 @@ graph TD
     *   **Orchestrator**: LangChain / LlamaIndex
     *   **Prompt Engineering**: Minimizes hallucinations.
 
-### Phase 2: The Retrieval Engine (Data Engineering)
-*   [[Document Parsing]](TODO): Extracting text from PDFs, tables, and images before chunking.
+### The Retrieval Engine (Data Engineering)
+*   [[Document Parsing]](TODO??): Extracting text from PDFs, tables, and images before chunking.
 *   [[Chunking Strategies]]:
     *   **Fixed-size**: Simple character retrieval
     *   **Recursive**: Respecting document structure.
@@ -29,33 +29,32 @@ graph TD
 *   [[Embeddings]]: Converting text to embedding vectors. Understanding MTEB benchmarks.
 *   [[Vector Databases]]: Managing the index (HNSW, IVF-Flat).
 
-### Phase 3: Advanced Retrieval
-*Improving the signal-to-noise ratio.*
-*   [[Hybrid Search]]: Combining Dense Passage Retrieval (Vectors) with Sparse Retrieval (BM25/Keywords) to catch specific terms.
-*   [[Query Transformations]]:
+### Advanced Retrieval
+* [[Hybrid Search]]: Combining Dense Passage Retrieval (Vectors) with Sparse Retrieval (BM25/Keywords) to catch specific terms.
+* [[Query Transformations]]:
     *   **HyDE (Hypothetical Document Embeddings)**: Hallucinating a fake answer to find real documents.
     *   **Multi-Query**: Breaking a complex question into sub-questions.
-*   [[Re-ranking]]: Using a Cross-Encoder to re-score the top-K results for higher precision.
-*   [[Contextual Retrieval]]: Prepending document/section context to chunks before embedding. Significantly improves retrieval accuracy. Related: Late Chunking.
+* [[Re-ranking]]: Using a Cross-Encoder to re-score the top-K results for higher precision.
+* [[Contextual Retrieval]]: Prepending document/section context to chunks before embedding. Significantly improves retrieval accuracy. Related: Late Chunking.
 
-### Phase 4: Generation & Synthesis
-*   **Context Window Management**: Handling token limits.
-*   **[[Multi-hop Reasoning]]**: When a single retrieval isn't enough, chaining multiple retrievals to answer complex questions (e.g., "Who founded the company that built X?").
-*   **Citation & Attribution**: Techniques to force the LLM to reference specific chunk IDs and their sources.
-*   **Compression Techniques**: Using summaries or extractive compression to fit more relevant context into token limits.
+### Generation & Synthesis
+* **Context Window Management**: Handling token limits.
+* **[[Multi-hop Reasoning]]**: When a single retrieval isn't enough, chaining multiple retrievals to answer complex questions (e.g., "Who founded the company that built X?").
+* **Citation & Attribution**: Techniques to force the LLM to reference specific chunk IDs and their sources.
+* **Compression Techniques**: Using summaries or extractive compression to fit more relevant context into token limits.
 
-### Phase 5: Evaluation
-*   [[RAG Evaluation Metrics]]:
-    *   **Context Relevance**: Is the retrieved text actually useful?
-    *   **Groundedness/Faithfulness**: Is the answer derived *only* from the context?
-    *   **Answer Relevance**: Did we answer the user's question?
-*   **Tools**: RAGAS, TruLens, Phoenix (Arize).
-*   **Synthetic Test Set Generation**: Using LLMs to generate question-answer pairs from your corpus for evaluation. Often the bottleneck in proper RAG evaluation.
+### Evaluation
+* [[RAG Evaluation Metrics]]:
+	* **Context Relevance**: Is the retrieved text actually useful?
+	* **Groundedness/Faithfulness**: Is the answer derived *only* from the context?
+	* **Answer Relevance**: Did we answer the user's question?
+	* **Tools**: RAGAS, TruLens, Phoenix (Arize).
+	* **Synthetic Test Set Generation**: Using LLMs to generate question-answer pairs from your corpus for evaluation. Often the bottleneck in proper RAG evaluation.
 
-### Phase 6: The Frontier
-*   [[GraphRAG]]: Using Knowledge Graphs to capture structural relationships between entities.
-*   [[Agentic RAG]]: Giving an agent tools to decide *when* to search, *what* to search, and if it needs to search *again* (e.g., Self-RAG).
-*   [[Multimodal RAG]]: Embedding and retrieving images, diagrams, and tables. Uses CLIP-style embeddings or vision-language models for document understanding.
+### The Frontier
+* [[GraphRAG]]: Using Knowledge Graphs to capture structural relationships between entities.
+* [[Agentic RAG]]: Giving an agent tools to decide *when* to search, *what* to search, and if it needs to search *again* (e.g., Self-RAG).
+* [[Multimodal RAG]]: Embedding and retrieving images, diagrams, and tables. Uses CLIP-style embeddings or vision-language models for document understanding.
 
 ## Comparisons
 
@@ -127,7 +126,7 @@ graph TD
 - **Index Versioning**: Maintain versioned indices for rollback and A/B testing.
 
 ## Resources
-*  [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - The original RAG paper.
+*  [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) - Original RAG paper.
 *  [Pinecone: Generative AI with RAG](https://www.pinecone.io/learn/retrieval-augmented-generation/)
 *  [LangChain RAG From Scratch](https://github.com/langchain-ai/rag-from-scratch)
 *  [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172)

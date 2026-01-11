@@ -15,7 +15,7 @@
 - [x] [[Fine-Tuning Overview#Full Fine-Tuning|Full Fine Tuning]]
 - [x] [[LoRA (Low-Rank Adaptation)]]
 - [x] [[QLoRA (Quantized LoRA)]]
-- [ ] [[P-Tuning, Prefix-Tuning]]
+- [x] [[P-Tuning]]
 - [x] [[Fine-Tuning Overview#Generic Adapter Method|Adapter Methods]]
 
 ### Model Evaluation
@@ -68,6 +68,7 @@
 
 ### Multi-Modal Systems
 - [ ] [[Multi-Modal Models Overview]]
+- [ ] [[Joint Embedding Spaces]]
 - [ ] [[Vision-Language Models]]
 - [ ] [[Text-to-Image Generation]]
 - [ ] [[Image-to-Text Generation]]

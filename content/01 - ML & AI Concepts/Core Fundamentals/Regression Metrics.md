@@ -1,6 +1,6 @@
 Regression metrics are quantitative measures used to evaluate how well a machine learning model predicts continuous numerical values. 
 ## Core Purpose
-These metrics answer the fundamental question: "How far off are my predictions from reality?" Different metrics emphasize different aspects of prediction error, giving you various lenses through which to assess model performance.
+These metrics answer the fundamental question: "How far off are the predictions from reality?" Different metrics emphasize different aspects of prediction errors.
 
 ---
 ## 1. Mean Absolute Error (MAE)

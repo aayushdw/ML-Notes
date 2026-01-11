@@ -81,7 +81,7 @@ You cannot do this with Adapters because the ReLU makes the operation non-linear
 
 #### Soft Prompting / P-Tuning (TODO)
 Instead of changing weights inside the model, you train "virtual tokens" (embeddings) that are prepended to the input. It's like finding the perfect magic words to whisper to the model to get it to behave, without performing surgery on the model's brain.
-[[P-Tuning, Prefix-Tuning]]
+[[P-Tuning]]
 
 
 ## SFT Training Data Preparation
