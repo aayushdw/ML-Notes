@@ -144,8 +144,6 @@ What are the troubleshooting steps I should follow to identify and resolve the i
 - User queries that are vague or context-dependent
 - When query clarification is the main issue
 
----
-
 ### 5. Query Routing
 
 **Concept**: Use a classifier to route queries to different retrieval strategies based on query type.
@@ -175,8 +173,6 @@ What are the troubleshooting steps I should follow to identify and resolve the i
 - Production systems with diverse query types
 - When classifier development is affordable
 - Cost-optimized systems where not all queries need expensive processing
-
----
 
 ### 6. Step-Back Prompting
 

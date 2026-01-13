@@ -14,7 +14,7 @@ Everything that goes into the model counts toward the limit:
 ## Key Ideas
 - Just because a model CAN handle 200K tokens doesn't mean it processes all of them equally well. Performance often degrades with very long contexts.
 
-## The "Lost in the Middle" Problem
+## "Lost in the Middle" Problem
 
 Models don't pay equal attention to all parts of the context window.
 Language models are best at using information that appears:

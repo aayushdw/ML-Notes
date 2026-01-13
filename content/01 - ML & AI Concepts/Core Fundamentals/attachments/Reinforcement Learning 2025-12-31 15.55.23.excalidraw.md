@@ -10,8 +10,6 @@ tags: [excalidraw]
 # Excalidraw Data
 
 ## Text Elements
-RL Algorithm Taxonomy ^ez4gUY8f
-
 RL Algorithms ^yFs8kLra
 
 Model-Based ^Qddi8n2H
@@ -54,44 +52,6 @@ A2C, PPO, etc. ^5tSJVP8N
 	"version": 2,
 	"source": "https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/tag/2.18.3",
 	"elements": [
-		{
-			"id": "ez4gUY8f",
-			"type": "text",
-			"x": -591.328125,
-			"y": -685.9453125,
-			"width": 307.1318359375,
-			"height": 37.800000000000004,
-			"angle": 0,
-			"strokeColor": "#1e1e1e",
-			"backgroundColor": "transparent",
-			"fillStyle": "solid",
-			"strokeWidth": 2,
-			"strokeStyle": "solid",
-			"roughness": 1,
-			"opacity": 100,
-			"groupIds": [],
-			"frameId": null,
-			"index": "a0",
-			"roundness": null,
-			"seed": 224508674,
-			"version": 22,
-			"versionNonce": 1055714846,
-			"isDeleted": false,
-			"boundElements": [],
-			"updated": 1767225324988,
-			"link": null,
-			"locked": false,
-			"text": "RL Algorithm Taxonomy",
-			"fontSize": 28,
-			"fontFamily": 6,
-			"textAlign": "left",
-			"verticalAlign": "top",
-			"containerId": null,
-			"originalText": "RL Algorithm Taxonomy",
-			"autoResize": true,
-			"lineHeight": 1.35,
-			"rawText": "RL Algorithm Taxonomy"
-		},
 		{
 			"id": "cDPSUcUVxZXeJo_UCcH1-",
 			"type": "rectangle",
@@ -1837,6 +1797,44 @@ A2C, PPO, etc. ^5tSJVP8N
 			"autoResize": true,
 			"lineHeight": 1.25,
 			"rawText": "A2C, PPO, etc."
+		},
+		{
+			"id": "ez4gUY8f",
+			"type": "text",
+			"x": -591.328125,
+			"y": -685.9453125,
+			"width": 307.1318359375,
+			"height": 37.800000000000004,
+			"angle": 0,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"fillStyle": "solid",
+			"strokeWidth": 2,
+			"strokeStyle": "solid",
+			"roughness": 1,
+			"opacity": 100,
+			"groupIds": [],
+			"frameId": null,
+			"index": "a0",
+			"roundness": null,
+			"seed": 224508674,
+			"version": 23,
+			"versionNonce": 1497727367,
+			"isDeleted": true,
+			"boundElements": [],
+			"updated": 1768094041011,
+			"link": null,
+			"locked": false,
+			"text": "RL Algorithm Taxonomy",
+			"fontSize": 28,
+			"fontFamily": 6,
+			"textAlign": "left",
+			"verticalAlign": "top",
+			"containerId": null,
+			"originalText": "RL Algorithm Taxonomy",
+			"autoResize": true,
+			"lineHeight": 1.35,
+			"rawText": "RL Algorithm Taxonomy"
 		}
 	],
 	"appState": {
@@ -1856,10 +1854,10 @@ A2C, PPO, etc. ^5tSJVP8N
 		"currentItemEndArrowhead": "arrow",
 		"currentItemArrowType": "round",
 		"currentItemFrameRole": null,
-		"scrollX": 922,
-		"scrollY": 668.0546875,
+		"scrollX": 774.203125,
+		"scrollY": 754.6484375,
 		"zoom": {
-			"value": 1
+			"value": 2
 		},
 		"currentItemRoundness": "round",
 		"gridSize": 20,

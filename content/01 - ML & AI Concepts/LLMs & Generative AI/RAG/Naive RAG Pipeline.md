@@ -6,15 +6,12 @@
 
 It is "Naive" because it assumes that **semantic similarity equals ground truth relevance**, which is not always true. It forms the foundation upon which all advanced RAG techniques ([[Hybrid Search]], [[Re-ranking]], [[Agentic RAG]]) are built.
 
-## Key Ideas / Intuition
-
-### Why "Naive"?
 The approach makes several simplifying assumptions that break down in real-world scenarios:
 - Assumption 1: The top-$k$ semantically similar chunks contain the answer. *Reality*: Semantic similarity $\neq$ relevance to the question.
 - Assumption 2: Chunks are self-contained. *Reality*: Information often spans multiple chunks or requires context from surrounding text.
 - Assumption 3: A single retrieval pass is sufficient. *Reality*: Complex questions require multi-hop reasoning across multiple retrievals.
 
-### Linear Pipeline
+## Linear Pipeline
 ```mermaid
 graph TD
     subgraph Indexing Phase
@@ -53,7 +50,7 @@ Ingest raw data into a processable format.
 - Extract metadata (filename, page numbers, timestamps, authors)
 - Handle special content: tables, images (via OCR or multimodal models), code blocks
 
-See [[Document Parsing]] for advanced techniques like LlamaParse and Docling.
+TODO( [[Document Parsing]] ) for techniques like LlamaParse and Docling.
 
 ### Step 2: Chunking (Text Splitting)
 Breaking documents into smaller pieces. Poor chunking is one of the most common causes of RAG failure.
@@ -61,7 +58,7 @@ Breaking documents into smaller pieces. Poor chunking is one of the most common 
 **Why chunk?**
 1. Context window limits: LLMs have finite input sizes
 2. Retrieval precision
-3. Cost: More tokens = more money; retrieving entire documents is wasteful
+3. Cost: More tokens = more money (retrieving entire documents is wasteful)
 
 **The Overlap Problem**:
 Chunks should *overlap* to avoid losing context at boundaries. Typical overlap: 10-20% of chunk size.
@@ -84,16 +81,11 @@ Where $f_\theta$ is the embedding model (a neural network with learned parameter
 
 Use the same model for both indexing and querying.
 
-See [[Embeddings]] for deeper coverage of embedding model architectures and MTEB benchmarks.
-
 ### Step 4: Vector Storage & Indexing
 Embeddings are stored in a Vector Database optimized for similarity search at scale.
 
 **Challenge**:
 Given a query vector $\mathbf{v}_q$, find the $k$ most similar vectors among potentially millions of stored vectors.
-
-TODO(Revisit various ANN algorithms and move below comparision to a separate note)
-
 This is done using Approximate Nearest Neighbor (ANN) Algorithms.
 
 | Algorithm                                      | How It Works                                               | Trade-off                              |
@@ -102,6 +94,7 @@ This is done using Approximate Nearest Neighbor (ANN) Algorithms.
 | **IVF** (Inverted File Index)                  | Clusters vectors; searches only relevant clusters          | Faster indexing, lower recall          |
 | **PQ** (Product Quantization)                  | Compresses vectors; trades accuracy for memory             | Low memory, lower accuracy             |
 | **ScaNN**                                      | Hybrid of quantization + reordering                        | Google's approach, good accuracy/speed |
+TODO(Revisit various ANN algorithms and move below comparision to a separate note)
 
 **Popular Vector Databases**:
 
@@ -118,8 +111,6 @@ This is done using Approximate Nearest Neighbor (ANN) Algorithms.
 Store metadata alongside vectors for filtering:
 This enables queries like: "Find similar chunks from documents published after 2023".
 
-See [[Vector Databases]] for detailed comparisons.
-
 ### Step 5: Retrieval
 When a user submits a query, we find the most relevant chunks.
 
@@ -127,12 +118,12 @@ When a user submits a query, we find the most relevant chunks.
 2. **Search the index**: Find top-$k$ vectors closest to $\mathbf{v}_q$
 3. **Return chunks**: Fetch the original text associated with each vector
 
-| $k$ value | Pros                         | Cons                                               |
-| :-------- | :--------------------------- | :------------------------------------------------- |
-| Small     | Precise, less noise, cheaper | May miss relevant information                      |
-| Large     | Higher recall, more context  | More noise, "lost in the middle" effect, expensive |
+| $k$ value | Pros                         | Cons                                                                                                           |
+| :-------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| Small     | Precise, less noise, cheaper | May miss relevant information                                                                                  |
+| Large     | Higher recall, more context  | More noise, [[Context Window Fundamentals#"Lost in the Middle" Problem\|Lost in the Middle]] effect, expensive |
 
-Ensure to pre-filter by metadata **before** similarity search.
+Ensure to pre-filter by metadata **before** similarity search. (To guarantee `k` closest vectors are metadata-relevant) 
 
 ### Step 6: Generation
 The retrieved chunks are assembled into a prompt and sent to the LLM.

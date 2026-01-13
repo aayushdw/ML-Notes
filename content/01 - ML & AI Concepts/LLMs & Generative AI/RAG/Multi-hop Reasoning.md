@@ -467,7 +467,18 @@ Answer: "Yes, recent studies show Drug X has significant interactions
 - **Paper**: [Least-to-Most Prompting](https://arxiv.org/abs/2205.10625) - Decomposition strategies
 - **Blog**: [LangChain Agent Loops](https://python.langchain.com/docs/modules/agents/) - Practical implementation
 - **Related**: [[GraphRAG]] - When multi-hop relationships are explicit in a knowledge graph
+- **Related**: [[RAG (Retrieval Augmented Generation) Overview]] - Parent concept
 
----
+## Personal Notes
+*[Space for your thoughts and learnings...]*
 
-**Back to**: [[01 - RAG Index]]
+## Progress Checklist
+- [ ] Understand single-hop limitations
+- [ ] Grasp multi-hop decomposition patterns
+- [ ] Learn production trade-offs (latency, cost, quality)
+- [ ] Review implementation patterns (Explicit, Agentic, Graph-based)
+- [ ] Study production challenges (context explosion, consistency, drift)
+- [ ] Hands-on practice (Build explicit decomposition RAG)
+- [ ] Evaluate when multi-hop is worth the cost
+
+**Back to**: [[01 - ML & AI Concepts/LLMs & Generative AI/RAG (Retrieval Augmented Generation) Overview]]

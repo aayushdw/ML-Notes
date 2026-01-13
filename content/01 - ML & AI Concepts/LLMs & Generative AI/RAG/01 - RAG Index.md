@@ -32,7 +32,7 @@ graph TD
 ### Advanced Retrieval
 * [[Hybrid Search]]: Combining Dense Passage Retrieval (Vectors) with Sparse Retrieval (BM25/Keywords) to catch specific terms.
 * [[Query Transformations]]:
-    *   **HyDE (Hypothetical Document Embeddings)**: Hallucinating a fake answer to find real documents.
+    *   [[Query Transformations#1. HyDE (Hypothetical Document Embeddings)|HyDE]]: Hallucinating a fake answer to find real documents.
     *   **Multi-Query**: Breaking a complex question into sub-questions.
 * [[Re-ranking]]: Using a Cross-Encoder to re-score the top-K results for higher precision.
 * [[Contextual Retrieval]]: Prepending document/section context to chunks before embedding. Significantly improves retrieval accuracy. Related: Late Chunking.
