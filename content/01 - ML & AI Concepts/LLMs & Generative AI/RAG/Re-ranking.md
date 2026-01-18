@@ -16,7 +16,6 @@ From the [[01 - RAG Index#Advanced Retrieval|Advanced Retrieval]] phase:
 
 ![[Re-ranking 2026-01-10 13.14.33.excalidraw.svg]]
 
----
 
 ## Core Concept: Cross-Encoder vs Bi-Encoder
 
@@ -64,7 +63,6 @@ Document: "Debugging techniques in Python"    [vector: 768 dims] ← (Encoder 2)
 
 **Example Models**: BERT-base-uncased fine-tuned for MS MARCO, `cross-encoder/mmarco-MiniLMv2-L12-H384-v1`
 
----
 
 ### Key Difference in Scoring
 
@@ -83,7 +81,6 @@ score(q, d) = cross_encode([q, d])
 - Tokens in document attend to query tokens and vice versa
 - Can understand nuanced relevance relationships
 
----
 
 ## Re-ranking Approaches
 
@@ -185,7 +182,6 @@ def hybrid_rerank(query, candidates, cross_encoder, bm25, metadata_filters):
 - Production systems with diverse requirements
 - Systems with different document types
 
----
 
 ## Integration with the RAG Pipeline
 
@@ -200,8 +196,6 @@ Re-ranking appears at a critical juncture, after initial retrieval but before LL
 4. **LLM** → Generates using the best documents
 
 Without re-ranking, the LLM works with whatever the retriever found, which may include noise or miss relevant documents ranked 11-100.
-
----
 
 ## Trade-offs & Decision Framework
 
@@ -226,7 +220,6 @@ Without re-ranking, the LLM works with whatever the retriever found, which may i
 ![[Re-ranking 2026-01-10 13.34.43.excalidraw.svg]]
 
 
----
 
 ## Sample Implementation Patterns
 
@@ -252,7 +245,6 @@ def rag_retrieval_with_reranking(query, vector_store, cross_encoder, top_k=10):
     return [doc for doc, score in ranked[:top_k]]
 ```
 
----
 
 ### Pattern 2: Selective Re-ranking (Cost Optimization)
 
@@ -276,7 +268,6 @@ def selective_rerank(query, vector_store, cross_encoder, threshold=0.7):
     return filtered
 ```
 
----
 
 ### Pattern 3: Multi-stage Re-ranking
 
@@ -308,7 +299,6 @@ def multi_stage_rerank(query, vector_store, fast_model, slow_model):
 This pattern balances cost and accuracy.
 - Only top 20 see the slow model
 
----
 
 ## Evaluation & Metrics
 

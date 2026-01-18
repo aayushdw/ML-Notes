@@ -38,33 +38,9 @@ Note that each entity belongs to a single leaf-level community.
 
 ### 1. Indexing Phase (Expensive, Upfront)
 
-```
-Source Documents
-      │
-      ▼ (1) Chunk Documents
-Text Chunks (~600 tokens, with overlap)
-      │
-      ▼ (2) LLM Entity & Relationship Extraction
-Entities: [(name, type, description), ...]
-Relationships: [(source, target, description), ...]
-      │
-      ▼ (3) Entity Resolution
-Canonical Nodes (deduplicated entities)
-      │
-      ▼ (4) Build Knowledge Graph
-Graph G = (V, E) where V=entities, E=relationships
-      │
-      ▼ (5) Community Detection (Leiden Algorithm)
-Hierarchical Community Structure
-      │
-      ▼ (6) LLM Community Summarization
-Community Summaries at each hierarchy level
-      │
-      ▼ (7) Embed Everything
-Vector indices for entities, communities, relationships
-```
+![[GraphRAG 2026-01-13 17.37.17.excalidraw.svg]]
 
-#### Step 2: Entity Extraction Detail
+#### Entity Extraction
 GraphRAG uses multipart prompts to guide the LLM:
 
 ```
@@ -80,66 +56,13 @@ After initial extraction, follow-up prompt:
 → Significantly reduces information loss
 ```
 
-#### How Does This Work If the Corpus Exceeds Context Window?
-
-A natural question: if we need RAG because the corpus is too large for the LLM context window, how can the LLM extract entities and relationships from the entire corpus?
-
-**GraphRAG processes chunks individually during indexing, then merges the extracted knowledge.**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    INDEXING PHASE                            │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   Document ──► Chunk 1 ──► LLM ──► Entities/Relations       │
-│             ──► Chunk 2 ──► LLM ──► Entities/Relations       │
-│             ──► Chunk 3 ──► LLM ──► Entities/Relations       │
-│                    ...                                       │
-│                    ↓                                         │
-│            ┌──────────────────┐                              │
-│            │  Merge & Dedupe  │                              │
-│            │ (Entity Resolution)                             │
-│            └────────┬─────────┘                              │
-│                     ↓                                        │
-│            Unified Knowledge Graph                           │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Handling cross-chunk relationships:**
-
-1. **Entity Resolution**: "Steve Jobs" in chunk 1 and "Jobs" in chunk 47 are resolved to the same node (via embedding similarity or LLM-based matching)
-
-2. **Gleaning across context**: Some implementations show entity lists from neighboring chunks during extraction to catch missed connections
-
-3. **Graph structure completes the picture**: Once entities exist as nodes, relationships spanning distant parts of the corpus are connected transitively. If A→B appears in chunk 1 and B→C in chunk 50, the graph still connects A to C through B
-
-**The trade-off**: GraphRAG captures relationships *within* a chunk very well, but relationships spanning distant parts of the corpus require either:
-- The entities appearing together in at least one chunk
-- Explicit entity resolution/linking during merge
-- Community detection grouping related entities post-hoc
-
-This is why [[Chunking Strategies|chunking strategy]] matters even more in GraphRAG: you want semantically coherent chunks where related entities co-occur.
-
 
 ### 2. Query Phase
 
 GraphRAG supports two distinct query modes:
 
 #### Local Search (Entity-Centric)
-For questions like: "Who founded SpaceX?"
-
-```
-Query → Extract Key Entities → Traverse Graph Neighborhood → Return Subgraph
-                                      │
-                                      ▼
-                    ┌─────────────────────────────────┐
-                    │        SpaceX                   │
-                    │       /      \                  │
-                    │  Elon Musk   Starship          │
-                    │      │         │               │
-                    │   Tesla    Mars Missions       │
-                    └─────────────────────────────────┘
-```
+![[GraphRAG 2026-01-13 17.41.30.excalidraw.svg]]
 
 **Process**:
 1. Use the LLM to extract entities from the query
@@ -175,7 +98,40 @@ Map-Reduce:
 
 **Characteristics**: Higher latency (10+ LLM calls), expensive (200K+ tokens), but answers previously impossible queries.
 
-## Mathematical Foundation
+#### DRIFT Search (Dynamic Reasoning and Inference with Flexible Traversal)
+[DRIFT](https://microsoft.github.io/graphrag/query/drift_search/) is a hybrid query mode introduced by Microsoft that bridges Local and Global search. It addresses queries that are too specific for pure Global search but require broader context than Local search provides.
+
+**Intuition**: Think of DRIFT as "starting with a map, then zooming in." It uses community summaries to get oriented, then dynamically drills down into specific graph neighborhoods based on what it discovers.
+
+**Three-Phase Process**:
+
+```
+Phase 1: Primer
+├─ Compare query against community reports at intermediate hierarchy levels
+├─ Generate initial answer + follow-up questions
+└─ Identify which communities/entities are most relevant
+
+Phase 2: Follow-Up (Iterative)
+├─ Take generated follow-up questions
+├─ Execute local search for each question
+├─ Gather specific facts from graph neighborhoods
+└─ May generate additional follow-up questions (multi-hop)
+
+Phase 3: Output Synthesis
+├─ Combine primer insights + local search results
+└─ Generate final comprehensive answer
+```
+
+**When DRIFT Excels**:
+- Queries that seem local but need broader context ("How does X's work relate to the industry trends?")
+- Questions where the optimal starting entities aren't obvious from the query text
+- Multi-faceted queries that span multiple communities
+
+**Key Advantage**: By incorporating community information early, DRIFT casts a wider net for relevant entities, leading to higher fact variety in final answers. Standard Local search might miss relevant entities if they don't appear directly in the query.
+
+**Cost**: Higher than Local (multiple LLM calls for follow-ups), but typically lower than Global (doesn't require map-reduce over all communities).
+
+## Mathematically
 
 ### Graph Representation
 Given a corpus $D = \{d_1, d_2, ..., d_n\}$, GraphRAG constructs:
@@ -220,17 +176,16 @@ $$answer(q) = Reduce(Map(q, \{summary(c) : c \in C_l\}))$$
 
 ### When NOT to Use GraphRAG
 
-| Scenario | Why It's Overkill |
-|:---------|:------------------|
-| **Simple factual QA** | Standard RAG suffices for direct fact retrieval |
-| **Single document QA** | No graph structure needed for one document |
-| **Latency-critical apps** | Global search is too slow (400ms-2s+) |
-| **Frequently changing data** | Re-indexing KG is expensive |
-| **Budget constraints** | Indexing costs 10-50x more than standard RAG |
-| **Low entity density** | If your corpus has few extractable entities, graph is sparse |
+| Scenario                     | Why It's Overkill                                            |
+| :--------------------------- | :----------------------------------------------------------- |
+| **Simple factual QA**        | Standard RAG suffices for direct fact retrieval              |
+| **Single document QA**       | No graph structure needed for one document                   |
+| **Latency-critical apps**    | Global search is too slow (400ms-2s+)                        |
+| **Frequently changing data** | Re-indexing KG is expensive                                  |
+| **Budget constraints**       | Indexing could cost 10-50x more than standard RAG            |
+| **Low entity density**       | If your corpus has few extractable entities, graph is sparse |
 
 ### Cost Analysis
-
 GraphRAG has significantly higher costs than standard RAG:
 
 | Phase | Cost Driver | Typical Scale |
@@ -242,7 +197,7 @@ GraphRAG has significantly higher costs than standard RAG:
 | **Global Query** | Reduce phase | 1-3 LLM calls |
 | **Local Query** | Subgraph retrieval + generation | 1-2 LLM calls |
 
-**Rule of Thumb**: Indexing 1MB of text costs roughly $10-15 (depending on LLM pricing). Global queries consume 200K+ tokens.
+**Rule of Thumb**: Indexing 1MB of text could cost roughly $10-15 (depending on LLM pricing). Global queries consume 200K+ tokens.
 
 ### Indexing Cost Breakdown (Example)
 For a corpus of 10,000 documents (~10MB of text):
@@ -294,17 +249,6 @@ Total: Heavy LLM dependency → $100-500+ for 10MB corpus
 | **Setup Cost** | Low (standard RAG index) | High (knowledge graph construction) |
 | **Best For** | Ad-hoc complex questions | Entity-relationship domains |
 
-### Query Type Decision Matrix
-
-| Query Type | Best Approach |
-|:-----------|:--------------|
-| "What is X?" (factual) | Standard RAG |
-| "How are X and Y related?" | GraphRAG (local search) |
-| "Who are all the people mentioned?" | GraphRAG (entity query) |
-| "What are the main themes?" | GraphRAG (global search) |
-| "What does X think about Y?" | Multi-hop or GraphRAG |
-| "Summarize document Z" | Long context or standard RAG |
-
 ## Technical Deep Dive: Community Summarization
 
 The community summarization step is critical for global search to work. At each level of the hierarchy:
@@ -344,7 +288,6 @@ The resulting summaries serve as a "compressed reasoning context" that allows th
 **Solution**:
 - Use domain-specific few-shot examples in extraction prompts
 - Implement gleaning (multi-pass extraction)
-- Manual review of entity sample for quality assurance
 
 ### 2. Over-Granular Communities
 **Problem**: Too many small communities make global search expensive and fragmented.
@@ -362,16 +305,7 @@ The resulting summaries serve as a "compressed reasoning context" that allows th
 - Track document versions and their graph contributions
 - Schedule periodic full re-indexing for data freshness
 
-### 4. Global Search Latency
-**Problem**: Map-reduce over many communities is slow (1-5+ seconds).
-
-**Solution**:
-- Pre-compute answers for common query patterns
-- Use faster/cheaper LLMs for map phase
-- Implement parallel processing for map calls
-- Cache community-level partial answers
-
-### 5. Cost Explosion at Scale
+### 4. Cost Explosion at Scale
 **Problem**: For very large corpora, indexing costs become prohibitive.
 
 **Solution**:
@@ -379,15 +313,7 @@ The resulting summaries serve as a "compressed reasoning context" that allows th
 - Sample documents for entity extraction, not 100% coverage
 - Consider hybrid approaches: GraphRAG for core entities, standard RAG for supporting content
 
-## Implementation Notes
-
-### Key Libraries and Tools
-- **Microsoft GraphRAG**: Official implementation (Python)
-- **Neo4j**: Graph database for storing knowledge graphs
-- **LangChain/LlamaIndex**: Orchestration frameworks with GraphRAG integrations
-- **NetworkX / igraph**: Graph algorithms (Leiden community detection)
-
-### Prompt Engineering for Entity Extraction
+## Prompt Engineering for Entity Extraction
 
 Example extraction prompt pattern:
 ```
@@ -411,42 +337,17 @@ RELATIONSHIPS:
 Be exhaustive. Include all entities mentioned, even if briefly.
 ```
 
-## Variants and Extensions
-
-### HybridRAG
-Combines GraphRAG with standard vector retrieval:
-- Use vector search for initial retrieval
-- Expand results using graph relationships
-- Best of both worlds: semantic similarity + structural relationships
-
-### Incremental GraphRAG
-Addresses the re-indexing problem:
-- Track which documents contribute to which entities
-- When a document updates, only re-extract affected subgraph
-- Merge new entities with existing graph
-
-### KET-RAG (Cost-Efficient GraphRAG)
-Research from 2024 that reduces indexing costs:
-- Multi-granular indexing (not everything needs LLM extraction)
-- Selective entity extraction (high-information chunks only)
-- Claims 10x cost reduction with comparable quality
 
 ## Resources
 
 ### Papers
-- [From Local to Global: A Graph RAG Approach to Query-Focused Summarization (Microsoft, 2024)](https://arxiv.org/abs/2404.16130) - The original GraphRAG paper
-- [Leiden Algorithm for Community Detection](https://www.nature.com/articles/s41598-019-41695-z) - The community detection method used
+- [From Local to Global: A Graph RAG Approach to Query-Focused Summarization (Microsoft, 2024)](https://arxiv.org/abs/2404.16130) - Original GraphRAG paper
+- [Leiden Algorithm for Community Detection](https://www.nature.com/articles/s41598-019-41695-z)
 
-### Articles
+### Others
 - [Microsoft Research Blog: GraphRAG](https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/)
-- [DataCamp: GraphRAG Tutorial](https://www.datacamp.com/tutorial/graphrag)
-
-### Code
 - [Microsoft GraphRAG GitHub](https://github.com/microsoft/graphrag) - Official implementation
-- [Neo4j GraphRAG Examples](https://neo4j.com/developer-blog/graphrag-knowledge-graph-rag/)
-
-### Videos
-- [GraphRAG Explained (Weights & Biases)](https://www.youtube.com/results?search_query=graphrag+weights+and+biases)
+- [GraphRAG Explained](https://www.youtube.com/watch?v=knDDGYHnnSI)
 
 ---
 

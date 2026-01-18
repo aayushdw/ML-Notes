@@ -74,12 +74,7 @@ See [[Chunking Strategies]] for detailed comparisons.
 
 ### Step 3: Embedding
 We convert text chunks into vector embeddings.
-
-$$\text{chunk} \xrightarrow{f_\theta} \mathbf{v} \in \mathbb{R}^d$$
-
-Where $f_\theta$ is the embedding model (a neural network with learned parameters $\theta$), and $d$ is the embedding dimension (commonly 384, 768, 1024, or 1536).
-
-Use the same model for both indexing and querying.
+See [[Embeddings]] for details.
 
 ### Step 4: Vector Storage & Indexing
 Embeddings are stored in a Vector Database optimized for similarity search at scale.
@@ -88,24 +83,7 @@ Embeddings are stored in a Vector Database optimized for similarity search at sc
 Given a query vector $\mathbf{v}_q$, find the $k$ most similar vectors among potentially millions of stored vectors.
 This is done using Approximate Nearest Neighbor (ANN) Algorithms.
 
-| Algorithm                                      | How It Works                                               | Trade-off                              |
-| :--------------------------------------------- | :--------------------------------------------------------- | :------------------------------------- |
-| **HNSW** (Hierarchical Navigable Small Worlds) | Graph-based; builds hierarchical layers for fast traversal | High recall, high memory               |
-| **IVF** (Inverted File Index)                  | Clusters vectors; searches only relevant clusters          | Faster indexing, lower recall          |
-| **PQ** (Product Quantization)                  | Compresses vectors; trades accuracy for memory             | Low memory, lower accuracy             |
-| **ScaNN**                                      | Hybrid of quantization + reordering                        | Google's approach, good accuracy/speed |
-TODO(Revisit various ANN algorithms and move below comparision to a separate note)
-
-**Popular Vector Databases**:
-
-| Database     | Type               | Best For                              |
-| :----------- | :----------------- | :------------------------------------ |
-| **FAISS**    | Library            | Local prototyping, high performance   |
-| **Pinecone** | Managed SaaS       | Production, serverless, zero-ops      |
-| **Weaviate** | Open-source        | Hybrid search (vectors + keywords)    |
-| **Qdrant**   | Open-source        | Filtering, payload storage            |
-| **Chroma**   | Open-source        | Simple setup, good for small projects |
-| **pgvector** | Postgres extension | When you already use Postgres         |
+See [[Vector Databases]] for details.
 
 **Metadata Storage**:
 Store metadata alongside vectors for filtering:

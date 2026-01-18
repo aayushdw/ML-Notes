@@ -280,13 +280,13 @@ LLMs can approximate human judgment at scale, with several advantages:
 
 ### Challenges and Mitigations
 
-| Challenge | Description | Mitigation |
-|:---|:---|:---|
-| **Self-preference bias** | LLMs prefer their own outputs | Use different models for generation vs. evaluation |
-| **Position bias** | Order of options affects judgment | Randomize option order, average across orderings |
-| **Verbosity bias** | Longer answers rated higher | Normalize by length or instruct to ignore length |
-| **Inconsistency** | Same input, different outputs | Use low temperature, average multiple runs |
-| **Sycophancy** | Agrees with user's implicit preference | Use neutral prompts, avoid leading questions |
+| Challenge                | Description                            | Mitigation                                         |
+| :----------------------- | :------------------------------------- | :------------------------------------------------- |
+| **Self-preference bias** | LLMs prefer their own outputs          | Use different models for generation vs. evaluation |
+| **Position bias**        | Order of options affects judgment      | Randomize option order, average across orderings   |
+| **Verbosity bias**       | Longer answers rated higher            | Normalize by length or instruct to ignore length   |
+| **Inconsistency**        | Same input, different outputs          | Use low temperature, average multiple runs         |
+| **Sycophancy**           | Agrees with user's implicit preference | Use neutral prompts, avoid leading questions       |
 
 1. **Use structured outputs**: Force JSON or specific formats to parse reliably
 2. **Chain-of-thought**: Ask for reasoning before the verdict
@@ -318,8 +318,6 @@ Most widely adopted open-source RAG evaluation framework. Provides reference-fre
 - Can be slow for large datasets (many LLM calls)
 - Metric definitions may not match your specific use case
 
----
-
 ### TruLens
 
 **Overview**: Evaluation and observability platform for LLM applications, with strong support for RAG.
@@ -340,8 +338,6 @@ Most widely adopted open-source RAG evaluation framework. Provides reference-fre
 - Production-ready with monitoring
 - Customizable feedback functions
 - Good LlamaIndex integration
-
----
 
 ### Phoenix (Arize AI)
 
@@ -364,8 +360,6 @@ Open-source observability platform with strong evaluation capabilities.
 - Strong embedding analysis
 - Works well for debugging retrieval
 
----
-
 ### Comparison of Frameworks
 
 | Feature | RAGAS | TruLens | Phoenix |
@@ -378,8 +372,6 @@ Open-source observability platform with strong evaluation capabilities.
 | **Customization** | Moderate | High | High |
 | **Learning curve** | Low | Medium | Medium |
 | **Best for** | Quick evaluation | Production apps | Debugging retrieval |
-
----
 
 ## Synthetic Test Set Generation
 
@@ -536,7 +528,6 @@ Low Context Relevance + Low Faithfulness + Low Answer Relevance
 
 ![[RAG Evaluation Metrics 2026-01-10 17.07.49.excalidraw.svg]]
 
----
 
 ## Resources
 

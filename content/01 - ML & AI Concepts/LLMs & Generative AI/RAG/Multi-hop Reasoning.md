@@ -7,49 +7,23 @@ It solves the problem of **"one retrieval isn't enough"** by introducing a feedb
 
 ### The Problem It Solves
 Standard RAG retrieves relevant chunks once and generates an answer:
-
-```
-Query: "Who founded the company that built the first commercial rocket?"
-│
-└─→ [Single Retrieval] "SpaceX" (from vector DB)
-    └─→ [Generation] LLM tries to answer with just "SpaceX" context
-        └─→ ❌ Answer quality depends on whether context mentions founder
-```
+![[Multi-hop Reasoning 2026-01-13 18.04.11.excalidraw.svg]]
 
 Multi-hop reasoning recognizes that some questions require **sequential knowledge dependencies**:
 
-```
-Query: "Who founded the company that built the first commercial rocket?"
-│
-├─→ [Retrieval #1] Find: "Who built the first commercial rocket?"
-│   └─→ Answer: SpaceX
-│
-├─→ [Retrieval #2] Find: "Who founded SpaceX?"
-│   └─→ Answer: Elon Musk
-│
-└─→ [Generation] Synthesize multi-step answer: "Elon Musk founded SpaceX..."
-```
+![[Multi-hop Reasoning 2026-01-13 18.07.50.excalidraw.svg]]
 
-### Key Insight
-Multi-hop reasoning breaks down **complex questions into decomposable sub-questions**, where answering one question provides context for the next. This is closest to how humans solve complex problems.
+Multi-hop reasoning breaks down complex questions into decomposable sub-questions, where answering one question provides context for the next. This is closest to how humans solve complex problems.
 
-## What It Is: Formal Definition
-
-**Multi-hop Reasoning** = A sequence of (Retrieval, Reasoning) pairs executed iteratively:
-
+It is a sequence of (Retrieval, Reasoning) pairs executed iteratively:
 1. **First Hop**: Retrieve documents relevant to the original question
 2. **Reason**: Use LLM to identify what additional information is needed
 3. **Second Hop**: Retrieve documents based on intermediate reasoning
 4. **Repeat**: Continue until sufficient context is gathered
 5. **Final Generation**: Synthesize all gathered context into final answer
 
-Mathematically, it extends the standard RAG formula:
 
-$$P_{mhr}(y|x) = \sum_{z_1, z_2, ..., z_n} P(y|z_n, ..., z_1, x) \prod_{i=1}^{n} P(z_i|z_{i-1}, ..., z_1, x)$$
-
-Where each $z_i$ is a retrieved document at hop $i$, and each retrieval depends on the chain of previous retrievals.
-
-## How It Works: Execution Patterns
+## Execution Patterns
 
 ### Pattern 1: Sequential Decomposition (Explicit)
 The LLM explicitly breaks down the question into sub-questions:
@@ -64,10 +38,10 @@ Step 2: LLM Decomposes
 
 Step 3: Execute Hops
   Hop 1: Retrieve docs for "solar panel inventor"
-         → Result: "SunPower Corporation"
+         - Result: "SunPower Corporation"
 
   Hop 2: Retrieve docs for "SunPower climate impact"
-         → Result: "Reduced 500M tons CO2 annually"
+         - Result: "Reduced 500M tons CO2 annually"
 
 Step 4: Generate Answer
   "SunPower Corporation, which pioneered modern solar panels, has reduced
@@ -91,6 +65,9 @@ Iteration 2:
 Output: Final synthesized answer
 ```
 
+> [!NOTE] Relationship to Agentic RAG
+> This pattern represents the **iterative retrieval loop** component of [[Agentic RAG]]. This pattern focuses specifically on the "retrieve → reason → retrieve again" cycle, which is a core building block of agentic architectures.
+
 ### Pattern 3: Graph-based Traversal
 Uses entity relationships to navigate knowledge:
 
@@ -102,7 +79,11 @@ Graph Traversal:
            → (Founded: Sam Altman) → Y Combinator → Funding amounts
 ```
 
-## Architecture Patterns for Production
+> [!NOTE] Relationship to GraphRAG
+> This pattern describes graph traversal *at query time*, assuming a knowledge graph already exists. This is essentially what [[GraphRAG]]'s **Local Search** does. However, GraphRAG is a complete system that also handles graph *construction* (entity extraction, community detection, hierarchical summarization) and supports additional query modes like Global Search for corpus-wide questions.
+
+
+## Architecture Patterns
 
 ### 1. **Explicit Decomposition Pipeline**
 Best for: Well-structured questions with clear sub-goals
@@ -119,7 +100,7 @@ Query → LLM Decomposer → [Sub-Q1, Sub-Q2, Sub-Q3]
 
 **Pros**: Predictable, easy to debug, parallelizable
 **Cons**: Requires good decomposition prompt, fails on ambiguous questions
-**Production Cost**: ~N retrieval calls (where N = sub-questions)
+**Cost**: ~N retrieval calls (N = # sub-questions)
 
 ### 2. **Agentic/Iterative Loop**
 Best for: Open-ended questions, exploratory reasoning
@@ -140,7 +121,6 @@ Query → LLM Agent with Retrieval Tool
 
 **Pros**: Adaptive, handles unexpected paths, good for complex reasoning
 **Cons**: Variable latency, cost unpredictable, harder to debug
-**Production Cost**: ~N retrieval calls (N unknown, avg 2-5)
 
 ### 3. **Hierarchical/Tree Search**
 Best for: Questions with branching dependencies
@@ -158,61 +138,57 @@ Best for: Questions with branching dependencies
 
 **Pros**: Handles complex dependencies, can prune irrelevant branches
 **Cons**: Expensive (exponential retrieval), complex orchestration
-**Production Cost**: ~O(branching_factor^depth) retrieval calls
+**Cost**: ~O(branching_factor^depth) retrieval calls
 
 ## When to Use Multi-hop Reasoning
 
 ### Use Multi-hop When:
 
-✅ **Questions have implicit dependencies**
+**Questions have implicit dependencies**
 - "Who funded the company that created GPT?" (Company → Founder → Founder's investors)
 - "What regulations apply to this industry's main competitor?" (Industry → Competitors → Competitor regulations)
 - "How does the technology from [X] relate to [Y]?" (X details → X connections → Y details)
 
-✅ **Your retrieval shows gaps**
+**Retrieval shows gaps**
 - Single retrieval returns "Company: TechCorp" but user needs "Company: TechCorp, Founded by: Jane Doe"
 - Retrieved context references entities not yet explained
 
-✅ **Questions require comparison or synthesis**
+**Questions require comparison or synthesis**
 - "Compare the founding philosophies of companies A and B" (Retrieve A → Retrieve B → Compare)
 - "How do these three methodologies relate?" (Retrieve 1 → Retrieve 2 → Retrieve 3 → Synthesis)
 
-✅ **Your domain knowledge graph is sparse**
+**Domain knowledge graph is sparse**
 - Without explicit relationships, multi-hop traversal discovers them implicitly
 - E.g., medical: symptoms → conditions → treatments → side effects
 
 ### Don't Use Multi-hop When:
 
-❌ **Questions are factual, single-retrieval answerable**
+**Questions are factual, single-retrieval answerable**
 - "What is the capital of France?" (Paris - one retrieval sufficient)
 - "Who invented the telephone?" (Alexander Graham Bell - direct fact)
 - Cost/latency overhead not justified
 
-❌ **Your retrieval system already captures context well**
-- If chunking strategy includes full entity context (person + affiliations + history), single hop suffices
-- If embedding quality naturally ranks highly relevant documents, additional hops add noise
-
-❌ **Latency requirements are strict**
+**Latency requirements are strict**
 - Multi-hop adds retrieval latency linearly (or exponentially in tree search)
 - If p99 latency < 500ms, multi-hop is risky (each retrieval ~100-300ms)
 
-❌ **Your vector database/retrieval quality is poor**
-- GIGO (Garbage In, Garbage Out): Bad retrieval at hop 1 cascades to worse retrieval at hop 2
+**Vector database/retrieval quality is poor**
+- Garbage In, Garbage Out: Bad retrieval at hop 1 cascades to worse retrieval at hop 2
 - Fix retrieval quality first before attempting multi-hop
 
 ## Production Considerations
 
 ### Latency & Cost Trade-offs
 
-| Aspect | Single Retrieval | Multi-hop (2 hops) | Multi-hop (3+ hops) |
-| :--- | :--- | :--- | :--- |
-| **Retrieval Calls** | 1 | 2-3 | 3-5+ |
-| **Typical Latency** | 150ms | 300-450ms | 450-700ms+ |
-| **Vector DB Cost** | 1 call | 2-3 calls | 3-5+ calls |
-| **LLM Cost** | 1 generation | 2-3 generations (reasoning) | 3-5+ generations |
-| **Answer Quality (potential)** | Good | Better | Best |
+| Aspect                         | Single Retrieval | Multi-hop (2 hops)          | Multi-hop (3+ hops) |
+| :----------------------------- | :--------------- | :-------------------------- | :------------------ |
+| **Retrieval Calls**            | 1                | 2-3                         | 3-5+                |
+| **Typical Latency**            | 150ms            | 300-450ms                   | 450-700ms+          |
+| **Vector DB Cost**             | 1 call           | 2-3 calls                   | 3-5+ calls          |
+| **LLM Cost**                   | 1 generation     | 2-3 generations (reasoning) | 3-5+ generations    |
+| **Answer Quality (potential)** | Good             | Better                      | Best                |
 
-**Production Rule**: Multi-hop adds ~150-200ms per additional hop. Budget accordingly.
+**Production Rule**: Multi-hop could add ~150-200ms per additional hop. Budget accordingly.
 
 ### Implementation Challenges
 

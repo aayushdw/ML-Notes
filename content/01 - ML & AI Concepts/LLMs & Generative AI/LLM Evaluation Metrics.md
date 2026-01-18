@@ -60,7 +60,6 @@ Where $c$ = candidate length, $r$ = reference length.
 - Ignores synonyms ("happy" vs "joyful" get no credit)
 - Ignores word order importance
 - Poor for creative or open-ended tasks
-- High scores don't always correlate with human judgment
 
 ### METEOR (Metric for Evaluation of Translation with Explicit ORdering)
 
@@ -91,8 +90,6 @@ Designed for summarization. Unlike BLEU (precision-focused), ROUGE is **recall-f
 | Variant | Description                | Use Case            |
 | :------ | :------------------------- | :------------------ |
 | ROUGE-N | N-gram recall              | General overlap     |
-| ROUGE-1 | Unigram recall             | Word coverage       |
-| ROUGE-2 | Bigram recall              | Phrase preservation |
 | ROUGE-L | Longest Common Subsequence | Sentence structure  |
 | ROUGE-S | Skip-bigram (allows gaps)  | Flexible matching   |
 
@@ -129,6 +126,29 @@ $$F_{BERT} = 2 \cdot \frac{P_{BERT} \cdot R_{BERT}}{P_{BERT} + R_{BERT}}$$
 - Computationally expensive
 - Still reference-based (needs ground truth)
 
+### COMET (Crosslingual Optimized Metric for Evaluation of Translation)
+
+A neural machine translation metric that uses multilingual embeddings (XLM-RoBERTa) and is trained on human quality judgments. Considered the state-of-the-art for translation evaluation.
+
+**How it works:**
+1. Encode source sentence, hypothesis (model output), and reference with multilingual encoder
+2. Pool representations and concatenate features
+3. Pass through regression head trained on human DA (Direct Assessment) scores
+4. Output: quality score (typically 0-1, higher is better)
+
+Unlike BLEU/BERTScore which compare strings, COMET is trained to **predict human judgments directly**.
+
+**Advantages:**
+- Highest correlation with human judgment for translation
+- Handles multilingual evaluation well
+- Reference-free variants available (COMET-QE)
+- Captures fluency, adequacy, and errors simultaneously
+
+**Limitations:**
+- Computationally expensive (requires GPU for speed)
+- Model-dependent (different COMET versions give different scores)
+- Less interpretable than n-gram metrics
+
 ### Comparison of Reference-Based Metrics
 
 | Metric | Type | Synonym Support | Order Sensitivity | Compute Cost | Best For |
@@ -137,6 +157,7 @@ $$F_{BERT} = 2 \cdot \frac{P_{BERT} \cdot R_{BERT}}{P_{BERT} + R_{BERT}}$$
 | ROUGE | N-gram Recall | No | Partial (ROUGE-L) | Low | Summarization |
 | METEOR | Hybrid | Yes (WordNet) | Yes | Medium | Translation |
 | BERTScore | Embedding | Yes (Contextual) | No | High | General semantic |
+| COMET | Neural (trained) | Yes (Learned) | Yes | High | Translation (SOTA) |
 
 ## Reference-Free Metrics
 
@@ -154,12 +175,78 @@ Where $P(x_i|x_{<i})$ is the probability of token $x_i$ given all previous token
 - If a model assigns high probability to every token → low perplexity → fluent text
 - If a model is constantly surprised → high perplexity → unusual text
 
+| Use Case | How Perplexity Helps |
+|:---------|:---------------------|
+| **Model Comparison** | Compare versions of the same model (lower PPL = better LM) |
+| **Training Monitoring** | Track PPL on validation set during fine-tuning |
+| **Fluency Check** | Flag unusually high-PPL outputs for review |
+| **Hallucination Detection** | Hallucinated facts often have higher perplexity |
+| **Domain Adaptation** | Measure how well model fits new domain text |
+| **Prompt Engineering** | Compare output quality across different prompts |
+
+#### Evaluating LLM-Generated Text with Perplexity
+
+You can use an **external judge model** to compute perplexity on generated text:
+
+```
+                    ┌─────────────────────┐
+   Generated Text   │   Judge Model       │   Perplexity
+   ───────────────► │   (e.g., GPT-2,     │ ───────────────►
+   "The cat sat..." │   LLaMA, Mistral)   │   Score: 12.3
+                    └─────────────────────┘
+```
+
+Use a *different* model as the judge. If Model A generates text, use Model B to score its perplexity. This prevents self-evaluation bias.
+
+**Interpretation:**
+- **Low perplexity (< 20)**: Fluent, natural-sounding text
+- **Medium perplexity (20-50)**: Acceptable, may have awkward phrasing
+- **High perplexity (> 50)**: Unusual constructions, potential issues
+- **Very high perplexity (> 100)**: Likely gibberish, hallucinations, or domain mismatch
+
+> [!NOTE]
+> Perplexity thresholds are model-dependent. Always calibrate on known-good examples first.
+
+#### Perplexity for Hallucination Detection
+
+Hallucinated content often exhibits **locally high perplexity** because:
+1. Made-up entities have unusual token sequences
+2. False facts create inconsistent contexts
+3. Non-existent relationships surprise the model
+
+**Approach:**
+```
+1. Compute token-level log probabilities
+2. Identify spans with unusually low probability
+3. Flag these as potential hallucinations
+4. Cross-reference with source for verification
+```
+
+#### Perplexity vs. Cross-Entropy
+
+They're closely related:
+
+$$\text{Cross-Entropy}(X) = -\frac{1}{N}\sum_{i=1}^{N}\log P(x_i|x_{<i})$$
+
+$$\text{Perplexity}(X) = \exp(\text{Cross-Entropy}(X))$$
+
+- **Cross-entropy**: Measured in bits/nats, used in loss functions
+- **Perplexity**: More interpretable (effective vocabulary size per token)
+
+Perplexity of 10 means the model is, on average, as uncertain as if choosing uniformly among 10 options.
+
 **Limitations:**
 - Measures fluency, not accuracy or relevance
 - A grammatically perfect lie has low perplexity
-- Different models have different perplexity scales (not comparable)
+- Different models have different perplexity scales (not directly comparable)
+- Doesn't capture semantic correctness or factuality
+- Short sequences have high variance
 
-**Use Case**: Measuring language model quality, comparing model versions.
+**When NOT to Use Perplexity:**
+- Comparing models with different tokenizers (unfair comparison)
+- Evaluating factual correctness (fluent lies score well)
+- Cross-model comparison without normalization
+- Creative tasks where unusual = good
 
 ## LLM-as-Judge Evaluation
 
@@ -197,66 +284,11 @@ Compares two outputs directly.
 | **Sycophancy** | Agrees with user's stated preference | Blind evaluation |
 | **Limited Reasoning** | Struggles with math/code verification | Use specialized checkers |
 
-## RAG-Specific Evaluation (RAGAS Framework)
-
-[[01 - RAG Index]] systems require specialized metrics that evaluate both retrieval and generation.
-
-### The RAG Triad
-
-```mermaid
-graph TD
-    Q[Query] --> CR[Context Relevance]
-    C[Retrieved Context] --> CR
-    C --> F[Faithfulness/Groundedness]
-    A[Answer] --> F
-    Q --> AR[Answer Relevance]
-    A --> AR
-```
-
-### 1. Context Relevance (Retrieval Quality)
-
-"Is the retrieved context useful for answering the query?"
-
-$$\text{Context Relevance} = \frac{|S_{extracted}|}{|C_{total}|}$$
-
-Where:
-- $S_{extracted}$ = Sentences from context relevant to the question
-- $C_{total}$ = Total sentences in context
-
-Ask LLM to extract only relevant sentences, then compute ratio.
-
-### 2. Faithfulness / Groundedness
-
-"Is the answer supported by the retrieved context?"
-Most critical RAG metric. Measures hallucination.
-
-$$\text{Faithfulness} = \frac{|\text{Claims supported by context}|}{|\text{Total claims in answer}|}$$
-
-1. Extract all claims/statements from the answer
-2. For each claim, verify if it can be inferred from the context
-3. Calculate ratio of supported claims
-
-### 3. Answer Relevance
-
-"Does the answer actually address the user's question?"
-
-**Implementation:** Generate N hypothetical questions that the answer would be a good response to. Measure semantic similarity between original question and generated questions.
-
-$$\text{Answer Relevance} = \frac{1}{N}\sum_{i=1}^{N} \cos(E(q), E(q_i^{gen}))$$
-
-### RAG Metrics
-
-| Metric | Formula | What It Measures |
-|:-------|:--------|:-----------------|
-| **Answer Correctness** | Semantic similarity + factual overlap | Overall answer quality |
-| **Context Precision** | Relevant chunks / Total chunks | Retrieval precision |
-| **Context Recall** | Ground truth covered / Total ground truth | Retrieval coverage |
-| **Answer Similarity** | Cosine(answer, ground truth) | Semantic match |
+## RAG-Specific Evaluation
+See [[RAG Evaluation Metrics]].
 
 ## Human Evaluation
-
-The gold standard, but expensive and hard to scale.
-
+Gold standard, but expensive and hard to scale.
 ### Evaluation Dimensions
 
 | Dimension           | Description                          |
@@ -359,15 +391,305 @@ TODO - Link Project specific details here.
 | **HELM** | Holistic evaluation | Multi-dimensional scoring |
 | **DeepEval** | Unit testing for LLMs | Pytest-style assertions |
 
+---
+
+## Metric Selection Framework
+
+### Decision Matrix: When to Use What
+
+| Scenario | Primary Metrics | Why | Avoid |
+|:---------|:----------------|:----|:------|
+| **Closed-domain QA** (factual, single correct answer) | EM, F1, Accuracy | Ground truth exists | BLEU (too lenient) |
+| **Open-domain QA** (multiple valid phrasings) | BERTScore, LLM-as-Judge | Captures semantic equivalence | EM (too strict) |
+| **Summarization** | ROUGE-L, Faithfulness, BERTScore | Coverage + factual consistency | BLEU (wrong focus) |
+| **Translation** | BLEU, COMET, chrF | Established benchmarks | ROUGE (recall-focused) |
+| **Creative Writing** | Human Eval, Distinct-N, Perplexity | Subjective quality | All exact-match metrics |
+| **Code Generation** | pass@k, Execution Accuracy | Functional correctness | BLEU/ROUGE (syntax ≠ function) |
+| **RAG Systems** | Faithfulness, Context Relevance, Answer Relevance | [[RAG Evaluation Metrics\|RAGAS triad]] | Single-dimension metrics |
+| **Chatbots / Assistants** | MT-Bench, Arena Elo, Human Preference | Multi-turn, subjective | Static metrics |
+| **Safety / Alignment** | Refusal Rate, Toxicity Score, Bias Metrics | Risk mitigation | Accuracy-only metrics |
+
+### Metric Trade-offs Analysis
+
+Understanding the trade-offs helps you pick the right tool for the job:
+
+| Metric | Pros | Cons | Computational Cost | Human Correlation |
+|:-------|:-----|:-----|:-------------------|:------------------|
+| **BLEU** | Fast, reproducible, established | No synonyms, ignores meaning | Very Low | Low-Medium |
+| **ROUGE** | Good for coverage | Recall-biased, no semantics | Very Low | Low-Medium |
+| **METEOR** | Synonym support, order-aware | WordNet dependency, slower | Medium | Medium |
+| **BERTScore** | Semantic similarity, context-aware | Expensive, model-dependent | High | High |
+| **Perplexity** | Fast fluency check | No accuracy/relevance signal | Low | Low |
+| **LLM-as-Judge** | Flexible, multi-dimensional | Expensive, biased, non-deterministic | Very High | High |
+| **Human Eval** | Gold standard | Expensive, slow, hard to scale | N/A (human time) | Perfect (by definition) |
+| **pass@k** | Functional correctness | Expensive (needs execution) | High | High (for code) |
+
+### The Speed vs. Depth Trade-off
+
+```
+Fast ←────────────────────────────────────────────→ Thorough
+│                                                           │
+│   Perplexity    BLEU/ROUGE    BERTScore    LLM-Judge    Human
+│       ↓              ↓            ↓            ↓          ↓
+│   Fluency only   Surface match  Semantic   Multi-dim   Complete
+│   $0.001/eval    $0.01/eval    $0.10/eval  $0.50/eval  $5+/eval
+```
+
+**Intuition**: Layer your evaluation—fast metrics for CI/CD, deep metrics for releases.
+
+---
+
+## High-Stakes Systems: Financial & Medical Evaluation
+
+> [!CAUTION]
+> In high-stakes domains (healthcare, finance, legal), **incorrect outputs can cause real harm**. Standard LLM evaluation is insufficient. You need defense-in-depth evaluation strategies.
+
+### Why Standard Metrics Fail in Critical Systems
+
+| Standard Metric | Failure Mode in High-Stakes |
+|:----------------|:----------------------------|
+| **BLEU/ROUGE** | High score doesn't mean factually correct |
+| **Perplexity** | Fluent lies score well |
+| **LLM-as-Judge** | Judges can miss domain-specific errors |
+| **BERTScore** | Semantic similarity ≠ medical accuracy |
+
+### The High-Stakes Evaluation Stack
+
+```mermaid
+graph TD
+    subgraph "Layer 1: Automated Safety Gates"
+        A1[Hallucination Detection]
+        A2[Citation Verification]
+        A3[Constraint Checking]
+    end
+    
+    subgraph "Layer 2: Domain-Specific Validation"
+        B1[Knowledge Graph Grounding]
+        B2[Structured Output Validation]
+        B3[Regulatory Compliance Checks]
+    end
+    
+    subgraph "Layer 3: Human-in-the-Loop"
+        C1[Domain Expert Review]
+        C2[Adversarial Red-Teaming]
+        C3[Audit Trail Analysis]
+    end
+    
+    A1 --> B1
+    A2 --> B1
+    A3 --> B2
+    B1 --> C1
+    B2 --> C1
+    B3 --> C2
+```
+
+### Essential Metrics for High-Stakes Systems
+
+#### 1. Faithfulness & Hallucination Detection
+
+**Definition**: Does the output contain ANY claims not supported by the provided context/sources?
+
+| Metric | Description | Use Case |
+|:-------|:------------|:---------|
+| **Claim-level Faithfulness** | Decompose output → verify each claim | Medical summaries |
+| **Entailment Score** | NLI model checks if context entails output | RAG systems |
+| **Citation Precision** | % of citations that actually support claims | Research assistants |
+| **Self-Consistency** | Same question → consistent answers? | Financial advice |
+
+**Implementation Approach**:
+```
+1. Decompose output into atomic claims
+2. For each claim:
+   - Check if source/context contains supporting evidence
+   - Use NLI model: context → claim (entailment check)
+   - Flag unsupported claims as hallucinations
+3. Faithfulness = supported_claims / total_claims
+```
+
+> [!WARNING]
+> A 95% faithfulness score means 1 in 20 claims may be hallucinated. In medical contexts, that's unacceptable. Target >99% with human verification for flagged cases.
+
+#### 2. Confidence Calibration
+
+**Definition**: Does the model know what it doesn't know?
+
+$$\text{ECE} = \sum_{b=1}^{B} \frac{|B_b|}{n} |acc(B_b) - conf(B_b)|$$
+
+Where:
+- $B_b$ = samples in confidence bin $b$
+- $acc(B_b)$ = accuracy in bin
+- $conf(B_b)$ = average confidence in bin
+
+**Intuition**: A well-calibrated model saying "I'm 90% confident" should be correct 90% of the time.
+
+**Why it matters**: 
+- Overconfident wrong answers are dangerous
+- Underconfident correct answers reduce trust
+- Enables appropriate human escalation
+
+#### 3. Abstention Rate & Quality
+
+**Definition**: Does the model refuse to answer when it should?
+
+| Metric | Formula | Target |
+|:-------|:--------|:-------|
+| **Appropriate Abstention Rate** | Correctly refused / Should have refused | High |
+| **Inappropriate Abstention Rate** | Wrongly refused / Could have answered | Low |
+| **Abstention Precision** | Correct abstentions / Total abstentions | High |
+
+**Critical Insight**: In high-stakes systems, **"I don't know"** is often the correct answer.
+
+#### 4. Structured Output Compliance
+
+For systems that must output in specific formats (e.g., ICD codes, financial tickers):
+
+| Check | Description |
+|:------|:------------|
+| **Schema Validation** | Output matches expected JSON/XML schema |
+| **Ontology Compliance** | Terms exist in domain ontology (SNOMED-CT, FIBO) |
+| **Value Range Checks** | Numerical outputs within valid ranges |
+| **Cross-field Consistency** | Related fields are logically consistent |
+
+#### 5. Worst-Case Performance (Robustness)
+
+| Metric | Description |
+|:-------|:------------|
+| **Tail Accuracy** | Accuracy on bottom 5% performing samples |
+| **Adversarial Robustness** | Performance under input perturbations |
+| **Distribution Shift Performance** | Accuracy on OOD examples |
+| **Stress Test Failure Rate** | % failures under edge cases |
+
+> [!IMPORTANT]
+> Average metrics hide dangerous failures. A model with 95% average accuracy but 50% accuracy on rare-but-critical cases is unsafe.
+
+### Domain-Specific Considerations
+
+#### Medical/Healthcare
+
+| Requirement | Evaluation Approach |
+|:------------|:--------------------|
+| **No hallucinated conditions** | Claim extraction + medical KB grounding |
+| **No contraindicated advice** | Drug interaction checking |
+| **Appropriate uncertainty** | Confidence calibration + abstention |
+| **HIPAA compliance** | PII detection in outputs |
+| **Up-to-date guidelines** | Knowledge freshness verification |
+
+**Recommended Stack**:
+1. **Automated**: Faithfulness (>99%), Schema validation, Toxicity
+2. **Domain**: Medical NER + KB linking, Drug interaction check
+3. **Human**: Physician review for flagged cases, periodic audits
+
+#### Financial Systems
+
+| Requirement | Evaluation Approach |
+|:------------|:--------------------|
+| **No made-up numbers** | Numerical claim verification |
+| **Regulatory compliance** | SEC/FINRA rule checking |
+| **No forward-looking statements** | Temporal claim analysis |
+| **Audit trail** | Full provenance tracking |
+| **Consistency** | Same data → same output |
+
+**Recommended Stack**:
+1. **Automated**: Faithfulness, Citation verification, Numerical accuracy
+2. **Domain**: Regulatory keyword detection, Disclaimer presence
+3. **Human**: Compliance officer review, Red-teaming
+
+### High-Stakes Evaluation Checklist
+
+```markdown
+## Pre-Deployment Checklist
+
+### Safety Gates (Must Pass All)
+- [ ] Hallucination rate < 1% on test set
+- [ ] Zero harmful/dangerous outputs in adversarial testing
+- [ ] Appropriate abstention on out-of-scope queries
+- [ ] All outputs traceable to sources
+
+### Robustness Testing
+- [ ] Tested on distribution shift
+- [ ] Tested on adversarial inputs  
+- [ ] Worst-case performance acceptable
+- [ ] Consistent outputs for same inputs
+
+### Compliance
+- [ ] Domain expert validation (sample review)
+- [ ] Regulatory requirement check
+- [ ] Audit logging implemented
+- [ ] Human escalation path defined
+
+### Monitoring
+- [ ] Confidence drift detection
+- [ ] Output distribution monitoring
+- [ ] User feedback collection
+- [ ] Periodic re-evaluation scheduled
+```
+
+### Build vs. Buy: Evaluation Tools for Critical Systems
+
+| Tool | Best For | High-Stakes Features |
+|:-----|:---------|:---------------------|
+| **Patronus AI** | Enterprise LLM security | Hallucination detection, PII leakage |
+| **Galileo** | LLM observability | Factuality scoring, drift detection |
+| **Weights & Biases/Weave** | Experiment tracking | Evaluation datasets, comparison |
+| **Arize Phoenix** | Production monitoring | Drift detection, troubleshooting |
+| **Custom pipelines** | Domain-specific needs | Full control, compliance |
+
+---
+
+## Comprehensive Metric Reference
+
+### Complete Metric Taxonomy
+
+| Category | Metric | Type | Reference Required | Cost | Best Domain |
+|:---------|:-------|:-----|:-------------------|:-----|:------------|
+| **N-gram** | BLEU | Precision | Yes | Low | Translation |
+| **N-gram** | ROUGE-N | Recall | Yes | Low | Summarization |
+| **N-gram** | ROUGE-L | LCS | Yes | Low | Summarization |
+| **N-gram** | METEOR | Hybrid | Yes | Medium | Translation |
+| **N-gram** | chrF | Char-level | Yes | Low | Translation |
+| **Semantic** | BERTScore | Embedding | Yes | High | General |
+| **Semantic** | MoverScore | Embedding | Yes | High | General |
+| **Semantic** | BLEURT | Learned | Yes | High | General |
+| **Semantic** | COMET | Neural MT | Yes | High | Translation |
+| **Fluency** | Perplexity | LM prob | No | Low | Fluency |
+| **Diversity** | Distinct-N | N-gram | No | Low | Dialogue |
+| **Diversity** | Self-BLEU | N-gram | No | Low | Generation |
+| **Code** | pass@k | Execution | Yes | High | Code |
+| **Code** | CodeBLEU | Hybrid | Yes | Medium | Code |
+| **Factuality** | Faithfulness | NLI/LLM | Yes (context) | High | RAG, Summary |
+| **Factuality** | FactScore | Claim-level | Yes (KB) | Very High | Long-form |
+| **LLM-Judge** | G-Eval | LLM prompt | Optional | Very High | General |
+| **LLM-Judge** | MT-Bench | LLM scoring | No | Very High | Chat |
+| **LLM-Judge** | Arena Elo | Pairwise | No | Very High | Chat |
+| **Human** | Likert Scale | Rating | No | N/A | All |
+| **Human** | Pairwise Pref | Comparison | No | N/A | All |
+| **RAG** | Context Relevance | LLM/Embed | Yes (query) | High | RAG |
+| **RAG** | Answer Relevance | LLM/Embed | Yes (query) | High | RAG |
+| **Safety** | Toxicity | Classifier | No | Low | All |
+| **Safety** | Bias Score | Statistical | No | Medium | All |
+
+---
+
 ## Resources
 
+**Core Papers:**
 - [Judging LLM-as-a-Judge (LMSYS)](https://arxiv.org/abs/2306.05685)
 - [G-Eval: NLG Evaluation using GPT-4](https://arxiv.org/abs/2303.16634)
 - [HELM: Holistic Evaluation of Language Models](https://crfm.stanford.edu/helm/)
 - [MMLU Paper](https://arxiv.org/abs/2009.03300)
 - [BERTScore Paper](https://arxiv.org/abs/1904.09675) 
 - [Lost in the Middle](https://arxiv.org/abs/2307.03172)
+
+**High-Stakes Evaluation:**
+- [FActScore: Fine-grained Atomic Evaluation of Factual Precision](https://arxiv.org/abs/2305.14251)
+- [TruthfulQA: Measuring How Models Mimic Human Falsehoods](https://arxiv.org/abs/2109.07958)
+- [Calibrating Language Models](https://arxiv.org/abs/2207.05221)
+- [Red Teaming Language Models](https://arxiv.org/abs/2202.03286)
+
+**Tools & Platforms:**
 - [Chatbot Arena](https://lmarena.ai)
+- [DeepEval GitHub](https://github.com/confident-ai/deepeval)
+- [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
 
 ---
 **Back to**: [[02 - LLMs & Generative AI Index]] | [[ML & AI Index]]
