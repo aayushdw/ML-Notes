@@ -464,13 +464,17 @@ hr {
   }
 }
 
-// Fallback: Center "inline" math that is the only content in a paragraph
-// This handles cases where block math ($$...$$) is rendered as inline math inside a <p> tag
-p>.katex:only-child {
-  display: block !important;
-  text-align: center !important;
+// Style paragraphs that contain ONLY block math (no text siblings)
+// This class is added by katex-block.inline.ts at runtime
+p.katex-block-paragraph {
+  display: block;
+  text-align: center;
   width: 100%;
   margin: 1em 0;
+
+  >.katex {
+    display: inline-block;
+  }
 }
 
 // Center Typst/other math displays

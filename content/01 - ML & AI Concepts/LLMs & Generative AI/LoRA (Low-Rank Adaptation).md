@@ -55,6 +55,7 @@ Therefore, at step 0:
 $$BAx = 0 \cdot A \cdot x = 0$$
 
 $$h = W_0x + 0$$
+
 i.e. The model starts exactly at the pre-trained baseline.
 
 ### The Scaling Factor ($\alpha$)
@@ -156,13 +157,13 @@ You can now discard $A$ and $B$ and serve $W_{final}$ as a standard model.
 
 
 ## Target Modules
-A modern LLM (like Llama-3) is just a stack of identical "blocks" (usually 32 or 80 of them). Inside _each_ block, there are two distinct departments that perform different jobs:
-1. The Attention Mechanism
-2. The Feed-Forward Network / MLP
+A modern LLM (like Llama-3) is just a stack of identical "blocks" (usually 32 or 80 of them). Inside _each_ block, there are two distinct modules that perform different jobs:
+1. Attention Mechanism
+2. Feed-Forward Network / MLP
 
-We apply LoRA to the linear layers (matrices) inside these departments.
+We apply LoRA to the linear layers (matrices) inside these modules.
 
-### Department A: The Attention Mechanism (Q, K, V, O)
+### Module A: Attention Mechanism (Q, K, V, O)
 Imagine the token "Bank" is trying to figure out if it means "River Bank" or "Financial Bank." It needs to look at the other words in the sentence (context). It does this using four specific projection layers.
 - **`q_proj` (Query):** "What am I looking for?"
     - The token broadcasts a search query. (e.g., "I am 'Bank', looking for words like 'money' or 'water' nearby.")
@@ -176,11 +177,10 @@ Imagine the token "Bank" is trying to figure out if it means "River Bank" or "Fi
 - **`o_proj` (Output):** "Mix it all together."
     - After grabbing information from all relevant words, this layer blends it back into the token's current state.
 
-**Why target these?** In the early days of LoRA, people _only_ targeted `q_proj` and `v_proj`. This was enough to change "what the model focuses on," but it wasn't great at teaching the model new logic.
 
 ---
 
-### Department B: The MLP / Feed-Forward (Gate, Up, Down)
+### Module B: MLP / Feed-Forward (Gate, Up, Down)
 After the Attention step, the token "Bank" knows it refers to a river. Now it needs to _think_ about that. It enters the MLP (Multi-Layer Perceptron). In Llama-style models, this is a "SwiGLU" architecture, which uses three specific matrices:
 - **`up_proj` (Up Projection):**
     - Takes the input (e.g., dimension 4096) and **explodes** it into a much higher dimension (e.g., 14,336). This is where the model "unpacks" the concept to look at fine-grained details.
@@ -201,7 +201,7 @@ We usually **do not** apply LoRA to the `lm_head` (the very final layer that pre
 - [ ] Semantic Routing
 - [ ] TIES-merging / DARE
 - [ ] Mixture of LoRA
-																			- [ ] Adapter Fusion
+- [ ] Adapter Fusion
 
 ## Resources
 
