@@ -9,18 +9,18 @@ Most popular PEFT technique. (See [[Fine-Tuning Overview]])
 
 ![[LoRA (Low-Rank Adaptation) 2025-12-30 22.06.21.excalidraw.svg]]
 
-## Intuition
 
-### Low Intrinsic Rank Hypothesis
+## Low Intrinsic Rank Hypothesis
 When we fine-tune a massive model (e.g., 70 Billion parameters), we are updating the weights to adapt to a new task. The authors of the LoRA paper hypothesized that **weight updates are not random; they are highly correlated.**
 If a model needs to learn to "speak like a pirate," it doesn't need to change every single neuron independently. The changes required to the weight matrices actually reside in a lower-dimensional space. This is called the **low intrinsic rank** hypothesis.
 
 ## Mathematical Foundation
-In a standard dense layer of a neural network, you have a pre-trained weight matrix $W_0$.
+In a standard dense layer of a neural network, you have a pre-trained weight matrix $W_0$
 
 In Full Fine-Tuning, you calculate a weight update $\Delta W$ that is the same size as $W_0$.
 
 $$W_{new} = W_0 + \Delta W$$
+
 In LoRA, we freeze $W_0$. We do not calculate $\Delta W$ directly. Instead, we decompose $\Delta W$ into two significantly smaller matrices, $A$ and $B$.
 
 - **$W_0$ (Frozen):** The original model weights
@@ -113,7 +113,7 @@ Think of $\alpha$ as a **"Volume Knob"** for the LoRA adapter.
 
 You want to balance how much the model listens to the old knowledge vs. the new knowledge.
 
-In the equation $h = W_0x + \frac{\alpha}{r} (BAx)$:
+In the equation $h = W_0x + \frac{\alpha}{r} (BAx)$ :
 - If you set $\alpha = r$, the scaling factor is 1. The adapter behaves "normally."
 - If you set $\alpha = 2r$, the scaling factor is 2. You are mathematically doubling the influence of the LoRA weights relative to the base weights.
 
@@ -134,7 +134,7 @@ The Rank determines the **capacity** of your fine-tuning. It controls how "compl
 ### How to choose Alpha ($\alpha$)
 
 Empirically, using a higher Alpha often stabilizes training for LoRA. It acts like a momentum booster.
-**($\alpha = 2r$)
+($\alpha = 2r$)
 
 It is critical to understand that **Alpha and Learning Rate (LR) are mathematically coupled.**
 If you double your Alpha, you are mathematically doubling the magnitude of your update. This is roughly equivalent to doubling your Learning Rate.
@@ -151,6 +151,7 @@ One of the best features of LoRA is that it introduces **zero latency** during i
 Because $BA$ has the same dimensions as $W_0$, once you are done training, you can simply perform matrix addition to permanently fuse the weights:
 
 $$W_{final} = W_0 + (B \times A) \cdot \frac{\alpha}{r}$$
+
 You can now discard $A$ and $B$ and serve $W_{final}$ as a standard model.
 
 

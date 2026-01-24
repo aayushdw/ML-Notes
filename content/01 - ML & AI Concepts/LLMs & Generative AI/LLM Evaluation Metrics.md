@@ -175,14 +175,14 @@ Where $P(x_i|x_{<i})$ is the probability of token $x_i$ given all previous token
 - If a model assigns high probability to every token → low perplexity → fluent text
 - If a model is constantly surprised → high perplexity → unusual text
 
-| Use Case | How Perplexity Helps |
-|:---------|:---------------------|
-| **Model Comparison** | Compare versions of the same model (lower PPL = better LM) |
-| **Training Monitoring** | Track PPL on validation set during fine-tuning |
-| **Fluency Check** | Flag unusually high-PPL outputs for review |
-| **Hallucination Detection** | Hallucinated facts often have higher perplexity |
-| **Domain Adaptation** | Measure how well model fits new domain text |
-| **Prompt Engineering** | Compare output quality across different prompts |
+| Use Case                    | How Perplexity Helps                                       |
+| :-------------------------- | :--------------------------------------------------------- |
+| **Model Comparison**        | Compare versions of the same model (lower PPL = better LM) |
+| **Training Monitoring**     | Track PPL on validation set during fine-tuning             |
+| **Fluency Check**           | Flag unusually high-PPL outputs for review                 |
+| **Hallucination Detection** | Hallucinated facts often have higher perplexity            |
+| **Domain Adaptation**       | Measure how well model fits new domain text                |
+| **Prompt Engineering**      | Compare output quality across different prompts            |
 
 #### Evaluating LLM-Generated Text with Perplexity
 
@@ -199,10 +199,10 @@ You can use an **external judge model** to compute perplexity on generated text:
 Use a *different* model as the judge. If Model A generates text, use Model B to score its perplexity. This prevents self-evaluation bias.
 
 **Interpretation:**
-- **Low perplexity (< 20)**: Fluent, natural-sounding text
-- **Medium perplexity (20-50)**: Acceptable, may have awkward phrasing
-- **High perplexity (> 50)**: Unusual constructions, potential issues
-- **Very high perplexity (> 100)**: Likely gibberish, hallucinations, or domain mismatch
+- Low perplexity: Fluent, natural-sounding text
+- Medium perplexity: Acceptable, may have awkward phrasing
+- High perplexity: Unusual constructions, potential issues
+- Very high perplexity: Likely gibberish, hallucinations, or domain mismatch
 
 > [!NOTE]
 > Perplexity thresholds are model-dependent. Always calibrate on known-good examples first.
@@ -255,7 +255,7 @@ Uses a powerful LLM to evaluate another LLM's outputs. This has become the stand
 ### How It Works
 ![[LLM Evaluation Metrics 2025-12-30 22.16.06.excalidraw.svg]]
 
-### G-Eval Framework
+### Eval Framework
 
 A systematic approach using Chain-of-Thought prompting for evaluation.
 
@@ -276,30 +276,19 @@ Compares two outputs directly.
 
 ### Limitations of LLM-as-Judge
 
-| Issue | Description | Mitigation |
-|:------|:------------|:-----------|
-| **Position Bias** | Prefers first/last option in pairwise | Randomize order, average both orderings |
-| **Verbosity Bias** | Prefers longer responses | Explicitly penalize unnecessary length |
-| **Self-Enhancement Bias** | GPT-4 prefers GPT-4 outputs | Use different judge than model tested |
-| **Sycophancy** | Agrees with user's stated preference | Blind evaluation |
-| **Limited Reasoning** | Struggles with math/code verification | Use specialized checkers |
+| Issue                     | Description                           | Mitigation                              |
+| :------------------------ | :------------------------------------ | :-------------------------------------- |
+| **Position Bias**         | Prefers first/last option in pairwise | Randomize order, average both orderings |
+| **Verbosity Bias**        | Prefers longer responses              | Explicitly penalize unnecessary length  |
+| **Self-Enhancement Bias** | GPT-4 prefers GPT-4 outputs           | Use different judge than model tested   |
+| **Sycophancy**            | Agrees with user's stated preference  | Blind evaluation                        |
+| **Limited Reasoning**     | Struggles with math/code verification | Use specialized checkers                |
 
 ## RAG-Specific Evaluation
 See [[RAG Evaluation Metrics]].
 
 ## Human Evaluation
 Gold standard, but expensive and hard to scale.
-### Evaluation Dimensions
-
-| Dimension           | Description                          |
-| :------------------ | :----------------------------------- |
-| **Fluency**         | Grammatical correctness, readability |
-| **Coherence**       | Logical flow, consistency            |
-| **Relevance**       | Addresses the query                  |
-| **Informativeness** | Provides useful information          |
-| **Harmlessness**    | Avoids harmful content               |
-| **Helpfulness**     | Overall utility                      |
-
 ### Evaluation Methods
 
 | Method                  | Best For              |
@@ -310,7 +299,6 @@ Gold standard, but expensive and hard to scale.
 | **Task Completion**     | Functional evaluation |
 
 ### Inter-Annotator Agreement
-
 Measure consistency between human evaluators:
 
 **Cohen's Kappa:** (Higher is better)

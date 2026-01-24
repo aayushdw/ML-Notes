@@ -50,8 +50,6 @@ This clustering is what enables retrieval: a query about "contract law" will be 
 
 The standard architecture for retrieval embeddings. Encodes queries and documents independently.
 
-![[Embeddings 2026-01-12 00.00.00.excalidraw.svg]]
-
 **Characteristics**:
 - Query and document encoded separately
 - Document embeddings can be pre-computed and cached
@@ -89,14 +87,14 @@ The **Massive Text Embedding Benchmark (MTEB)** is the standard benchmark for ev
 
 ### Task Categories
 
-| Task | Description | Relevance to RAG |
-|:-----|:------------|:-----------------|
-| **Retrieval** | Find relevant documents for a query | Direct RAG relevance |
+| Task                                  | Description                             | Relevance to RAG             |
+| :------------------------------------ | :-------------------------------------- | :--------------------------- |
+| **Retrieval**                         | Find relevant documents for a query     | Direct RAG relevance         |
 | **Semantic Textual Similarity (STS)** | Score similarity between sentence pairs | Related to retrieval quality |
-| **Classification** | Categorize text into classes | Less relevant |
-| **Clustering** | Group similar documents | Document organization |
-| **Reranking** | Reorder candidates by relevance | Post-retrieval refinement |
-| **Pair Classification** | Binary similarity decisions | Deduplication |
+| **Classification**                    | Categorize text into classes            | Less relevant                |
+| **Clustering**                        | Group similar documents                 | Document organization        |
+| **Reranking**                         | Reorder candidates by relevance         | Post-retrieval refinement    |
+| **Pair Classification**               | Binary similarity decisions             | Deduplication                |
 
 
 **For RAG, prioritize Retrieval scores**. The benchmark reports:
@@ -325,12 +323,12 @@ Models like **BGE-M3** and **SPLADE** output both dense and sparse representatio
 ### Embedding Quantization
 Reduce storage and speed up search by quantizing embeddings:
 
-| Type | Original | Quantized | Memory Savings |
-|:-----|:---------|:----------|:---------------|
-| **float32** | 4 bytes/dim | Baseline | 0% |
-| **float16** | 4 bytes/dim | 2 bytes/dim | 50% |
-| **int8** | 4 bytes/dim | 1 byte/dim | 75% |
-| **binary** | 4 bytes/dim | 1 bit/dim | 97% |
+| Type        | Original    | Quantized   | Memory Savings |
+| :---------- | :---------- | :---------- | :------------- |
+| **float32** | 4 bytes/dim | Baseline    | 0%             |
+| **float16** | 4 bytes/dim | 2 bytes/dim | 50%            |
+| **int8**    | 4 bytes/dim | 1 byte/dim  | 75%            |
+| **binary**  | 4 bytes/dim | 1 bit/dim   | 97%            |
 
 Most [[Vector Databases]] support quantization options.
 

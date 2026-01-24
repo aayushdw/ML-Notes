@@ -55,13 +55,13 @@ Must Read: https://www.pinecone.io/learn/series/faiss/hnsw/
 
 #### Characteristics
 
-| Aspect | Details |
-|:-------|:--------|
-| **Query Speed** | Very fast ($O(\log N)$) |
-| **Memory Usage** | High (graph structure + original vectors) |
-| **Index Build Time** | Medium-slow |
-| **Update Support** | Good (can add/remove without full rebuild) |
-| **Best For** | Read-heavy workloads, high recall requirements |
+| Aspect               | Details                                        |
+| :------------------- | :--------------------------------------------- |
+| **Query Speed**      | Very fast ($O(\log N)$)                        |
+| **Memory Usage**     | High (graph structure + original vectors)      |
+| **Index Build Time** | Medium-slow                                    |
+| **Update Support**   | Good (can add/remove without full rebuild)     |
+| **Best For**         | Read-heavy workloads, high recall requirements |
 
 ### IVF (Inverted File Index)
 
@@ -163,16 +163,16 @@ Add vector search to existing database infrastructure.
 
 ### Popular Options
 
-| Database | Type | Best For | Key Features |
-|:---------|:-----|:---------|:-------------|
-| **Pinecone** | Managed SaaS | Production, zero-ops | Serverless, automatic scaling, hybrid search |
-| **Weaviate** | Open-source/Cloud | Hybrid search, semantic features | Built-in hybrid search, modules for ML |
-| **Qdrant** | Open-source/Cloud | Filtering, payload storage | Advanced filtering, payload indexing |
-| **Milvus** | Open-source/Cloud | Scale, GPU acceleration | Billion-scale, GPU support |
-| **Chroma** | Open-source | Prototyping, simplicity | Simple API, LangChain integration |
-| **FAISS** | Library | Performance, research | Facebook's library, state-of-art algorithms |
-| **pgvector** | Postgres extension | Existing Postgres users | SQL integration, ACID transactions |
-| **Elasticsearch** | Search platform | Full-text + vector hybrid | Mature ecosystem, hybrid search |
+| Database          | Type               | Best For                         | Key Features                                 |
+| :---------------- | :----------------- | :------------------------------- | :------------------------------------------- |
+| **Pinecone**      | Managed SaaS       | Production, zero-ops             | Serverless, automatic scaling, hybrid search |
+| **Weaviate**      | Open-source/Cloud  | Hybrid search, semantic features | Built-in hybrid search, modules for ML       |
+| **Qdrant**        | Open-source/Cloud  | Filtering, payload storage       | Advanced filtering, payload indexing         |
+| **Milvus**        | Open-source/Cloud  | Scale, GPU acceleration          | Billion-scale, GPU support                   |
+| **Chroma**        | Open-source        | Prototyping, simplicity          | Simple API, LangChain integration            |
+| **FAISS**         | Library            | Performance, research            | Facebook's library, state-of-art algorithms  |
+| **pgvector**      | Postgres extension | Existing Postgres users          | SQL integration, ACID transactions           |
+| **Elasticsearch** | Search platform    | Full-text + vector hybrid        | Mature ecosystem, hybrid search              |
 
 
 ### Detailed Comparison

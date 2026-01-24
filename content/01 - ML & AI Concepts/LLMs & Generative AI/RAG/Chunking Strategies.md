@@ -13,7 +13,7 @@ The most basic approach. Splits text after a specific number of characters or to
 *   **Overlap**: Essential to prevent cutting words in half at the boundary.
 *   **Pros**: computationally cheap, simple to implement.
 *   **Cons**: Breaks semantic meaning mid-sentence.
-*   **Production Readiness**: **Low** (Avoid unless resources are extremely constrained).
+*   **Production Readiness**: **Low**.
 
 ### 2. Recursive Character Chunking
 The distinct standard for most text-based RAG applications. It tries to split on natural boundaries first.

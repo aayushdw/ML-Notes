@@ -28,7 +28,6 @@ Hallucinate a hypothetical answer to the user's question, then use that answer's
 **Strengths**:
 - Simple and elegant, leverages LLM's ability to write natural documents
 - Works well for factual, answer-seeking questions
-- Single forward pass through embedding model
 
 **Limitations**:
 - Requires an extra LLM call (latency/cost trade-off)
@@ -146,7 +145,7 @@ What are the troubleshooting steps I should follow to identify and resolve the i
 
 ### 5. Query Routing
 
-**Concept**: Use a classifier to route queries to different retrieval strategies based on query type.
+Use a classifier to route queries to different retrieval strategies based on query type.
 
 **Why It Works**:
 - Different query types benefit from different retrieval approaches
